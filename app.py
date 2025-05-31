@@ -13,28 +13,21 @@ GOV_ORGS = [
 ]
 
 # ----------------------
-# FUNCTIONS
+# READ IN DATA FRAMES
 # ----------------------
-def fetch_repos(org):
-    url = f"https://api.github.com/orgs/{org}/repos?per_page=100"
-    response = requests.get(url, headers=GITHUB_HEADERS)
-    if response.status_code != 200:
-        return []
-    return response.json()
 
-def process_repos(repos):
-    data = []
-    for repo in repos:
-        data.append({
-            "name": repo["name"],
-            "description": repo.get("description", ""),
-            "language": repo.get("language"),
-            "stars": repo.get("stargazers_count"),
-            "updated_at": repo.get("updated_at"),
-            "html_url": repo.get("html_url"),
-            "org": repo["owner"]["login"]
-        })
-    return pd.DataFrame(data)
+#df_all = pd.read_csv('all_gov_projects.csv')
+df = pd.read_csv('filtered_repositories.csv')
+
+# ----------------------
+# LOAD STATIC CSV DATA
+# ----------------------
+@st.cache_data
+def load_data():
+    df = pd.read_csv("govtech_data.csv")  # Ensure this file is in the same folder as app.py
+    df["updated_at"] = pd.to_datetime(df["updated_at"])
+    df["year"] = df["updated_at"].dt.year
+    return df
 
 # ----------------------
 # STREAMLIT UI
@@ -42,47 +35,41 @@ def process_repos(repos):
 st.set_page_config(page_title="GovScan Prototype", layout="wide")
 st.title("🌍 GovScan: Global GovTech Repo Aggregator")
 
-if "repo_df" not in st.session_state:
-    all_repos = []
-    for org in GOV_ORGS:
-        with st.spinner(f"Fetching repos from {org}..."):
-            org_repos = fetch_repos(org)
-            all_repos.extend(org_repos)
-    st.session_state.repo_df = process_repos(all_repos)
+# Load data from static CSV
+df = load_data()
 
-# Display filters
+# ----------------------
+# FILTERS
+# ----------------------
 st.sidebar.header("Filters")
-language_filter = st.sidebar.multiselect("Language", options=st.session_state.repo_df["language"].dropna().unique())
-org_filter = st.sidebar.multiselect("Organization", options=GOV_ORGS)
+language_filter = st.sidebar.multiselect("Language", options=sorted(df["language"].dropna().unique()))
+org_filter = st.sidebar.multiselect("Organization", options=sorted(df["org"].dropna().unique()))
+years = sorted(df["year"].dropna().unique(), reverse=True)
+selected_years = st.sidebar.multiselect("Year Updated", options=years, default=years)
 
 # Apply filters
-df = st.session_state.repo_df.copy()
 if language_filter:
     df = df[df["language"].isin(language_filter)]
 if org_filter:
     df = df[df["org"].isin(org_filter)]
+if selected_years:
+    df = df[df["year"].isin(selected_years)]
 
-# Display table
+# ----------------------
+# DISPLAY TABLE
+# ----------------------
 st.subheader("📊 Repository Overview")
 st.dataframe(df.sort_values("stars", ascending=False).reset_index(drop=True), use_container_width=True)
 
-# Show insights
+# ----------------------
+# INSIGHTS
+# ----------------------
 st.subheader("🔍 Quick Insights")
-st.markdown(f"**Total Repos Scanned:** {len(st.session_state.repo_df)}")
-st.markdown(f"**Most Common Language:** {st.session_state.repo_df['language'].mode().values[0]}")
-latest_update = pd.to_datetime(st.session_state.repo_df['updated_at']).max()
-st.markdown(f"**Last Repo Update Detected:** {latest_update.strftime('%Y-%m-%d')}")
-
-from transformers import pipeline
-
-classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
-CATEGORIES = ["Health", "Justice", "Education", "Infrastructure", "AI/Automation", "Cybersecurity"]
-
-def classify_description(desc):
-    result = classifier(desc, CATEGORIES)
-    return result["labels"][0]  # Most likely category
-
-df['category'] = df['description'].fillna("").apply(classify_description)
-
-st.download_button("Download CSV", df.to_csv(index=False), file_name="govscan_repos.csv")
+st.markdown(f"**Total Repos Scanned:** {len(df)}")
+if not df.empty:
+    st.markdown(f"**Most Common Language:** {df['language'].mode().values[0]}")
+    latest_update = pd.to_datetime(df['updated_at']).max()
+    st.markdown(f"**Last Repo Update Detected:** {latest_update.strftime('%Y-%m-%d')}")
+else:
+    st.markdown("No data to display based on current filters.")
 
