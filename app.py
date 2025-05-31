@@ -84,3 +84,5 @@ def classify_description(desc):
 
 df['category'] = df['description'].fillna("").apply(classify_description)
 
+st.download_button("Download CSV", df.to_csv(index=False), file_name="govscan_repos.csv")
+
