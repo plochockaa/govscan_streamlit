@@ -1,0 +1,625 @@
+name,description,stars,forks,language,readme,topic,summary
+a11y,No description,5,8,HTML,"
+([Français](#gabarit-pour-dépôts-de-code-source-ouvert-du-gouvernement-du-canada))
+
+**Note: This pr",government-open-source-template,"This repository appears to be related to an open-source code template or project for the Government of Canada. The README.md includes a French-language link and a brief mention of its purpose, but the content is incomplete and lacks substantial details. Further context or documentation would be needed for a more comprehensive summary."
+accelerators_accelerateurs-aws,[AWS] Tools and templates to accelerate GC service delivery. Outils et modèles pour accélérer la prestation de services du GC.,16,3,None specified,"# GC Accelerators (AWS)
+
+AWS has developed a project called the AWS Secure Environment Accelerator (",government-open-source-template,"The ""GC Accelerators (AWS)"" repository provides tools and templates designed to accelerate the delivery of secure and efficient services for the Government of Canada (GC) using AWS. It includes resources to streamline the setup and deployment of secure environments, ensuring compliance with GC standards. The project aims to simplify and enhance cloud adoption for GC departments."
+accelerators_accelerateurs-azure,[AZURE] Tools and templates to accelerate GC service delivery. Outils et modèles pour accélérer la prestation de services du GC.,37,14,PowerShell,"([Français](#gc-accelerateurs-azure))
+
+## Azure Landing Zones for Canadian Public Sector
+
+Microsoft ",government-open-source-template,"This GitHub repository provides tools and templates to accelerate the delivery of Government of Canada (GC) services using Azure Landing Zones tailored to the Canadian public sector. It includes resources and configurations to facilitate the deployment of secure, compliant, and scalable cloud environments aligned with Canadian government standards. The repository supports bilingual use (English and French) and aims to streamline cloud adoption for public sector organizations."
+accelerators_accelerateurs-gcp,[GCP] Tools and templates to accelerate GC service delivery. Outils et modèles pour accélérer la prestation de services du GC.,10,8,HCL,"
+# GC Accelerators (GCP)
+
+[![Open this project in Google Cloud Shell](http://gstatic.com/cloudssh/im",government-open-source-template,The **GC Accelerators (GCP)** repository provides tools and templates designed to streamline and accelerate service delivery on Google Cloud. It includes resources aimed at simplifying the deployment and management of Google Cloud services for Government of Canada (GC) projects. The repository is intended to improve efficiency and standardization in GC service implementations on GCP.
+aia-eia,Algorithmic Impact Assessment - Évaluation de l'incidence algorithmique (Python prototype),3,2,HTML,[![Build Status](https://travis-ci.com/canada-ca/aia-eia.svg?branch=master)](https://travis-ci.com/c,algorithmic-impact-assessment,This GitHub repository provides a Python prototype for conducting Algorithmic Impact Assessments (AIA) to evaluate the societal and ethical implications of algorithms. It includes tools and methodologies aligned with best practices for assessing algorithmic systems. The repository appears to focus on transparency and accountability in the use of AI technologies.
+aia-eia-js,Algorithmic Impact Assessment - Évaluation de l'incidence algorithmique (TS/JS),63,43,Vue,[![Build Status](https://travis-ci.com/canada-ca/aia-eia-js.svg?branch=master)](https://travis-ci.co,algorithmic-impact-assessment,"The GitHub repository provides tools for conducting Algorithmic Impact Assessments (AIA) using TypeScript/JavaScript. It aims to evaluate the impact and risks of algorithms in various systems, promoting transparency and accountability. The project includes implementation guidelines, code samples, and assessment frameworks. It is maintained by the Canada.ca organization."
+aia-eia-js2,Algorithmic Impact Assessment - Évaluation de l'incidence algorithmique (JS Prototype),0,0,HTML,README not available,algorithmic-impact-assessment,"This GitHub repository appears to be a JavaScript prototype for conducting Algorithmic Impact Assessments (AIA), aiming to evaluate the societal and ethical implications of algorithmic systems. As the README.md is not available, further details about its implementation or usage are unclear. The project likely serves as a tool or framework to analyze and assess the impact of algorithms in various contexts."
+aia-eia-net,Algorithmic Impact Assessment - Évaluation de l'incidence algorithmique (.NET prototype),1,1,JavaScript,[![Build Status](https://travis-ci.com/canada-ca/aia-eia-net.svg?branch=master)](https://travis-ci.c,algorithmic-impact-assessment,"This GitHub repository hosts a .NET prototype for conducting Algorithmic Impact Assessments (AIA), aimed at evaluating the effects and risks of algorithmic systems. It includes tools and frameworks to assess ethical, legal, and social implications of algorithms. The repository is part of a Canadian government initiative, as evidenced by its branding and Travis CI integration for continuous build and testing."
+alexapoc-ccbpaymentdates,No description,0,0,JavaScript,# alexapoc-ccbpaymentdates,payment-management,"The repository **alexapoc-ccbpaymentdates** appears to be related to managing or handling payment date information, likely for a system or application. However, the README.md lacks detailed content or a description to provide further context about its purpose or functionality."
+alexapoc-healthcanada-recalls,Alexa Proof of Concept - Health Canada - Recalls and Safety Alerts Amazon Alexa Voice Skill,2,0,JavaScript,"# Alexa Proof of Concept
+
+--------------------------------------
+
+## Health Canada Recalls and Safet",voice-assistant,This repository contains a proof-of-concept Amazon Alexa voice skill developed for Health Canada to provide users with information on recalls and safety alerts. It demonstrates how Alexa can be used as an accessible tool for delivering public health and safety information. The project includes the foundational code and setup for integrating Health Canada's recall data with Alexa's voice interface.
+alexapoc-vdpalexa,Proof-of-concept for delivering service on Alexa / Validation de principe pour la prestation de service via Alexa,10,1,None specified,"# alexapoc-vdpalexa
+
+## [English] Proof-of-concept for delivering service on Alexa
+
+To learn more, p",voice-assistant,"This GitHub repository, **alexapoc-vdpalexa**, is a proof-of-concept for delivering services via Amazon Alexa. It explores the feasibility of using Alexa to provide service interactions. The repository serves as a foundational project for validation and experimentation in this domain."
+alexapoc-vrdb,No description,0,0,JavaScript,README not available,algorithmic-impact-assessment,"This GitHub repository lacks a description and README.md content, providing no information about its purpose or contents."
+architecture,Repository for the storage of architectural modeling ,44,19,JavaScript,"# Open Government of Canada Architecture Git Repository
+
+The canada-ca/architecture repository is me",government-open-source-template,"This repository, ""Open Government of Canada Architecture Git Repository,"" is intended for the storage and management of architectural modeling related to the Government of Canada. It serves as a centralized location for architectural resources and materials."
+Azure_LZBCA-AIZDB,Azure Landing Zone Base Cloud Architecture - Architecture infonuagique zone d'atterrissage de base,13,6,PowerShell,"# Azure_LZBCA-AIZDB
+Azure Landing Zone Base Cloud Architecture - Architecture infonuagique zone d'at",cloud-architecture,"The repository provides a foundational cloud architecture framework for creating an Azure Landing Zone. It serves as a base structure to support best practices and streamlined deployments in Azure environments. The architecture is designed to facilitate scalability, security, and governance for cloud solutions."
+blog-dto,Canada.ca blog: Digital Transformation Office,3,2,HTML,"#blog-dto  
+
+Prep repo for the move
+",government-open-source-template,"This GitHub repository, titled ""Canada.ca blog: Digital Transformation Office,"" appears to be a preparatory repository for the migration or setup of content related to the Digital Transformation Office blog on Canada.ca. The README.md is minimal, stating ""Prep repo for the move,"" indicating it serves as an initial staging point for the transition process. No further details about the blog's content or its objectives are provided."
+blogue-btn,blogue de Canada.ca - Bureau de la transformation numérique,1,2,HTML,"# blogue-btn
+blogue de Canada.ca - nous sommes en train de restructurer
+",government-open-source-template,"The repository, *blogue-btn*, is associated with the Canada.ca Digital Transformation Office and serves as the blog for Canada.ca. It is currently undergoing restructuring."
+blogue-canada-ca-blog,Canada.ca blog: Digital Transformation Office | blogue de Canada.ca - Bureau de la transformation numérique,4,9,HTML,[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.s,government-digital-transformation,"The GitHub repository is dedicated to the Canada.ca blog managed by the Digital Transformation Office. It likely contains resources, content, or tools related to digital transformation initiatives in Canada. The README.md references adherence to the Contributor Covenant, indicating a commitment to fostering an inclusive and welcoming community for contributors."
+caf-tg,No description,1,0,None specified,# caf-tg,government-open-source-template,"The `caf-tg` repository appears to be a project with minimal context provided, as the README.md contains only the title and no further details. Without additional information or documentation, the purpose or functionality of the repository cannot be determined."
+canada-bot,No description,3,1,JavaScript,"# 🤖 CanadaBot
+The Pull Request Bot for Anonymous contributions on GitHub!
+
+---
+With PRB0t you can ma",anonymous-contributions,"CanadaBot, also known as PRB0t, is a GitHub bot designed to facilitate anonymous contributions by enabling users to create pull requests discreetly. It helps streamline collaboration and contribution processes on GitHub while maintaining user anonymity."
+canada-ca-jekyll-boilerplate,A repository set as a Jekyll boilerplate to build a site with the Canada.ca template from GCWeb-Jekyll (wet-boew/gcweb-jekyll),0,6,HTML,[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.s,government-digital-transformation,"This repository provides a Jekyll boilerplate for building websites using the Canada.ca template from GCWeb-Jekyll, which is part of the Web Experience Toolkit (WET). It simplifies the integration of official Government of Canada web design standards into Jekyll-based projects. The repository is intended for developers aiming to create compliant and accessible websites for Canadian government use."
+canada-ca.github.io,Stories and insights about the design of Canada.ca,16,14,HTML,"# canada-ca.github.io
+Github pages: content to redirect to new blog space(s)
+
+[Alpha Blog](https://c",government-digital-transformation,"This GitHub repository hosts content for redirecting users to new blog spaces related to the design of Canada.ca. It provides links, such as the Alpha Blog, for accessing stories and insights about the website's design. The repository primarily serves as a redirection tool rather than containing extensive content itself."
+CATS-STAE,Cyber Authentication Technology - Technologie d’authentification électronique,16,1,Shell,"# Cyber Authentication Technology
+
+Cyber authentication allows individuals and businesses to securel",cybersecurity,"Cyber Authentication Technology is a system designed to enhance electronic authentication for individuals and businesses. It focuses on providing secure methods to protect sensitive information and ensure safe access to digital systems. The repository likely includes tools, methodologies, or frameworks related to implementing robust authentication mechanisms."
+ckanext-canada,Government of Canada CKAN Extension - Extension à CKAN du Gouvernement du Canada,0,0,None specified,"# ckanext-canada
+
+Government of Canada CKAN Extension - Extension à CKAN du Gouvernement du Canada
+
+",government-open-source-template,"The repository ""ckanext-canada"" is a CKAN extension developed for the Government of Canada. It aims to enhance CKAN functionality to meet specific requirements and standards of Canadian government data management. The extension provides features and customizations tailored to improve the accessibility, organization, and presentation of open data hosted by the Canadian government."
+cloud-guardrails,Minimum guardrails for GC's cloud operationalization framework.,98,32,JavaScript,"# GC Cloud Guardrails
+
+([Français](#mesures-de-protection-du-nuage-du-gc))
+
+**The latest version of ",cloud-architecture,"GC Cloud Guardrails provides minimum guidelines for operationalizing cloud services within the Government of Canada framework. The repository outlines foundational principles and best practices to ensure secure, efficient, and compliant cloud usage. It includes documentation and resources to help government teams implement these guardrails effectively."
+cloud-guardrails-aws,Tools to support cloud guardrails implementation and compliance checks for AWS.,14,9,Shell,"# GC Cloud Guardrails Checks for AWS
+
+This project will provide tools to validate the implementation",cloud-architecture,"This GitHub repository, ""GC Cloud Guardrails Checks for AWS,"" provides tools to validate the implementation of cloud guardrails and perform compliance checks for AWS environments. It aims to support organizations in enforcing best practices and maintaining governance in the cloud. The repository is designed to ensure alignment with predefined guardrails for secure and compliant AWS usage."
+cloud-guardrails-azure,Tools to support cloud guardrails implementation and compliance checks for Microsoft Azure.,27,9,PowerShell,"# GC Cloud Guardrails Checks for Azure
+
+This project will host the minimum guardrails as part of the",cloud-architecture,This repository provides tools to implement and verify cloud guardrails and compliance checks for Microsoft Azure. It hosts essential guardrails to ensure secure and compliant cloud usage. The project is designed to support organizations in maintaining governance in their Azure environments.
+cloud-guardrails-gcp,Recommended configuration guidance for Google Cloud Platform / Conseils de configuration recommandés pour Platforme infonuagique de Google,23,14,Open Policy Agent,"# GC Cloud Guardrails Checks for Google Cloud Platform
+
+This repository will provide the tools requi",cybersecurity,This repository offers recommended configuration guidance and tools for implementing guardrails and compliance checks on Google Cloud Platform. It aims to enhance security and ensure best practices in cloud environments.
+cloud-guardrails-ibm,Tools to support cloud guardrails implementation and compliance checks for IBM Cloud.,4,4,JavaScript,"# Government of Canada Cloud Guardrails Checks for IBM Cloud
+
+This repository will provide the tools",cloud-architecture,"This repository provides tools to implement and verify compliance with cloud guardrails on IBM Cloud, tailored for the Government of Canada. It includes resources to support adherence to governance and regulatory requirements in cloud environments. The tools aim to streamline compliance checks and ensure cloud practices align with established guardrails."
+cloud-guardrails-O365,Recommended configuration guidance for Microsoft O365 / Conseils de configuration recommandés pour Microsoft O365,36,11,JavaScript,"# GC Cloud Guardrails for O365
+
+([Français](#mesures-de-sécurité-dinformatique-en-nuage-du-gc-pour-o",cybersecurity,"The repository provides recommended configuration guidance for Microsoft O365, tailored to align with Government of Canada (GC) cloud security practices. It includes a set of best practices, security measures, and guardrails to ensure the secure and efficient use of O365 within organizations. The documentation is available in both English and French, catering to bilingual users."
+cloud-guardrails-oracle,Tools to support cloud guardrails implementation and compliance checks for Oracle.,6,2,HCL,"# GC Cloud Guardrails for Oracle
+
+This project will host the minimum guardrails as part of the GC Cl",cloud-architecture,"This repository provides tools to implement and verify cloud guardrails for Oracle environments, ensuring compliance with governance and security standards. It includes a minimal set of predefined guardrails as part of the GC Cloud initiative. The project supports organizations in maintaining secure and compliant cloud operations."
+atomium,The very base theme,9,5,PHP,"# Atomium
+[![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/atomium/status.svg?branch=7.x",web development,"Atomium is a foundational theme designed for Drupal, serving as a base for building other themes. The repository includes tools and configurations to streamline theme development. It is maintained by ec-europa and features build status tracking via Drone CI."
+atomium_europa,A subtheme based on atomium for Europa,0,0,PHP,"# ECL example
+
+Requirements:
+-   Node.js >= 6.9.5
+-   yarn >= 0.20.3
+
+## Setup
+
+```
+yarn
+```
+
+## Bui",government-open-source-template,"This repository contains a subtheme for ""Europa"" based on ""Atomium."" It requires Node.js (>= 6.9.5) and Yarn (>= 0.20.3) for setup. The installation involves running `yarn`, and it appears to support building processes, though the README.md is incomplete."
+aws-fpfis-repo,No description,0,0,Shell,"# Staging repo to test-build RPM packages for AWS
+
+See https://travis-ci.org/ec-europa/aws-fpfis-rep",cloud-architecture,"This repository serves as a staging environment for testing the build process of RPM packages for AWS. It includes integration with Travis CI for continuous testing, with further details available at the provided Travis CI link."
+backtrac-php-client,Backtrac visual regression service - PHP library and phing tasks,2,0,PHP,"# Backtrac PHP client
+
+This projects includes both a client library and a phing helper to trigger vi",visual-regression-testing,Backtrac PHP Client is a library and phing task helper designed for integrating with the Backtrac visual regression service. It enables users to trigger visual regression tests programmatically using PHP or via automation tools like Phing. The repository provides a convenient way to streamline regression testing workflows.
+cloudformation-templates,Centrally managed templates for AWS CloudFormation,0,1,None specified,"# cloudformation-templates - DEPRECATED
+Centrally managed templates for AWS CloudFormation
+
+This rep",cloud-architecture,"The repository, **cloudformation-templates**, contains centrally managed templates for AWS CloudFormation but has been marked as deprecated. Its purpose was to provide reusable CloudFormation templates for managing AWS resources. Users are advised to seek alternative solutions, as this repository is no longer maintained."
+Console_Table,Library that makes it easy to build console style tables.,0,0,PHP,README not available,algorithmic-impact-assessment,"This GitHub repository provides a library designed to simplify the creation of console-style tables. It offers tools and features to format and display tabular data in a clean and structured manner within a console environment. The README file is not available, so further details about usage or examples are not provided."
+content-layer-api-specs,No description,1,0,None specified,"# Content layer api definition
+",web development,"The repository defines an API for a content layer, likely serving as a foundational structure or interface for managing or interacting with content. The README provides minimal details, focusing solely on its purpose as an API definition. Further documentation or code may be required to understand its full functionality."
+cope-api,No description,5,1,JavaScript,"# COPE API
+
+For more information, please read our [Documentation](./docs/README.md).
+",government-open-source-template,"The repository, **COPE API**, appears to provide an API, with additional details and usage instructions available in the linked documentation located in the `docs/README.md` file. The README itself contains minimal information."
+d7-contrib-updater-scripts,"Shell scripts to update core and contrib modules, respecting local changes (""hacks"").",1,1,Shell,"# Module updater scripts
+
+## Purpose
+
+Shell scripts to update core and contrib modules in Drupal 7 s",drupal-update-scripts,"This repository provides shell scripts designed to update core and contributed modules for Drupal 7 while preserving any local modifications (""hacks""). These scripts aim to streamline the update process, ensuring custom changes are respected."
+digit-ict-conf-2016,[DIGIT] DIGITEC Conference 2016,0,0,JavaScript,"# DIGIT-ICT Conference 2016
+
+[![Standard Version](https://img.shields.io/badge/release-standard%20ve",ict-conference,"The DIGIT-ICT Conference 2016 repository appears to host materials related to the DIGITEC Conference held in 2016. It may include resources, documentation, or content used during the event. The README references standard versioning for releases but lacks detailed information about the repository's contents."
+digit-ne-varnish,Nexteuropa Varnish - Drupal 7 module.,0,2,PHP,"Table of Contents
+- [Nexteuropa Varnish](#nexteuropa-varnish)
+    - [Requirements](#requirements)
+  ",drupal-update-scripts,Nexteuropa Varnish is a Drupal 7 module designed to integrate and manage Varnish caching for Nexteuropa-based platforms. The repository includes basic requirements and configurations necessary for its implementation. It aims to optimize web performance through efficient caching mechanisms.
+digitec,DIGITEC (preview at https://digitec.netlify.app),0,1,JavaScript,"# DIGITEC
+
+Deploys for digitec: https://app.netlify.com/sites/digitec/deploys
+
+## Getting Started (R",web development,"DIGITEC is a web project with a live preview available at https://digitec.netlify.app, deployed via Netlify. The repository provides instructions for getting started with the project, including deployment details. It appears to be a platform or application, though specific functionality isn't detailed in the README.md."
+digitec-news,The event-independent website for news and past events.,0,1,JavaScript,"# DIGITEC News
+
+Deploys logs: https://app.netlify.com/sites/digitec-news2020/overview
+
+## Getting St",web development,"DIGITEC News is a website for accessing news and past event information, designed to function independently of specific events. The repository includes deployment logs hosted on Netlify for tracking updates. The README provides minimal instructions, focusing on deployment and setup."
+drupal-project,":rocket: Composer template for Drupal projects. Quick installation via ""composer create-project drupal-composer/drupal-project""",0,0,PHP,"# Composer template for Drupal projects
+
+[![Build Status](https://travis-ci.org/drupal-composer/drup",drupal-update-scripts,This GitHub repository provides a Composer template for quickly setting up Drupal projects using the command `composer create-project drupal-composer/drupal-project`. It simplifies the installation process and offers a structured starting point for Drupal development. The project integrates tools and dependencies commonly used in Drupal workflows.
+DrupalConsole,"The Drupal Console is a CLI tool to generate boilerplate code, interact and debug Drupal 8.",0,0,PHP,"<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT TH",drupal-update-scripts,"The Drupal Console is a command-line interface (CLI) tool designed for Drupal 8 developers. It facilitates the generation of boilerplate code, streamlines interactions with Drupal, and aids in debugging. The tool enhances development efficiency by providing automated code scaffolding and other utilities tailored for Drupal 8 projects."
+DrupalDriver,A collection of drivers for controlling Drupal.,0,1,PHP,[![Build Status](https://travis-ci.org/jhedstrom/DrupalDriver.svg?branch=master)](https://travis-ci.,drupal-update-scripts,"The repository provides a collection of drivers for controlling and interacting with Drupal, enabling developers to manage and test Drupal applications programmatically. It includes tools for seamless integration with Drupal's API and testing frameworks. The project is actively maintained, as indicated by its build status integration."
+drupalextension,"An integration layer between Behat, Mink Extension, and Drupal.",1,0,PHP,"# Behat Drupal Extension
+
+The Drupal Extension is an integration layer between [Behat](http://behat.",drupal,"The Behat Drupal Extension is an integration layer that connects Behat, Mink Extension, and Drupal. It facilitates the testing of Drupal applications by providing tools and configurations tailored for Drupal-specific functionality. This extension enhances automated behavioral testing for Drupal projects, streamlining the development and quality assurance process."
+drush-commands,No description,0,0,PHP,"# drush-module-cleanup
+
+## Installation
+
+* Put the *.inc file into your $HOME/.drush/ folder
+* Run d",drupal,"The `drush-module-cleanup` repository provides a Drush script to assist with module cleanup in Drupal projects. To use it, you need to place the `.inc` file in your `$HOME/.drush/` directory. Further details about its functionality are not provided in the README."
+easyrdf,EasyRdf is a PHP library designed to make it easy to consume and produce RDF.,0,0,PHP,"EasyRdf
+=======
+
+[![Build Status](https://travis-ci.org/njh/easyrdf.svg?branch=master)](https://trav",semantic-web,"EasyRdf is a PHP library that simplifies the consumption and production of RDF (Resource Description Framework) data. It provides tools for parsing, serializing, and querying RDF data with support for multiple formats. The library is designed to be developer-friendly, offering an intuitive API for working with RDF resources and graphs. It is suitable for use in semantic web applications and data integration projects."
+ec-europa-theme,Drupal 7 theme for the NextEuropa platform ,4,3,JavaScript,"# Ec-Europa theme
+Repository containing the drupal theme for the NextEuropa platform.
+
+The Ec-Europa",drupal,The **Ec-Europa** repository contains a Drupal 7 theme designed specifically for the NextEuropa platform. It provides the necessary theme structure and styling to align with the platform's requirements.
+ec-europa-theme-tools,Repository containing modules and features related to the ec-europa-,2,1,PHP,"# ec-europa-theme-tools
+Repository containing modules and features related to the ec-europa-
+",drupal,"The **ec-europa-theme-tools** repository contains modules and features associated with the EC Europa theme, likely designed to support development and customization within the context of European Commission projects. It serves as a toolkit for implementing or extending functionalities related to the theme. The README provides minimal details about the repository's contents or specific use cases."
+ec-europa-tools,Repository for tools/helpers used on the NEXT-Europa project,2,0,PHP,"# EC-EUROPA Tools
+Repository for tools/helpers used on the NEXT-Europa project
+",drupal,"This GitHub repository contains tools and helper utilities developed for the NEXT-Europa project, an initiative by EC-EUROPA. It serves as a centralized collection of resources to support the project's implementation and functionality."
+ec-nems-platform,"[DIGIT] Modules, features and theme for the nems platform",0,3,PHP,"## NEMS Platform Instructions
+
+To incorporate the nems platform into your subsite project with toolk",drupal,"The GitHub repository ""[DIGIT]"" provides modules, features, and themes designed for the NEMS platform. It includes instructions to integrate the NEMS platform into subsite projects using the provided toolkit. The repository appears to be focused on enhancing functionality and user experience for projects utilizing the NEMS platform."
+ec-reps-platform,"[COMM] Modules, features and theme for the reps platform",0,4,PHP,"## REPS Platform Instructions
+
+To incorporate the REPS platform into your subsite project you need t",drupal,"The repository provides modules, features, and themes designed for integration with the REPS platform. It facilitates adding functionality to subsites by incorporating the REPS platform components. The README.md offers instructions for integrating these components into subsite projects. Specific implementation details are not fully visible in the excerpt provided."
+ec2-autoscaling,Automatically register new spinned servers into SALT database and give the server a correct naming + set a grain for Availability Zone,3,0,Scheme,"ec2-autoscale-reactor
+=====================
+
+This is a reactor formula, which allows the autoscaling",cloud-architecture,"The repository, **ec2-autoscale-reactor**, provides a reactor formula for automatically registering newly launched servers into the SALT database. It assigns appropriate server names and sets a grain for the Availability Zone. This tool is designed to facilitate seamless integration of autoscaling servers with SALT infrastructure."
+ecas-phpcas-parser,phpcas attribute parser callback for ECAS,2,1,PHP,"#EcasPhpCASParser
+
+## Why
+Default parsing of ECAS attributes is currently broken with phpCAS, 
+group",phpCAS,EcasPhpCASParser is a tool designed to fix the broken default parsing of ECAS attributes in phpCAS. It provides a custom callback for parsing ECAS attributes to ensure proper handling and functionality. This repository addresses issues with group attribute parsing in particular.
+ecl-ssg, Node application using gatsby to generate static websites using ECL webcomponents.,0,1,TypeScript,"<p align=""center"">
+  <a href=""https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_cam",government-open-source-template,"This repository contains a Node.js application that uses Gatsby to generate static websites incorporating ECL (European Commission Library) web components. It leverages Gatsby's static site generation capabilities to build performant and reusable web solutions. The project is designed for developers seeking to create standardized, component-based websites with ECL designs."
+ecl-toolkit,ECL Toolkit,0,3,JavaScript,"# ECL Toolkit
+
+Set of tools we use to build our front-end components.
+
+## Development
+
+### Requireme",web development,The ECL Toolkit is a collection of tools designed for developing front-end components. It provides the necessary utilities and setup for streamlining the front-end development process. The repository includes instructions and requirements for development.
+ecl-twig,ECL Twig Components,18,5,JavaScript,"# ECL-Twig Library
+
+[![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/ecl-twig/status.svg",government-open-source-template,ECL-Twig Library is a collection of reusable Twig components designed for the European Commission's design system (ECL). It provides pre-built components and templates to streamline the development of consistent and accessible web interfaces. The repository includes tools for developers to integrate ECL components into projects efficiently and adheres to European Commission standards.
+ecl-webcomponents,ECL webcomponents is a new implementation of ECL vanilla components,2,1,TypeScript,"# ECL Web-components
+
+Repository for the implementation and distribution of ECL [Europa component li",web development,"ECL Web-components is a repository for the implementation and distribution of ECL (Europa Component Library) vanilla components as web components. It aims to provide reusable, standardized UI elements for web development. The project simplifies integration and enhances compatibility across platforms."
+2021-bootcamp-gds,No description,1,23,TypeScript,"# Bootcamp - Government Digital Services - 2021
+
+A simple web application which implements a Todo li",web development,This repository contains a simple web application developed during the 2021 Government Digital Services Bootcamp. The application implements a basic Todo list functionality. It serves as a learning project to demonstrate web application development concepts.
+2022-geekout-gds,No description,2,46,TypeScript,"# Geekout - Government Digital Services - 2022
+
+A simple web application which implements a Todo lis",web development,Geekout - Government Digital Services - 2022 is a lightweight web application designed to manage a Todo list. It provides basic functionality for organizing tasks in a straightforward manner.
+ACE-Form-Builder,A React component for building Web forms from JSON Schema.,1,0,JavaScript,"react-jsonschema-form
+=====================
+
+[![Build Status](https://travis-ci.org/mozilla-services",web development,"react-jsonschema-form is a React library for dynamically generating web forms based on JSON Schema definitions. It simplifies form creation by automatically rendering form components from a provided JSON Schema and handling form validation. The library is highly customizable, allowing users to tailor the form's appearance and behavior to suit various use cases. It is an open-source project developed and maintained by Mozilla."
+adex-ug,ADEX User Guide,3,1,None specified,"# Asynchronous Data Exchange (ADEX)
+
+> Learn about [ADEX](https://adex.gov.sg)
+",government-digital-transformation,"The repository provides a user guide for Asynchronous Data Exchange (ADEX), a platform designed to facilitate secure and efficient data sharing between systems. It includes documentation and resources to help users understand and utilize ADEX effectively. For more details, users can visit the official [ADEX website](https://adex.gov.sg)."
+amazon-linux-consul,Contains ansible playbook for installation of Consul client agent on AWS EMR cluster.,0,0,Shell,"# `amazon-linux-consul`
+
+This repository is now deprecated and has been subsumed into
+[`terraform-mo",cloud-architecture,This repository provided an Ansible playbook for installing the Consul client agent on AWS EMR clusters. It is now deprecated and has been merged into the `terraform-mo` project. Users are advised to refer to the new project for updated functionality.
+ansible-rhsso-oracle,This Ansible playbook is to automate the installation to Red Hat Single-Sign-On (RHSSO) in a VM and connect it to an existing Oracle database,0,0,None specified,"# ansible-rhsso-oracle
+![](https://img.shields.io/github/release/GovTechSG/ansible-rhsso-oracle.svg?",cloud-architecture,"This repository contains an Ansible playbook designed to automate the installation of Red Hat Single Sign-On (RHSSO) on a virtual machine and configure its integration with an existing Oracle database. It streamlines the deployment process, ensuring efficient and consistent setup. The playbook is ideal for environments requiring secure authentication and centralized identity management with Oracle backend support."
+apex-cloud-overview,No description,0,0,None specified,README not available,algorithmic-impact-assessment,"This GitHub repository lacks a description and does not provide a README file. Therefore, no information is available to summarize its purpose or contents."
+apex-proxy-node,No description,3,1,TypeScript,"# Archived
+
+This module is no longer actively maintained and should not be used. Consider implementi",archived,"This repository contains an archived module that is no longer actively maintained. It is not recommended for use, and users are advised to consider alternative implementations."
+apex-signature-validator,HTTP Signature validator and test client for APEX ,2,2,JavaScript,"![APEX Logo](/assets/color_apex_landscape.png)
+
+# APEX Signature and JOSE Validator
+
+[![Codacy Badge",cybersecurity,The repository provides tools for validating HTTP Signatures and JSON Object Signing and Encryption (JOSE) in APEX environments. It includes a validation utility and a test client to ensure compliance with digital signature standards. The project is designed to streamline secure communication by verifying the authenticity and integrity of HTTP-based requests.
+apex-signature-validator-server,No description,1,1,JavaScript,"![APEX Logo](/assets/color_apex_landscape.png)
+
+# APEX Signature and JOSE Validator
+
+The Apex Signat",cybersecurity,"The repository appears to contain the ""APEX Signature and JOSE Validator,"" a tool or library related to validating JSON Object Signing and Encryption (JOSE) signatures. The README.md is incomplete, providing only a partial title and an image reference, with no detailed information about its functionality or usage. Further clarification or additional documentation would be required to fully understand the repository's purpose."
+attest,No description,1,0,Shell,"# attest
+
+attest is a tool for downloading terraform and verify that the SHASUM matches the archive.",cybersecurity,"Attest is a tool designed to download Terraform and verify that the SHASUM of the downloaded archive matches its expected value, ensuring the integrity of the file."
+base-images,Base images used for internal builds,0,3,Shell,"# Base Containers
+
+[![Build Status](https://github.com/govtechsg/base-images/actions/workflows/build",cloud-architecture,"The repository contains base container images used for internal builds by GovTech Singapore. It includes automated workflows for building and maintaining these images, as indicated by the build status badge in the README. The repository likely serves as a foundational resource for creating consistent and reliable environments for various projects."
+batch-gen-csr,Generating CSR for L2 Security,5,3,Shell,"# APEX L2 Certificate Generation Scripts
+
+## Generate the CSR
+1. Execute git command to get the scri",cybersecurity,"The repository provides scripts to generate Certificate Signing Requests (CSRs) for Layer 2 (L2) security in APEX systems. The README includes basic instructions, such as using Git commands to retrieve the scripts. It is designed for streamlined certificate generation and security enhancement processes."
+bigchaindb-exploration,No description,0,0,HTML,"# Bigchaindb-Exploration
+
+## Quick start on bigchaindb with docker
+
+https://docs.bigchaindb.com/proj",blockchain-database,"The repository ""Bigchaindb-Exploration"" provides resources for quickly starting with BigchainDB using Docker. It references the official BigchainDB documentation for setup guidance."
+butler-bot,Telegram bot for booking meeting rooms,19,15,JavaScript,"# Butler Bot
+[![Build Status](https://travis-ci.org/GovTechSG/butler-bot.svg?branch=master)](https:/",meeting-room-booking-bot,"The repository contains ""Butler Bot,"" a Telegram bot designed for booking meeting rooms. It automates the scheduling process, allowing users to reserve rooms efficiently via Telegram. The project includes build status tracking and is likely maintained by GovTechSG."
+cert-issuer,Issues Blockcerts using the Bitcoin blockchain,0,0,Python,[![Build Status](https://travis-ci.org/blockchain-certificates/cert-issuer.svg?branch=master)](https,blockchain-certificates,"The repository ""cert-issuer"" enables the issuance of Blockcerts using the Bitcoin blockchain. It provides tools and scripts to securely anchor digital certificates to the blockchain, ensuring authenticity and tamper-resistance. The project is designed for developers and institutions looking to implement blockchain-based credentialing systems."
+cert-verifier,Python library for verifying Blockcerts,0,0,Python,[![Build Status](https://travis-ci.org/blockchain-certificates/cert-verifier.svg?branch=master)](htt,blockchain-certificates,"This GitHub repository provides a Python library for verifying Blockcerts, which are blockchain-based digital certificates. It includes tools and functionality to validate the authenticity and integrity of certificates issued on blockchain networks. The repository appears to have integration with CI tools like Travis CI for build status tracking."
+certificate-schema,No description,1,0,JavaScript,"# MOVED TO https://github.com/OpenCerts/open-certificate
+
+## Schema Version
+
+[v1.0](https://govtechs",blockchain-certificates,"This repository has been moved to a new location at [https://github.com/OpenCerts/open-certificate](https://github.com/OpenCerts/open-certificate). It appears to be related to a schema version, possibly for digital certificates, with a reference to version 1.0. Further updates and development can be found in the new repository."
+CFT-Docs,Documentation for Cloud File Transfer (CFT),0,1,HTML,"# What is CFT?
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras blandit tristique aucto",cloud-architecture,"The repository provides documentation for Cloud File Transfer (CFT), a system designed to facilitate file transfers in cloud environments. The README.md content is incomplete, but it appears to introduce CFT and its functionality. Further details would likely be found in the repository's additional files or sections."
+chatbot-notifier,This application allow sending of messages to chat group with token ecryption capabilities,5,1,Go,"# chatbot-notifier
+
+chatbot-notifier is a tool for sending message with telegram bot while securing ",cybersecurity,chatbot-notifier is an application designed to send messages to chat groups using a Telegram bot. It incorporates token encryption to enhance security during message transmission. This tool simplifies secure communication within group chats.
+commitlint-circle,Lint all relevant commits for a change or PR on Circle CI,0,0,None specified,"> Lint all relevant commits for a change or PR on Circle CI
+
+# commitlint-circle
+
+This package is a ",commit-message-linting,"commitlint-circle is a tool designed to lint all relevant commits associated with a change or pull request (PR) on CircleCI. It ensures commit messages adhere to defined standards, improving code quality and collaboration."
+containerstack-doc-crds,This repository stores containerstack crds which meant to be published in doc portal,0,0,None specified,"# containerstack-doc-crds
+",cloud-architecture,"This repository contains the CRDs (Custom Resource Definitions) for ContainerStack, intended for publication in the documentation portal. It serves as a centralized storage for these definitions to support documentation and development purposes."
+crawlee-core,No description,0,0,JavaScript,"<h1 align=""center"">
+    <a href=""https://crawlee.dev"">
+        <picture>
+          <source media=""(p",web scraping,"The repository appears incomplete or improperly formatted, with missing or truncated content in the README.md file. It seems to reference ""Crawlee,"" a web scraping and crawling framework, but no substantial details are provided. For further understanding, access to the full README.md or additional context is required."
+crossplane-provider-aws,Crossplane Amazon Web Services (AWS) infrastructure provider.,0,0,Go,"# provider-aws
+
+## Overview
+
+This `provider-aws` repository is the Crossplane infrastructure provide",cloud-architecture,"The `provider-aws` repository is a Crossplane infrastructure provider for managing Amazon Web Services (AWS) resources. It enables users to provision and manage AWS services declaratively using Kubernetes-style APIs. The repository is part of the Crossplane ecosystem, designed to extend Kubernetes with cloud-native infrastructure management capabilities."
+csharp-apex-api-security,🔑  C# helper utility that sign HTTP Authorization Scheme for API authentication,4,4,C#,"# APEX API C# Security Utility 
+[![Build Status](https://travis-ci.org/GovTechSG/csharp-apex-api-sec",cybersecurity,The repository provides a C# utility designed to facilitate API authentication by signing HTTP Authorization Scheme headers. It includes tools and methods to enhance security for API requests. The utility is aimed at developers working with C# who require secure and efficient API authentication mechanisms.
+cstack-ecr-repo-list,Quick UI into an AWS ECR repository,1,0,JavaScript,"# Introduction
+
+This application is built on top of [rk295/ecr-repo-list](https://github.com/rk295/e",cloud-architecture,"This repository provides a simple user interface for browsing and managing AWS Elastic Container Registry (ECR) repositories. It is built on top of the [rk295/ecr-repo-list](https://github.com/rk295/ecr-repo-list) project. The application streamlines access to ECR repositories, making it easier to view and interact with container images."
+cstack-quota-monitoring,Container Stack monitoring for Cloud Resource quota,0,0,JavaScript,"# cstack-quota-monitoring
+Container Stack monitoring for Cloud Resource quota
+
+Description
+=========",cloud-architecture,"The ""cstack-quota-monitoring"" repository is a tool designed for monitoring cloud resource quotas within container stack environments. It helps track and manage resource usage to ensure that cloud resource limits are not exceeded. This project aims to provide insights and facilitate efficient resource allocation in cloud-based infrastructures."
+dependency-check-action,Runs OWASP dependency-check on github repo,1,0,None specified,"# depedency-check-action
+Runs OWASP dependency-check on github repo
+
+## Docker Image
+
+Image [public.",cybersecurity,The **dependency-check-action** GitHub repository provides a GitHub Action to run the OWASP Dependency-Check tool on a repository. This helps identify and report vulnerabilities in project dependencies by leveraging a Docker image to execute the scan. It is designed to enhance security in software projects by integrating automated dependency vulnerability checks into the CI/CD pipeline.
+dependency-hasher,Source for dependency hasher,0,0,Shell,README not available,algorithmic-impact-assessment,"This GitHub repository contains the source code for a dependency hasher, a tool likely used to compute hashes for dependencies. However, since the README.md is unavailable, detailed usage instructions or additional context about its functionality are not provided."
+developer.gov.sg-natasha-5-12,No description,0,0,HTML,"# developer.gov.sg
+
+[![Known Vulnerabilities](https://snyk.io//test/github/GovTechSG/developer.gov.s",government-digital-transformation,"The repository ""developer.gov.sg"" appears to be related to the GovTech Singapore development platform. The README.md includes a badge for vulnerability tracking via Snyk, indicating a focus on security. However, the provided content is incomplete, and the repository lacks a description, making it difficult to ascertain its full purpose or functionality. For more details, reviewing the complete README.md or codebase is necessary."
+.github,GitHub community health files for Open Government Products,1,1,None specified,"# .github
+
+This repository contains GitHub [community health files](https://docs.github.com/en/commu",government-open-source-template,"This repository, maintained by Open Government Products, contains GitHub community health files such as issue templates, pull request templates, and contributing guidelines. These files are designed to standardize and improve collaboration across projects hosted by the organization. It follows GitHub’s best practices for community engagement and repository management."
+action-pr-description-add,GitHub Action to change Pull Request descriptions.,0,0,None specified,"<!-- Badges -->
+[![Build-Test](https://github.com/bcgov-nr/action-pr-description-add/actions/workflo",commit-message-linting,This GitHub repository provides a GitHub Action for modifying Pull Request descriptions. It allows users to programmatically update or append content to PR descriptions during workflows. The tool is designed to streamline collaboration and improve documentation consistency in pull request management.
+activesg-pgbench,No description,0,0,None specified,"# ActiveSG pgbench
+
+## Conclusions
+
+Errors happen when all of the following conditions are met:
+
+- q",benchmarking-analysis,"The repository ""ActiveSG pgbench"" appears to focus on identifying and analyzing errors under specific conditions during performance benchmarking or testing, as indicated by the README.md. However, the README.md content is incomplete, providing only a fragment under ""Conclusions,"" stating that errors occur when certain conditions are met, with no further details. The repository likely involves tools or scripts related to benchmarking, but additional context or documentation is required for a clearer understanding."
+add-pr-comment,uses: mshick/add-pr-comment@v2,0,0,None specified,"# add-pr-comment
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
+[![A",github-actions,The `add-pr-comment` GitHub Action allows users to programmatically add comments to pull requests during workflows. It is part of the `mshick/add-pr-comment` repository and supports flexible configurations to customize comments based on CI/CD needs. This tool is particularly useful for automating feedback or updates directly within pull requests.
+armoury-docs,No description,0,0,None specified,README not available,algorithmic-impact-assessment,"The GitHub repository lacks both a description and a README file, so no information is available to summarize its purpose or contents."
+askgov2,No description,0,1,TypeScript,"# AskGov2
+
+Answers from the Singapore Government (v2)
+
+## Tools 
+
+* Needed to run in development:
+  ",government-digital-transformation,"AskGov2 is a platform that provides answers from the Singapore Government, serving as a version 2 of the project. The repository includes tools required for development, though specifics are not detailed in the provided README content."
+askgovsg,Answers from the Singapore Government,17,6,TypeScript,"# AskGov
+Answers from the Singapore Government 
+
+## Tech Stack
+
+#### Front-end
+
+- Front-end Framewor",government-digital-transformation,"AskGov is a GitHub repository designed to provide answers from the Singapore Government. It focuses on delivering information using a front-end framework, as suggested by the tech stack section. The README provides minimal details, primarily highlighting the project's purpose and its reliance on front-end technologies."
+askgovsg-demo,No description,0,0,Pug,README not available,algorithmic-impact-assessment,"The GitHub repository lacks a description and README.md content, making it impossible to determine its purpose or functionality."
+aws-ssm-getparameters-action,"A GitHub action centered on AWS Systems Manager Parameter Store GetParameters call, and placing the results into environment variables",0,0,TypeScript,"# AWS SSM Parameter Store GetParameters Action
+
+A GitHub action centered on AWS Systems Manager Para",github-actions,"This GitHub repository provides a GitHub Action designed to fetch parameters from AWS Systems Manager Parameter Store using the `GetParameters` API call. The retrieved parameters are automatically set as environment variables, enabling seamless integration with workflows. It simplifies secure and efficient parameter management within CI/CD pipelines."
+beanstalk-deploy,GitHub action (and command line script) to deploy apps to Elastic Beanstalk,0,0,JavaScript,"# Beanstalk Deploy
+
+Beanstalk Deploy is a GitHub action (and command line script) to deploy apps to ",github-actions,"Beanstalk Deploy is a GitHub Action and command-line tool designed to simplify the deployment of applications to AWS Elastic Beanstalk. It automates the deployment process, making it easier for developers to integrate Elastic Beanstalk deployments into their CI/CD workflows. The tool is versatile and can be used both as a GitHub Action or standalone script."
+beeline-eol-build,The final build of the Beeline app,0,0,CSS,README not available,algorithmic-impact-assessment,"The repository contains the final build of the Beeline app. However, no README.md content is provided to elaborate on the app's features, functionality, or purpose."
+blueprint-jekyll-theme,Staging: https://stupefied-curie-98b835.netlify.com/; Production: https://opengovsg.github.io/blueprint-jekyll-theme/,0,0,CSS,"# blueprint-jekyll-theme
+
+## Usage
+
+The blueprint-jekyll-theme repo offers a remote_theme option for",web development,"The **blueprint-jekyll-theme** repository provides a Jekyll theme designed for use as a remote theme, enabling streamlined website development and customization. It includes staging and production URLs for testing and deployment, with staging hosted on Netlify and production hosted on GitHub Pages. The theme is optimized for open government and organizational use cases, allowing users to quickly integrate and build functional websites."
+camp-design-system,The Design System used at Open Government Products,42,11,TypeScript,"# Open Government Products Design System
+
+Exports components which follow the design and accessibili",government-digital-transformation,The Open Government Products Design System repository provides reusable components that adhere to design and accessibility standards. It serves as the foundation for creating consistent and accessible user interfaces within Open Government Products.
+carparks-near-me,No description,2,0,JavaScript,"# nearestCarparkInfo API
+This repository is the API used for the [Understanding Web Development Cour",web development,"The ""nearestCarparkInfo API"" repository provides an API developed as part of the ""Understanding Web Development"" course. It is designed to retrieve information about the nearest car parks. Further details about its functionality, setup, or usage are not provided in the README.md."
+cbdc-smart-contracts,Smart contracts for the CBDC collaboration,11,2,TypeScript,"<h1 align=""center"">
+  <br>
+  <a href=""https://github.com/opengovsg/cbdc-smart-contracts/wiki"" width=",blockchain-database,This GitHub repository contains smart contracts designed for Central Bank Digital Currency (CBDC) collaboration. It provides foundational code and documentation to facilitate secure and efficient deployment of CBDC-related blockchain solutions. The README directs users to additional resources and a detailed wiki for further guidance.
+changesets-action,fork of https://github.com/changesets/action for internal use,0,0,TypeScript,"# Changesets Release Action
+
+This action for [Changesets](https://github.com/changesets/changesets) ",github-actions,"The repository is a fork of the Changesets Release Action, which is an action for automating the release process using Changesets. It is intended for internal use and integrates with the Changesets workflow to streamline versioning and publishing of packages."
+checkfirst,Don't Know? CheckFirst. A tool to build eligibility checkers and calculators for Singapore Government policies,14,6,TypeScript,"# CheckFirst
+
+Don't Know? CheckFirst. A tool to build eligibility checkers and calculators for Singa",government-digital-transformation,CheckFirst is a tool designed to create eligibility checkers and calculators for Singapore Government policies. It simplifies the process of determining eligibility for various schemes by providing a customizable framework. The repository supports users in building intuitive tools tailored to specific policy requirements.
+CheckGoGovSG,Verify phone calls from public officers using GoGovSG,0,0,TypeScript,"# Remix
+
+This directory is a brief example of a [Remix](https://remix.run/docs) site that can be dep",government-digital-transformation,"The repository is a Remix-based project designed to verify phone calls from public officers using GoGovSG. It serves as a tool to ensure authenticity and trust in communication between government officials and the public. The README.md provides a minimal example of a Remix site setup, though detailed implementation instructions are not included."
+CheckWho,Enable Singapore residents to easily and authoritatively verify public officers,0,0,TypeScript,"# CheckWho
+
+## Getting started with your dev environment
+
+### Initialization
+
+- Make a copy of `/bac",government-digital-transformation,"CheckWho is a tool designed to help Singapore residents easily and authoritatively verify the identities of public officers. The repository includes instructions for setting up a development environment, starting with initialization steps. While the README.md content appears to be incomplete, the project likely focuses on providing a reliable verification process for public officers in Singapore."
+checkwho-infra,No description,0,0,TypeScript,"# CheckWho Infra Repo
+
+## Setup
+
+If you are here after running [create-ogp-app](https://github.com/o",cloud-architecture,"The ""CheckWho Infra Repo"" appears to be an infrastructure-related repository that is part of the ""create-ogp-app"" project. It likely contains setup instructions and configuration for deploying or managing the infrastructure of the associated application. However, the README.md is incomplete, leaving specific details about its purpose and functionality unclear."
+codeql-config,No description,0,1,None specified,README not available,algorithmic-impact-assessment,"This GitHub repository lacks a description and does not provide a README.md file, leaving its purpose and content unclear."
+ColouriseSG,A deep learning colouriser prototype specifically for old Singaporean photos.,26,1,None specified,"# ColouriseSG
+A deep learning colouriser prototype specifically for old Singaporean photos.
+",ai,ColouriseSG is a deep learning-based prototype designed to colorize old Singaporean photos.
+countries-regions-codes,Utility for converting between nationality codes,7,0,TypeScript,"# Convert country/region codes
+
+![Coverage Status](https://coveralls.io/repos/github/opengovsg/count",geographic-code-conversion,This GitHub repository provides a utility for converting between country or region nationality codes. It simplifies the process of mapping and translating codes used to represent countries or regions in various formats. The project includes test coverage to ensure reliability and accuracy.
+credits-generator,Attributes the authors of your first-level package.json dependencies,17,6,JavaScript,"# credits-generator
+
+Takes in package.json and outputs a CREDITS.md file attributing the authors of ",github-actions,"The **credits-generator** tool processes a `package.json` file to generate a `CREDITS.md` file, attributing the authors of first-level dependencies listed in the file. It automates the process of crediting open-source contributors for the dependencies used in a project."
+ctrl-shift,Web application for solving Employee Rostering using OptaPlanner,4,0,TypeScript,":projectKey: optaweb-employee-rostering
+:sonarBadge: image:https://sonarcloud.io/api/project_badges/",constraint-solving,"This GitHub repository hosts a web application for solving Employee Rostering problems using OptaPlanner, an AI-based constraint solver. It provides tools to optimize employee schedules while adhering to constraints like shift requirements and employee availability. The project focuses on improving workforce management efficiency through automated, intelligent rostering."
+deploy,Opinionated convenience wrapper action for applications to deploy to AWS ECS or Fly.io,0,0,None specified,"# Deploy
+
+An opinionated convenience wrapper action for applications to deploy to AWS ECS or Fly.io
+",github-actions,This GitHub repository provides an opinionated GitHub Action designed as a convenience wrapper to streamline the deployment of applications to either AWS Elastic Container Service (ECS) or Fly.io. It simplifies the deployment process for developers by abstracting repetitive tasks.
+deploy-to-vercel-action,Fork to resolve null author.login,0,0,JavaScript,"<div align=""center"">
+
+# Deploy to Vercel Action
+
+[![Node CI](https://github.com/BetaHuhn/deploy-to-v",github-actions,"The repository is a fork of the original ""Deploy to Vercel Action"" GitHub Action, created to address an issue with `null author.login`. It automates the deployment of projects to Vercel directly from GitHub Actions. The repository includes CI integration and simplifies the deployment workflow for developers. The README.md provides setup instructions and usage details."
+design-tokens,No description,0,0,None specified,"# Design Tokens
+",design-tokens,"This repository focuses on ""Design Tokens,"" which are centralized, platform-agnostic style definitions used in design systems to maintain consistency across applications. It likely includes resources, examples, or tools for implementing and managing design tokens in projects. However, the README provides minimal information, so specifics about its contents or usage are unclear."
+discoversg,No description,0,1,CSS,"## Overview
+
+This project repo has two parts, the main folder with a
+[Create React App](https://gith",web development,"This repository contains a project split into two parts, with the main folder using Create React App for building a React application. The README is incomplete, and no further information is provided about the project's purpose or functionality."
+docker-nginx-open-dev-ports,No description,0,0,HTML,"# docker-nginx-open-dev-ports
+
+This is the Git repo of the Docker ""[nginx open dev ports image](http",web development,The repository hosts a Docker image for Nginx configured to open development ports. It appears to facilitate development workflows by allowing easy access to open ports in an Nginx server setup. Additional details about configuration or usage are not provided in the README.md.
+.github,Alphagov organisation health files,6,19,None specified,"# .github
+
+Alphagov organisation health files
+",government-open-source-template,"This repository contains organizational health files for the Alphagov GitHub organization. It likely includes shared templates, guidelines, or documentation aimed at maintaining and standardizing best practices across the organization."
+a11y,A collection of accessibility resources for developers building GOV.UK,5,4,None specified,"a11y
+====
+
+A collection of accessibility resources for developers building GOV.UK
+
+What follows is a",accessibility-resources,"The repository ""a11y"" is a curated collection of accessibility resources designed to assist developers in creating accessible services for GOV.UK. It provides tools, guidelines, and best practices to ensure compliance with accessibility standards and improve the user experience for all."
+a11y-dev-workshop,No description,6,2,HTML,"# a11y-dev-workshop
+
+* [Preparation notes](preparation.md)
+* [Exercise 1](exercise1.md)
+* [Exercise ",accessibility-resources,"The ""a11y-dev-workshop"" repository appears to be focused on accessibility (a11y) development. It includes resources such as preparation notes and exercises to guide users through accessibility-related concepts or practices. The content seems structured to support learning and hands-on engagement with accessibility topics."
+accessibility,A repo to organize the guidelines and best practices for accessibility at 18f.,0,2,Ruby,"# Accessibility
+This repo will contain the guidelines and best practices for 508 accessibility at 18",accessibility-resources,"This GitHub repository is dedicated to organizing guidelines and best practices for ensuring 508 accessibility compliance at 18F. It serves as a resource to promote accessibility in digital projects, aligning with federal standards. The repository aims to provide clear and actionable recommendations for creating inclusive and accessible designs."
+accessibility-community-notes-and-discussion,Draft accessibility guidance,21,5,None specified,"The  documents and wiki notes are available for discussion but do not constitute offical guidance
+",accessibility-resources,"This GitHub repository contains draft accessibility guidance, including documents and wiki notes intended for discussion. The content is not official guidance but serves as a basis for collaboration and feedback."
+accessibility-guidance,No description,2,2,Ruby,"# Accessibility Guidance
+
+This is draft accessibility guidance for the new accessibility regulations",accessibility-resources,This repository contains draft accessibility guidance related to new accessibility regulations. It serves as a resource for understanding and implementing accessibility requirements.
+accessibility-issues,Collecting accessibility issues we find,2,4,HTML,"# Accessibility issues
+
+This tool is for collecting accessibility issues we find. This is to
+* gathe",accessibility-resources,"This GitHub repository is designed to collect and document accessibility issues encountered in various contexts. It serves as a centralized resource to gather, track, and possibly address these issues. The aim is to improve accessibility awareness and solutions."
+accessibility-monitoring,Tool(s) for sampling/monitoring/testing accessibility of public sector websites ,3,2,PHP,"# Accessibility Monitoring
+
+Tool(s) for sampling/monitoring/testing accessibility of public sector w",accessibility-resources,"This repository provides tools for sampling, monitoring, and testing the accessibility of public sector websites. It aims to support accessibility compliance and improve user experiences by identifying and addressing accessibility issues."
+accessibility-monitoring-platform,GDS internal system for managing the accessibility testing of public sector websites.,2,0,Python,"# GDS Accessibility Monitoring Platform
+
+The accessibility monitoring platform is to support the acc",accessibility-resources,"The GDS Accessibility Monitoring Platform is an internal system designed to manage and support the accessibility testing of public sector websites. It helps ensure compliance with accessibility standards, facilitating efficient monitoring and reporting."
+accessibility-personas,Experience the web as personas with access needs,26,6,JavaScript,"# Accessibility Personas
+
+These pages include:
+
+* Documentation how to set up devices or browsers wi",accessibility-resources,"The ""Accessibility Personas"" repository provides documentation on how to configure devices or browsers to simulate the web experience of individuals with various access needs. It aims to help developers and designers understand and address accessibility challenges by adopting the perspectives of different personas. This resource supports creating more inclusive digital experiences."
+accessibility-self-evaluation,Helps users evaluate the accessibility of their website,1,3,HTML,"# Technical Documentation
+
+This project uses the [Tech Docs Template][template], which is a [Middlem",accessibility-resources,"This GitHub repository provides a tool for evaluating the accessibility of websites. It leverages the Tech Docs Template, a Middleman-based framework, to deliver technical documentation. The project aims to assist users in ensuring their websites meet accessibility standards effectively."
+accessibility-tool-audit,Automated accessibility tools audit,84,31,HTML,"# Accessibility tool audit
+
+Automated accessibility checkers can be used to help identify accessibil",accessibility-resources,This GitHub repository is focused on auditing automated accessibility tools. It aims to evaluate their effectiveness in identifying accessibility issues in digital content. The project likely involves testing and analyzing various accessibility checkers to improve inclusivity and compliance with accessibility standards.
+accessible-autocomplete,"An autocomplete component, built to be accessible.",942,149,JavaScript,"# Accessible autocomplete
+
+The accessible autocomplete is a component that helps users choose answer",accessibility-resources,"Accessible Autocomplete is a component designed to assist users in selecting answers while prioritizing accessibility. It ensures usability for individuals with diverse needs, making it an inclusive tool for implementing autocomplete functionality."
+accessible-autocomplete-multiselect,"An autocomplete multi-select component, built to be accessible.",17,2,JavaScript,"# Accessible autocomplete multi select (DEPRECATED)
+
+> **NOTE**: This project is deprecated and is [",archived,This GitHub repository provides an accessible autocomplete multi-select component but has been deprecated. Users are advised that the project is no longer actively maintained.
+Accessible-Media-Player,Accessible Media Player by Nomensa,7,7,JavaScript,"# [Nomensa](http://www.nomensa.com/) - Accessible Media Player
+
+## About
+
+The Nomensa accessible med",accessibility-resources,"The Nomensa Accessible Media Player is a project focused on creating an inclusive and user-friendly media player that adheres to accessibility standards. Developed by Nomensa, it aims to ensure equal access to media content for all users, including those with disabilities. The repository provides the tools and documentation needed to implement the player effectively."
+account-api,An account for GOV.UK,6,3,Ruby,"# Account API
+
+Provides sign in / sign out and attribute storage functionality to
+other GOV.UK appli",government-digital-transformation,"The repository provides an ""Account API"" for GOV.UK, enabling functionality for user sign-in, sign-out, and attribute storage. It is designed to support other GOV.UK applications by managing user account-related operations."
+ai-publishing-feedback-experimentation-2024,Experimentation work started in Feb 2024 on how AI could help in understanding user feedback in GOV.UK Publishing,3,0,Python,"# AI Publishing Feedback Experimentation
+
+**Archived** - Repository of experimentation that may get ",government-digital-transformation,"This repository documents experimental work started in February 2024 to explore how AI can assist in analyzing user feedback for GOV.UK Publishing. The project has since been archived, indicating it is no longer actively maintained."
+ai-ruby-test-app-2023,Some AI stuff written in Ruby to try and understand how this stuff hangs together,0,0,HTML,"# AI for Ruby Devs
+
+**Archived** Experimentation project from the AI team in 2023.
+
+## Getting start",ai,"This GitHub repository contains experimental AI projects written in Ruby, aimed at helping developers understand AI concepts and how they integrate. It was created by the AI team in 2023 and has since been archived. The README provides minimal guidance, focusing on experimentation rather than production-ready tools."
+alphagov.github.io,GitHub organisation site for GDS. Also an Apache Maven repository.,23,5,HTML,"# GitHub organisation site for GDS
+
+This is the GitHub organisation site for GDS.
+
+[View this site o",government-digital-transformation,This repository serves as the GitHub organization site for GDS and also functions as an Apache Maven repository. It hosts resources and information related to the GDS organization.
+analytics-settings-database,Export Google Analytics (GA4 and UA) settings ,1,0,Python,"## Google Analytics Settings Database
+
+This is not an officially supported Google product.
+
+This rep",data science,This repository provides tools to export and manage Google Analytics settings for both GA4 and UA (Universal Analytics). It is not an officially supported Google product. The project aims to facilitate the extraction and organization of analytics configuration data.
+ansible,"Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy. Avoid writing scripts or custom code to deploy and update your applications — automate in a language that approaches plain English, using SSH, with no agents to install on remote systems. https://docs.ansible.com/ansible/",0,2,Python,"|PyPI version| |Docs badge| |Build Status|
+
+*******
+Ansible
+*******
+
+Ansible is a radically simple I",it-automation,"Ansible is an IT automation platform designed to simplify application and system deployment using a plain-English approach. It leverages SSH for automation without requiring agents on remote systems. The tool enables users to avoid scripting or custom coding by providing a straightforward, efficient solution for managing IT infrastructure. Comprehensive documentation is available at [docs.ansible.com](https://docs.ansible.com/ansible/)."
+anthology,The GDS Library web app.,9,8,Ruby,"# Anthology
+
+An easier way to keep track of the books on your office bookshelf.
+
+* Uses Google authe",book-management,Anthology is a web app designed to help users easily manage and track books on their office bookshelf. It incorporates Google authentication for user access and management. The app is part of the GDS Library project.
+api-explorer,An API explorer to help people get to grips with the GOV.UK APIs,3,5,JavaScript,"## GOV.UK Api Explorer
+
+The code behind http://govuk-api.heroku.com
+
+This is a simple rack and javas",government-digital-transformation,"The GitHub repository hosts the code for the GOV.UK API Explorer, which is a tool designed to help users understand and interact with GOV.UK APIs. The application is built using Rack and JavaScript and is deployed at http://govuk-api.heroku.com. It provides a straightforward interface for exploring API functionalities."
+api-standards,No description,1,2,None specified,"# White House Web API Standards
+
+* [Guidelines](#guidelines)
+* [Pragmatic REST](#pragmatic-rest)
+* [",government-open-source-template,"This repository contains the ""White House Web API Standards,"" which provides guidelines and best practices for designing and implementing pragmatic RESTful APIs. It outlines principles to ensure consistency, usability, and reliability in API development. The document is structured with sections such as ""Guidelines"" and ""Pragmatic REST"" to support developers in creating high-quality APIs."
+app-performance-summary,Extract and summarise performance data for the GOV.UK applications,1,2,Python,"# GOV.UK App performance summary
+
+Extracts error rate information from graphite.
+
+## Nomenclature
+
+-",government-digital-transformation,"The GitHub repository focuses on extracting and summarizing performance data for GOV.UK applications. It retrieves error rate information from Graphite, aiding in monitoring and analyzing application performance metrics. The README is minimal and does not elaborate further."
+apprentice-news,A Hacker News clone for apprentices,0,4,Ruby,# Apprentice News [![Build Status](https://travis-ci.org/alphagov/apprentice-news.svg?branch=master),web development,"Apprentice News is a Hacker News clone designed for apprentices to practice and improve their development skills. The repository provides a simplified version of the popular news aggregation platform, offering functionalities for posting, commenting, and ranking content. It includes a build status badge, indicating integration with Travis CI for continuous integration. The project serves as a learning tool for apprentices to gain hands-on experience with web development and collaborative coding practices."
+apprentice_quiz_app,No description,0,0,Ruby,"# Quiz Application in Rails
+
+This is a basic Rails-based quiz application that allows users to creat",web development,This repository contains a basic quiz application built using Ruby on Rails. The application enables users to create quizzes and interact with them. It serves as a foundational project for learning or building quiz-related features in Rails.
+aquae-java,Aquae is a protocol for personal data exchange (PDE) in Government. This is an implementation along with a collection of tools and fixings.,0,2,Java,README not available,algorithmic-impact-assessment,"Aquae is a protocol designed to facilitate the secure and efficient exchange of personal data in government systems. The repository provides an implementation of the protocol along with supplementary tools and fixes to support its functionality. However, the README file is not available, limiting further details about its usage or setup."
+aquae-match,Aquae is a protocol for personal data exchange (PDE) in Government. This is a Ruby prototype for matching identities,0,2,Ruby,"# aquae-match
+Aquae is a protocol for personal data exchange (PDE) in Government. This is a Ruby pro",government-digital-transformation,Aquae is a Ruby-based prototype implementing a protocol for personal data exchange (PDE) in government systems. It focuses on identity matching to facilitate secure and efficient data sharing.
+aquae-ruby,"A Ruby implementation of Aquae, a protocol for personal data exchange in Government.",0,2,Ruby,"# Aquae
+
+This gem is a low-level library for interacting with an AQuAE (Attributes, Questions, Answe",cybersecurity,"Aquae is a Ruby library designed to facilitate interaction with the AQuAE protocol, which enables secure and efficient personal data exchange in government contexts. It serves as a low-level tool for handling attributes, questions, and answers within the protocol. The gem is intended for developers working on systems that require streamlined and compliant data exchange mechanisms."
+ai-gov-uk-cms,Content Management System for ai.gov.uk website,0,0,Nunjucks,"# ai-gov-uk-cms
+Content Management System for ai.gov.uk website
+
+Documentation for Decap CMS can be ",government-digital-transformation,"The repository ""ai-gov-uk-cms"" hosts the Content Management System (CMS) for the ai.gov.uk website. It utilizes Decap CMS, with documentation available for setup and usage. The repository enables efficient management of website content specific to AI-related government initiatives."
+ai-gov-uk-website,No description,2,0,Nunjucks,"# AI.gov.uk site
+
+This is our repository for our [public website](https://ai.gov.uk/). The intent of",government-digital-transformation,This repository contains the source code and resources for the public website [AI.gov.uk](https://ai.gov.uk/). It serves as the official platform for hosting information related to AI initiatives in the UK.
+approval-form,No description,0,0,Python,"To run this project:
+
+    docker-compose up --build --force-recreate web
+",docker,This repository provides a project that can be run using Docker. The command `docker-compose up --build --force-recreate web` is used to build and start the application. No additional details about the project's purpose or functionality are provided.
+ask-ai-archive,Ask AI archive,0,1,Python,"# Ask AI
+
+**This repo is an archive - the project is no longer being maintained.**
+
+This is a Django",archived,Ask AI is an archived project built with Django that is no longer being actively maintained. It served as a platform for AI-related functionalities but is now preserved for reference purposes only.
+automatilib,No description,0,0,Python,"# i.AI Shared Code
+
+`automatilib` is a django package used and developed by the i.AI team within the",it-automation,"`automatilib` is a Django package developed by the i.AI team. The repository appears to host shared code for the team's projects, likely aimed at streamlining or automating certain functionalities within Django applications."
+awesome-gov-datasets,A curated set of references to useful UK Government datasets ,104,6,Python,"# Awesome UK Government Datasets
+
+[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d2",government-open-data,"This repository is a curated collection of references to valuable datasets provided by the UK government. It aims to organize and highlight useful open data resources for developers, researchers, and policymakers. The repository aligns with the ""awesome"" list format, providing a structured and accessible way to explore UK government data."
+brise-bureau-hack,Incubator for AI - Paris Hackathon - Generative AI for the Public Good,0,1,Python,"# Incubator for AI: Paris Generative AI for the Public Good Hackathon
+
+> [!IMPORTANT]
+> Hackathon pr",generative-ai-for-social-good,"The repository is dedicated to an AI incubator focused on a Paris Hackathon centered around generative AI for public good. It aims to foster innovation and collaboration in using generative AI to address societal challenges. The README appears to be incomplete, but the initiative emphasizes leveraging AI for positive social impact."
+caddy-chatbot,Caddy is an AI powered co-pilot for customer service functions everywhere.,20,8,Python,"# Caddy Chatbot
+
+Caddy is an LLM powered co-pilot for customer service functions everywhere. This co",generative-ai-for-social-good,"Caddy is an AI-powered chatbot designed to assist with customer service functions. Utilizing large language models (LLMs), it acts as a co-pilot to streamline and enhance customer support processes across various platforms."
+caddy-scraper,No description,3,3,Python,"# Caddy Scraper
+
+This is the modular scraper designed for [caddy-chatbot](https://github.com/i-dot-a",web scraping,Caddy Scraper is a modular scraping tool developed for integration with the [Caddy Chatbot](https://github.com/i-dot-a). It is designed to support flexible and efficient data extraction functionalities tailored for chatbot applications. The repository provides a framework for scraping and processing web data.
+cei,No description,0,1,Python,README not available,algorithmic-impact-assessment,"The GitHub repository lacks both a description and a README file, leaving no information available to summarize its purpose or content."
+consult,No description,26,7,Python,"# Consult
+
+Consult is an LLM-powered tool to automate the processing of public consultations.
+
+> [!I",generative-ai-for-social-good,"Consult is an AI-driven tool designed to streamline the processing of public consultations using Large Language Models (LLMs). It aims to automate tasks associated with gathering and analyzing public feedback during consultation processes, enhancing efficiency and scalability."
+cookie-cutter,No description,0,0,Python,"## Running the cookiecutter
+
+1. [Install cookiecutter](https://pypi.org/project/cookiecutter/) on yo",cookiecutter,"This repository provides instructions for running Cookiecutter, a tool for creating project templates. It includes a link to install Cookiecutter from PyPI and likely guides users through its setup and usage. The README.md appears to be incomplete, as it cuts off mid-sentence."
+crit,Audit your docs,0,0,Python,"# 🖍️ crit: audit your docs
+
+> [!IMPORTANT]
+> This is an experiment. It is not ready for production.
+",documentation-auditing,crit is an experimental tool designed to audit documentation. It is still in its early stages and is not yet ready for production use.
+cruft-iai,"Allows you to maintain all the necessary cruft for packaging and building projects separate from the code you intentionally write. Built on-top of, and fully compatible with, CookieCutter.",0,0,Python,"## Fork Information
+
+This repository has been forked from [cruft](https://github.com/cruft/cruft) by",cookiecutter,"The repository is a fork of the original Cruft project and serves as a tool to manage project packaging and build-related files separately from the core codebase. It is built on top of CookieCutter and retains full compatibility with it, making it easier to maintain and update project templates. The tool streamlines workflows by isolating ancillary files, ensuring cleaner and more intentional coding practices."
+dashboard-sample,No description,1,0,Python,README not available,algorithmic-impact-assessment,"The GitHub repository lacks both a description and a README file, leaving no available information about its purpose, content, or functionality."
+django-gov-notify,A GOV.UK Notify flavoured Django email backend,0,0,Python,"# django-gov-notify, a GOV.UK Notify flavoured Django email backend
+
+![GitHub workflow](https://gith",django-email-backend,"The repository provides a Django email backend tailored for integration with GOV.UK Notify, a UK government notification service. It enables developers to send emails via GOV.UK Notify directly from Django applications. The project streamlines email delivery by aligning with GOV.UK Notify's API and requirements."
+django-history-example,Repo to test functionality of django-simple-history.,0,0,Python,"# django-history-example
+
+## About this project
+
+This is an example project to test the functionalit",django-simple-history,"This GitHub repository, *django-history-example*, is an example project created to test the functionality of the Django package *django-simple-history*. The project aims to demonstrate how to implement and utilize historical tracking for Django models. It serves as a practical reference for developers exploring the features of *django-simple-history*."
+ec2-github-runner,On-demand self-hosted AWS EC2 runner for GitHub Actions,0,0,JavaScript,"# On-demand self-hosted AWS EC2 runner for GitHub Actions
+
+⚠️ If you like the project, please consid",cloud-architecture,"The repository provides a solution for running self-hosted GitHub Actions runners on AWS EC2 instances, enabling on-demand scalability. It automates the provisioning and management of EC2 instances to execute workflows, offering cost efficiency and flexibility. The project is particularly useful for teams needing dynamic compute resources for CI/CD pipelines."
+etf-search,Evaluation Registry Search,0,0,None specified,"This purpose of this project is to create an ""Evaluation Registry"" for the Evaluation Task Force (ET",evaluation-registry,"The repository aims to develop an ""Evaluation Registry"" for the Evaluation Task Force (ET), serving as a centralized platform to manage and search evaluation-related data effectively. The project focuses on streamlining the organization and accessibility of evaluation tasks and resources."
+frontend-exercise,No description,0,0,JavaScript,"# Frontend Challenge
+
+Develop a responsive application that fetches live data on books and users as ",web development,The repository contains a frontend challenge focused on developing a responsive application that retrieves live data on books and users. The goal is to create an interactive interface that dynamically displays the fetched information while ensuring responsiveness across devices.
+frontend-starterkit,No description,0,1,TypeScript,"# I-Dot-Ai Frontend starter kit
+
+Simply run the below. Replace `project_name`
+
+```
+npx @idotai/creat",cookiecutter,"The ""I-Dot-Ai Frontend Starter Kit"" is a tool designed to quickly initialize frontend projects. Users can create a new project by running the provided command (`npx @idotai/creat`) and replacing `project_name` with their desired name. No additional details or features are outlined in the README."
+fse-tech-test,Technical test for full stack engineers,0,0,Python,"# Technical test for Lead Full Stack Engineer
+
+## Scenario
+
+An AI engineer in the incubator has comp",full-stack-engineer-evaluation,"The GitHub repository contains a technical test designed for full stack engineers, specifically targeting the role of Lead Full Stack Engineer. The test is set within a scenario involving an AI engineer in an incubator, likely focusing on evaluating candidates' skills in problem-solving, AI integration, and full-stack development. The README provides guidelines and context for completing the test."
+gov-ai-client,No description,0,0,TypeScript,[![build](https://github.com/i-dot-ai/gov-ai-client/actions/workflows/build.yml/badge.svg?branch=mai,archived,"The repository, `gov-ai-client`, appears to be a project related to AI, but its README.md is incomplete and lacks sufficient context or information. The provided content includes a badge for build status but does not offer details about the project's purpose, functionality, or usage. Without more information, it's unclear what the repository is intended for."
+gov_tech_aggregator,An aggregator for open source government code,1,1,None specified,README not available,algorithmic-impact-assessment,"This GitHub repository serves as an aggregator for open-source government code, aiming to centralize and make accessible software developed by or for government entities. Since the README.md is unavailable, specific details about its functionality, usage, or contributing guidelines are not provided. The repository likely facilitates transparency, collaboration, and reuse of government-developed open-source tools."
+i-dot-ai-core-github-actions,Core github actions for projects across i-dot-ai workspace,1,1,None specified,"# i-dot-ai-core-github-actions
+Core github actions for projects across i-dot-ai workspace
+",github-actions,This repository contains core GitHub Actions designed for use across projects within the i-dot-ai workspace. It provides reusable workflows to streamline CI/CD processes and enhance automation consistency across the organization's repositories.
+lex-graph,Building a knowledge graph of UK legislation,9,2,Jupyter Notebook,"# Lex Graph 🕸️
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-s",semantic-web,"Lex Graph is a project aimed at constructing a knowledge graph of UK legislation. It seeks to organize and represent legal information in a structured format, enabling easier analysis and exploration. The repository welcomes contributions and is focused on advancing legal informatics."
+local-gov-hack,No description,15,7,None specified,"# 🏙️ Local Government Innovation Hackathon
+
+> **NOTICE: The Local Government Innovation Hackathon (3",local-government-innovation,"The repository is for the ""Local Government Innovation Hackathon,"" an event focused on fostering innovative solutions for local government challenges. It likely contains resources, guidelines, or tools for participants to collaborate and develop projects during the hackathon. Details are incomplete due to truncated README.md content."
+mvp-python-cookiecutter,Unofficial cookiecutter for a basic Python repo.,0,0,Makefile,"# Minimal Python Cookiecutter
+
+This is a very basic Python Cookiecutter repo.
+
+
+## How to use this
+
+",cookiecutter,The repository provides an unofficial and minimal cookiecutter template for setting up a basic Python project. It simplifies the process of initializing a Python repository by offering a pre-configured structure.
+platform-terraform-test,No description,0,0,HCL,"# I.AI Platform AWS / Terraform Exercise
+
+### Intro
+
+- This is a pair programming task designed to t",cloud-architecture,This repository contains a pair programming task focused on deploying an AI platform on AWS using Terraform. It is intended as a practical exercise to collaborate and work through infrastructure provisioning and automation. The README provides an introduction but appears incomplete.
+redactomatic,A Streamlit app for redacting documents with Presidio,4,1,Python,"# Redact-o-matic
+
+A Streamlit app to help you redact documents!
+
+![Redact-o-matic](images/app_screen",cybersecurity,"Redact-o-matic is a Streamlit application designed for redacting sensitive information in documents using Presidio, an open-source data protection library. The app provides an intuitive interface to identify and redact personal data efficiently. It is ideal for users seeking a straightforward solution for privacy compliance and data anonymization tasks."
