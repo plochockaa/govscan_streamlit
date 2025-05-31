@@ -72,3 +72,15 @@ st.markdown(f"**Total Repos Scanned:** {len(st.session_state.repo_df)}")
 st.markdown(f"**Most Common Language:** {st.session_state.repo_df['language'].mode().values[0]}")
 latest_update = pd.to_datetime(st.session_state.repo_df['updated_at']).max()
 st.markdown(f"**Last Repo Update Detected:** {latest_update.strftime('%Y-%m-%d')}")
+
+from transformers import pipeline
+
+classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+CATEGORIES = ["Health", "Justice", "Education", "Infrastructure", "AI/Automation", "Cybersecurity"]
+
+def classify_description(desc):
+    result = classifier(desc, CATEGORIES)
+    return result["labels"][0]  # Most likely category
+
+df['category'] = df['description'].fillna("").apply(classify_description)
+
