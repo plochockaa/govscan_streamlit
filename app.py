@@ -35,7 +35,6 @@ def load_data():
                     "stars": repo["stargazers_count"],
                     "country": country,
                     "description": repo["description"],
-                    "readme": readme,
                 })
         else:
             st.warning(f"Failed to fetch repos for {org}: {response.status_code}")
@@ -59,6 +58,7 @@ language_filter = st.sidebar.multiselect("Language", options=sorted(df["language
 org_filter = st.sidebar.multiselect("Organization", options=sorted(df["org"].dropna().unique()))
 years = sorted(df["year"].dropna().unique(), reverse=True)
 selected_years = st.sidebar.multiselect("Year Updated", options=years, default=years)
+country_filter = st.sidebar.multiselect("Country", options=sorted(df["country"].unique()), default=sorted(df["country"].unique()))
 
 # Apply filters
 if language_filter:
@@ -67,6 +67,8 @@ if org_filter:
     df = df[df["org"].isin(org_filter)]
 if selected_years:
     df = df[df["year"].isin(selected_years)]
+if country_filter:
+    df = df[df["country"].isin(country_filter)]
 
 # ----------------------
 # DISPLAY TABLE
@@ -90,7 +92,7 @@ else:
 # EXPORT DOWNLOAD
 # ----------------------
 st.subheader("⬇️ Download Filtered Data")
-export_cols = ["language", "org", "year", "stars", "country", "description", "readme"]
+export_cols = ["language", "org", "year", "stars", "country", "description"]
 export_df = df[export_cols].copy()
 st.download_button(
     label="Download CSV",
