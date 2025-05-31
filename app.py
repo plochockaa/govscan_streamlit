@@ -7,20 +7,38 @@ from datetime import datetime
 # CONFIGURATION
 # ----------------------
 GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]  # Store securely in Streamlit secrets
-GITHUB_HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
-GOV_ORGS = [
-    "datagovsg", "govau", "canada-ca", "UKHomeOffice", "italia", "govbr", "gov-si"
-]
 
-# ----------------------
-# LOAD STATIC CSV DATA (all_gov_projects.csv/filtered_repositories.csv)
-# ----------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("filtered_repositories.csv")  # Ensure this file is in the same folder as app.py
-    df["updated_at"] = pd.to_datetime(df["updated_at"])
-    df["year"] = df["updated_at"].dt.year
-    return df
+    orgs = ["alphagov", "i-dot-ai", "canada-ca", "govtechsg", "GSA", "ec-europa", "opengovsg"]  # Example gov GitHub orgs
+    all_repos = []
+
+    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+
+    for org in orgs:
+        url = f"https://api.github.com/orgs/{org}/repos?per_page=100"
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            repos = response.json()
+            for repo in repos:
+                readme_url = f"https://api.github.com/repos/{org}/{repo['name']}/readme"
+                readme_resp = requests.get(readme_url, headers=headers)
+                readme = readme_resp.json().get("content", "") if readme_resp.status_code == 200 else ""
+
+                all_repos.append({
+                    "language": repo["language"],
+                    "org": org,
+                    "updated_at": repo["updated_at"],
+                    "year": pd.to_datetime(repo["updated_at"]).year,
+                    "stars": repo["stargazers_count"],
+                    "country": "",  # Optional: map based on org
+                    "description": repo["description"],
+                    "readme": readme,
+                })
+        else:
+            st.warning(f"Failed to fetch repos for {org}: {response.status_code}")
+
+    return pd.DataFrame(all_repos)
 
 # ----------------------
 # STREAMLIT UI
@@ -28,7 +46,7 @@ def load_data():
 st.set_page_config(page_title="GovScan Prototype", layout="wide")
 st.title("🌍 GovScan: Global GovTech Repo Aggregator")
 
-# Load data from static CSV
+# Load dynamic data from GitHub API
 df = load_data()
 
 # ----------------------
@@ -66,3 +84,15 @@ if not df.empty:
 else:
     st.markdown("No data to display based on current filters.")
 
+# ----------------------
+# EXPORT DOWNLOAD
+# ----------------------
+st.subheader("⬇️ Download Filtered Data")
+export_cols = ["language", "org", "year", "stars", "country", "description", "readme"]
+export_df = df[export_cols].copy()
+st.download_button(
+    label="Download CSV",
+    data=export_df.to_csv(index=False),
+    file_name="govtech_filtered_export.csv",
+    mime="text/csv"
+) 
