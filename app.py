@@ -13,18 +13,11 @@ GOV_ORGS = [
 ]
 
 # ----------------------
-# READ IN DATA FRAMES
-# ----------------------
-
-#df_all = pd.read_csv('all_gov_projects.csv')
-df = pd.read_csv('filtered_repositories.csv')
-
-# ----------------------
-# LOAD STATIC CSV DATA
+# LOAD STATIC CSV DATA (all_gov_projects.csv/filtered_repositories.csv)
 # ----------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("govtech_data.csv")  # Ensure this file is in the same folder as app.py
+    df = pd.read_csv("filtered_repositories.csv")  # Ensure this file is in the same folder as app.py
     df["updated_at"] = pd.to_datetime(df["updated_at"])
     df["year"] = df["updated_at"].dt.year
     return df
