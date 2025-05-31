@@ -15,7 +15,6 @@ def load_data():
 
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
 
-    
     for org in orgs:
         url = f"https://api.github.com/orgs/{org}/repos?per_page=100"
         response = requests.get(url, headers=headers)
@@ -25,16 +24,17 @@ def load_data():
                 readme_url = f"https://api.github.com/repos/{org}/{repo['name']}/readme"
                 readme_resp = requests.get(readme_url, headers=headers)
                 readme = readme_resp.json().get("content", "") if readme_resp.status_code == 200 else ""
+
                 country = "UK" if org in ["alphagov", "i-dot-ai"] else "not-UK"
 
                 all_repos.append({
-                    "name": repo['name'],
-                    "description": repo['description'] or "No description",
+                    "language": repo["language"],
+                    "org": org,
+                    "updated_at": repo["updated_at"],
                     "year": pd.to_datetime(repo["updated_at"]).year,
                     "stars": repo["stargazers_count"],
-                    "language": repo["language"],
-                    "organisation": org,
                     "country": country,
+                    "description": repo["description"],
                     "readme": readme,
                 })
         else:
@@ -45,8 +45,8 @@ def load_data():
 # ----------------------
 # STREAMLIT UI
 # ----------------------
-st.set_page_config(page_title="GovScan Prototype", layout="wide")
-st.title("🌍 Government Github Scanner: explore international government github projects")
+st.set_page_config(page_title="Gov Scan Prototype", layout="wide")
+st.title("🌍 Government Github Scanner: classify international github projects")
 
 # Load dynamic data from GitHub API
 df = load_data()
