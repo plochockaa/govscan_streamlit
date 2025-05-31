@@ -46,7 +46,7 @@ def load_data():
 # STREAMLIT UI
 # ----------------------
 st.set_page_config(page_title="GovScan Prototype", layout="wide")
-st.title("🌍 GovScan: Global GovTech Repo Aggregator")
+st.title("🌍 Government Github Scanner: explore international government github projects")
 
 # Load dynamic data from GitHub API
 df = load_data()
