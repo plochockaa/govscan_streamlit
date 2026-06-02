@@ -56,3 +56,37 @@ The app uses `@st.cache_data` to avoid re-fetching on every interaction. The Git
 ## Running locally
 
 ```bash
+git clone https://github.com/plochockaa/govscan_streamlit
+cd govscan_streamlit
+pip install -r requirements.txt
+```
+
+Add your GitHub token to `.streamlit/secrets.toml`:
+
+```toml
+GITHUB_TOKEN = "ghp_your_token_here"
+```
+
+Then:
+
+```bash
+streamlit run app.py
+```
+
+---
+
+## What I'd build next
+
+- **LLM classification** — tag each repo by AI maturity, domain, and deployment status from README content
+- **Automated org discovery** — find government orgs via the GitHub API rather than a hardcoded list
+- **Change tracking** — store snapshots over time to surface which governments are publishing more AI projects
+- **Multilingual README parsing** — many EU and Asian government repos have non-English READMEs; an LLM layer could normalise these
+
+---
+
+## Tech stack
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat&logo=pandas&logoColor=white)
+![GitHub API](https://img.shields.io/badge/GitHub_API-181717?style=flat&logo=github&logoColor=white)
