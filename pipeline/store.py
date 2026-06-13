@@ -152,15 +152,13 @@ def update_cluster(repo_id: str, cluster_id: int,
 
 def get_unclassified(limit: int = 50,
                      db_path: Path = DB_PATH) -> list[dict]:
-    """Repos needing classification — new or recently updated."""
+    """Repos that have never been classified."""
     with get_connection(db_path) as conn:
         rows = conn.execute("""
             SELECT id, name, org, country, description,
                    readme_text, language, topics
             FROM repos
             WHERE domain IS NULL
-               OR (updated_at > classified_at
-                   AND classified_at IS NOT NULL)
             ORDER BY stars DESC
             LIMIT ?
         """, (limit,)).fetchall()
