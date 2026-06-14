@@ -7,7 +7,7 @@ from typing import Literal
 from mistralai.client.sdk import Mistral
 from pydantic import BaseModel
 
-from pipeline.store import get_unclassified, update_classification
+from pipeline.store import DB_PATH, get_unclassified, update_classification
 
 _PROMPT = (Path(__file__).parent / "prompts" / "classify.txt").read_text()
 _MODEL = "mistral-small-latest"
@@ -84,13 +84,14 @@ def _log_batch(n_repos: int, input_tokens: int, output_tokens: int) -> None:
         f.write(json.dumps(entry) + "\n")
 
 
-def classify_batch(client: Mistral, limit: int = 50) -> None:
-    repos = get_unclassified(limit=limit)
+def classify_batch(client: Mistral, limit: int = 50,
+                   db_path: Path = DB_PATH) -> None:
+    repos = get_unclassified(limit=limit, db_path=db_path)
     total_in = total_out = 0
 
     for repo in repos:
         result, usage = _call_model(repo, client)
-        update_classification(repo["id"], result.model_dump())
+        update_classification(repo["id"], result.model_dump(), db_path)
         total_in += usage.prompt_tokens
         total_out += usage.completion_tokens
 

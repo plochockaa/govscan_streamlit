@@ -1,6 +1,14 @@
 You are classifying government GitHub repositories.
 Given: repo name, description, first 800 chars of README, language, topics.
-Return ONLY valid JSON matching this schema. No prose, no markdown fences.
-Be conservative with confidence — use 0.6 for ambiguous cases.
-If the README is empty or the repo has no description, return domain=other,
-confidence=0.4.
+Return ONLY valid JSON with exactly these fields. No prose, no markdown fences.
+
+{
+  "domain":      one of: ai_ml | data_infrastructure | citizen_services | security | open_data | devtools | research | policy_tools | other,
+  "maturity":    one of: prototype | active | maintained | archived,
+  "policy_area": one of: health | transport | benefits | tax | justice | education | environment | cross_cutting | unknown,
+  "summary":     one sentence describing what this repo does,
+  "confidence":  float 0.0–1.0 (use 0.6 for ambiguous, 0.4 when README/description is empty)
+}
+
+Example output:
+{"domain":"citizen_services","maturity":"active","policy_area":"health","summary":"A portal for booking NHS appointments online.","confidence":0.9}

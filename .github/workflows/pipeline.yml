@@ -1,0 +1,43 @@
+name: Nightly Pipeline
+
+on:
+  schedule:
+    - cron: "0 23 * * *"  # 23:00 UTC = 01:00 CEST (UTC+2)
+  workflow_dispatch:       # allow manual trigger from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # use the built-in token so the later git push is authorised
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Run fetch → classify → embed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+        run: uv run python -m pipeline.run
+
+      - name: Commit updated DB
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f data/govscan.db
+          git diff --staged --quiet && echo "No DB changes" || (
+            git commit -m "chore: nightly db update [skip ci]" && git push
+          )
