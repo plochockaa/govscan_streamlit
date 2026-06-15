@@ -4,7 +4,7 @@ Return ONLY valid JSON with exactly these fields. No prose, no markdown fences.
 
 {
   "domain":      one of: ai_ml | data_infrastructure | citizen_services | security | open_data | devtools | research | policy_tools | other,
-  "maturity":    one of: prototype | active | maintained | archived,
+  "maturity":    one of: prototype | active | maintained | archived  (never "unknown" — pick the closest),
   "policy_area": one of: health | transport | benefits | tax | justice | education | environment | cross_cutting | unknown,
   "summary":     one sentence describing what this repo does,
   "confidence":  float 0.0–1.0 (use 0.6 for ambiguous, 0.4 when README/description is empty)

@@ -1,8 +1,11 @@
 import json
+import logging
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Literal
+
+log = logging.getLogger(__name__)
 
 from mistralai.client.sdk import Mistral
 from pydantic import BaseModel
@@ -90,10 +93,13 @@ def classify_batch(client: Mistral, limit: int = 50,
     total_in = total_out = 0
 
     for repo in repos:
-        result, usage = _call_model(repo, client)
-        update_classification(repo["id"], result.model_dump(), db_path)
-        total_in += usage.prompt_tokens
-        total_out += usage.completion_tokens
+        try:
+            result, usage = _call_model(repo, client)
+            update_classification(repo["id"], result.model_dump(), db_path)
+            total_in += usage.prompt_tokens
+            total_out += usage.completion_tokens
+        except Exception as exc:
+            log.warning("Skipping %s — classification failed: %s", repo["id"], exc)
 
     if repos:
         _log_batch(len(repos), total_in, total_out)
