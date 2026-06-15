@@ -1,12 +1,10 @@
 # GovScan — International Government GitHub Scanner
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://govscan.streamlit.app)
-
 A live intelligence tool that tracks, classifies, and compares open-source work published by government organisations on GitHub worldwide. The nightly pipeline fetches repos, classifies them with an LLM, embeds them for similarity search, and clusters them to surface duplicate efforts across countries.
 
 🔗 **[Live app → govscan.streamlit.app](https://govscan.streamlit.app)**
 
-![GovScan demo](https://github.com/plochockaa/govscan_streamlit/pages/govscan.gif)
+![GovScan demo](https://raw.githubusercontent.com/plochockaa/govscan_streamlit/main/pages/govscan.gif)
 
 ---
 
