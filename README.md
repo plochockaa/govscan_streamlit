@@ -6,6 +6,8 @@ A live intelligence tool that tracks, classifies, and compares open-source work 
 
 🔗 **[Live app → govscan.streamlit.app](https://govscan.streamlit.app)**
 
+![GovScan demo](https://github.com/plochockaa/govscan_streamlit/pages/govscan.gif)
+
 ---
 
 ## What it does
@@ -21,7 +23,7 @@ A live intelligence tool that tracks, classifies, and compares open-source work 
 
 | Page | Description |
 |---|---|
-| **Overview** | Domain breakdown (donut), repos by country (bar), domain × country heatmap |
+| **Overview** | Domain breakdown, repos by country |
 | **Trends** | Repos over time, top languages, AI frontier vs open weight usage |
 | **Similarity** | Expandable cluster cards — countries, repo links, LLM summaries, domain filters |
 | **Search** | Full-text search across name / description / LLM summary with sidebar filters |
