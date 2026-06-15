@@ -42,7 +42,8 @@ def init_db(db_path: Path = DB_PATH) -> None:
                 llm_confidence  REAL,
                 classified_at   TEXT,
                 embedding       BLOB,
-                cluster_id      INTEGER
+                cluster_id      INTEGER,
+                ai_providers    TEXT
             );
 
             CREATE TABLE IF NOT EXISTS pipeline_log (
@@ -148,6 +149,42 @@ def update_cluster(repo_id: str, cluster_id: int,
             "UPDATE repos SET cluster_id = ? WHERE id = ?",
             (cluster_id, repo_id)
         )
+
+
+def update_ai_providers(repo_id: str, providers: dict,
+                        db_path: Path = DB_PATH) -> None:
+    """Write detected AI provider tiers for a single repo."""
+    with get_connection(db_path) as conn:
+        conn.execute(
+            "UPDATE repos SET ai_providers = ? WHERE id = ?",
+            (json.dumps(providers), repo_id)
+        )
+
+
+def get_ai_ml_repos(db_path: Path = DB_PATH) -> list[dict]:
+    """All ai_ml repos that haven't had provider detection run yet."""
+    with get_connection(db_path) as conn:
+        rows = conn.execute("""
+            SELECT id, org, name, language
+            FROM repos
+            WHERE domain = 'ai_ml'
+              AND ai_providers IS NULL
+        """).fetchall()
+    return [dict(r) for r in rows]
+
+
+def get_undetected_classified(db_path: Path = DB_PATH) -> list[dict]:
+    """Non-ai_ml classified repos that haven't had provider detection run yet.
+    Used to catch repos the LLM mislabelled but that actually use AI SDKs."""
+    with get_connection(db_path) as conn:
+        rows = conn.execute("""
+            SELECT id, org, name, language, domain
+            FROM repos
+            WHERE domain IS NOT NULL
+              AND domain != 'ai_ml'
+              AND ai_providers IS NULL
+        """).fetchall()
+    return [dict(r) for r in rows]
 
 
 def get_unclassified(limit: int = 50,

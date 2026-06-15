@@ -3,12 +3,45 @@ Given: repo name, description, first 800 chars of README, language, topics.
 Return ONLY valid JSON with exactly these fields. No prose, no markdown fences.
 
 {
-  "domain":      one of: ai_ml | data_infrastructure | citizen_services | security | open_data | devtools | research | policy_tools | other,
+  "domain":      one of the values below,
   "maturity":    one of: prototype | active | maintained | archived  (never "unknown" — pick the closest),
   "policy_area": one of: health | transport | benefits | tax | justice | education | environment | cross_cutting | unknown,
   "summary":     one sentence describing what this repo does,
   "confidence":  float 0.0–1.0 (use 0.6 for ambiguous, 0.4 when README/description is empty)
 }
 
+Domain definitions — pick the best fit:
+
+  ai_ml               Machine learning models, LLMs, AI assistants, NLP pipelines, neural
+                      networks, computer vision, model training/inference, AI evaluation
+                      frameworks, RAG pipelines, prompt engineering, AI governance tools,
+                      chatbots, generative AI. If the repo is primarily ABOUT using or
+                      building AI/ML systems, use this — even if it also serves citizens.
+
+  data_infrastructure ETL pipelines, data warehouses, data quality tools, data catalogues,
+                      APIs for structured data access, analytics platforms, dashboards.
+
+  citizen_services    Public-facing government services and portals: benefits applications,
+                      appointment booking, forms, payments, service-status pages.
+
+  security            Authentication, authorisation, identity management (SSO, OAuth, PKI),
+                      penetration testing tools, vulnerability scanning, certificate
+                      management, DMARC/TLS checking.
+
+  open_data           Datasets, open government data portals, statistical releases,
+                      data-sharing standards, CKAN extensions.
+
+  devtools            Developer tooling not specific to a government service: CI/CD helpers,
+                      SDKs, boilerplates, design systems, prototyping kits, linters,
+                      deployment tools, Terraform modules.
+
+  research            Academic or exploratory work with no current production intent:
+                      papers, experiments, proof-of-concepts, simulation models.
+
+  policy_tools        Legislative tracking, regulatory compliance tools, consultation
+                      platforms, policy drafting aids, procurement tools.
+
+  other               Does not fit any category above.
+
 Example output:
-{"domain":"citizen_services","maturity":"active","policy_area":"health","summary":"A portal for booking NHS appointments online.","confidence":0.9}
+{"domain":"ai_ml","maturity":"prototype","policy_area":"cross_cutting","summary":"A RAG pipeline for answering citizen queries using government documents.","confidence":0.85}

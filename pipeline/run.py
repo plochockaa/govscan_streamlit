@@ -5,9 +5,12 @@ from mistralai.client.sdk import Mistral
 
 from config import ORGS
 from pipeline.classify import classify_batch
+from pipeline.cluster import cluster_repos
+from pipeline.detect import detect_ai_providers
 from pipeline.embed import embed_and_store
 from pipeline.fetch import fetch_org_repos
-from pipeline.store import init_db, upsert_repo
+from pipeline.store import (get_ai_ml_repos, get_connection, get_undetected_classified,
+                             init_db, update_ai_providers, upsert_repo)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -72,6 +75,39 @@ def run() -> None:
     log.info("Embedding unembedded repos...")
     n_embedded = embed_and_store()
     log.info("Embedded %d repos", n_embedded)
+
+    # --- Cluster ---
+    log.info("Clustering embedded repos...")
+    n_clusters = cluster_repos()
+    log.info("Assigned %d clusters", n_clusters)
+
+    # --- Detect AI providers (ai_ml repos) ---
+    ai_repos = get_ai_ml_repos()
+    log.info("Detecting AI providers for %d ai_ml repos...", len(ai_repos))
+    for repo in ai_repos:
+        providers = detect_ai_providers(repo["org"], repo["name"], headers)
+        update_ai_providers(repo["id"], providers)
+        log.info("  %s/%s → %s", repo["org"], repo["name"], providers)
+
+    # --- Catch LLM misses: scan non-ai_ml repos for AI SDK usage ---
+    other_repos = get_undetected_classified()
+    log.info("Scanning %d non-ai_ml repos for AI SDK usage...", len(other_repos))
+    reclassified = 0
+    for repo in other_repos:
+        providers = detect_ai_providers(repo["org"], repo["name"], headers)
+        update_ai_providers(repo["id"], providers)
+        any_ai = (providers.get("frontier") or providers.get("open_weight")
+                  or providers.get("frameworks"))
+        if any_ai:
+            with get_connection() as conn:
+                conn.execute(
+                    "UPDATE repos SET domain='ai_ml', llm_confidence=1.0 WHERE id=?",
+                    (repo["id"],)
+                )
+            reclassified += 1
+            log.info("  Reclassified %s → ai_ml (detected: %s)",
+                     repo["id"], providers)
+    log.info("Reclassified %d repos to ai_ml via dependency detection", reclassified)
 
     log.info("Pipeline complete.")
 

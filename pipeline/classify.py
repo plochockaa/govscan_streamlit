@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
@@ -98,8 +99,10 @@ def classify_batch(client: Mistral, limit: int = 50,
             update_classification(repo["id"], result.model_dump(), db_path)
             total_in += usage.prompt_tokens
             total_out += usage.completion_tokens
+            time.sleep(0.4)
         except Exception as exc:
             log.warning("Skipping %s — classification failed: %s", repo["id"], exc)
+            time.sleep(1.0)
 
     if repos:
         _log_batch(len(repos), total_in, total_out)
