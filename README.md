@@ -1,55 +1,83 @@
 # GovScan — International Government GitHub Scanner
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://govscan-interview.streamlit.app)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://govscan.streamlit.app)
 
-A live tool for scanning, filtering, and analysing open-source repositories published by government organisations worldwide. Built as a prototype to demonstrate what cross-government AI project intelligence could look like at scale.
+A live intelligence tool that tracks, classifies, and compares open-source work published by government organisations on GitHub worldwide. The nightly pipeline fetches repos, classifies them with an LLM, embeds them for similarity search, and clusters them to surface duplicate efforts across countries.
 
----
-
-## Demo
-
-![GovScan demo](docs/demo.gif)
-
-🔗 **[Live app → govscan-interview.streamlit.app](https://govscan-interview.streamlit.app)**
+🔗 **[Live app → govscan.streamlit.app](https://govscan.streamlit.app)**
 
 ---
 
 ## What it does
 
-Government organisations increasingly publish AI and data projects on GitHub, but there's no unified way to discover or compare what's being built across countries. GovScan pulls live repository data from government GitHub organisations across the UK, Canada, Singapore, the US, and the EU, and presents it in a filterable dashboard.
+- **Classifies** every government repo by domain (AI/ML, citizen services, open data, security, etc.), policy area, and maturity using Mistral
+- **Detects AI model usage** by scanning dependency files — distinguishes frontier models (OpenAI, Anthropic, AWS Bedrock) from open weight (Mistral, HuggingFace, Ollama)
+- **Clusters similar repos** across governments to find where multiple countries built the same thing independently
+- **Tracks 12,700+ repos** from 32 government organisations across 16 countries, updated nightly
 
-You can:
-- Filter by programming language, organisation, country, and year
-- Rank repositories by activity (stars, last update)
-- Export filtered results as CSV for further analysis
+---
+
+## Pages
+
+| Page | Description |
+|---|---|
+| **Overview** | Domain breakdown (donut), repos by country (bar), domain × country heatmap |
+| **Trends** | Repos over time, top languages, AI frontier vs open weight usage |
+| **Similarity** | Expandable cluster cards — countries, repo links, LLM summaries, domain filters |
+| **Search** | Full-text search across name / description / LLM summary with sidebar filters |
 
 ---
 
 ## Architecture
 
-    GitHub REST API
-          │
-          ▼
-    load_data() [cached]     ← pulls repos + metadata per org
-          │
-          ▼
-    pandas DataFrame         ← filtering, aggregation
-          │
-          ▼
-    Streamlit UI             ← sidebar filters, table, CSV export
+```
+GitHub REST API
+      │
+      ▼
+pipeline/fetch.py        ← paginated org scraping, rate-limit handling
+      │
+      ▼
+pipeline/store.py        ← SQLite (repos, embeddings, clusters, ai_providers)
+      │
+      ├── pipeline/classify.py   ← Mistral LLM → domain / maturity / policy_area
+      │
+      ├── pipeline/embed.py      ← fastembed (BAAI/bge-small-en-v1.5, local ONNX)
+      │
+      ├── pipeline/cluster.py    ← KMeans on embeddings → cluster_id
+      │
+      └── pipeline/detect.py     ← scan requirements.txt / package.json for AI SDKs
+                                    tier as frontier / open weight / frameworks
 
-The app uses `@st.cache_data` to avoid re-fetching on every interaction. The GitHub token is stored in Streamlit Secrets — never hardcoded.
+data/govscan.db          ← committed to repo nightly by CI
+      │
+      ▼
+Streamlit multipage app  ← reads DB, no runtime API calls needed
+```
 
-**Organisations currently tracked:**
+The Streamlit app is read-only — it queries the committed SQLite DB. All heavy processing runs in CI overnight.
 
-| Organisation | Country |
+---
+
+## Organisations tracked
+
+| Country | Organisations |
 |---|---|
-| alphagov, i-dot-ai | UK |
-| canada-ca | Canada |
-| govtechsg | Singapore |
-| GSA | USA |
-| ec-europa | EU |
-| opengovsg | Singapore |
+| UK | alphagov, i-dot-ai, co-cddo, nhsengland, DWPDigital, hmrc, ministryofjustice, ScottishGovernment |
+| USA | GSA, 18F, uswds, CDCgov, USDS |
+| France | betagouv, numerique-gouv, etalab |
+| Canada | canada-ca, cds-snc |
+| Singapore | govtechsg, opengovsg |
+| Germany | digitalservicebund |
+| Netherlands | minbzk, nl-design-system |
+| Australia | AusDTO, govau, ServiceNSW |
+| New Zealand | ServiceInnovationLab, GOVTNZ |
+| Sweden | diggsweden |
+| Denmark | digst |
+| Estonia | e-gov |
+| India | egovernments, mosip |
+| Brazil | servicosgovbr |
+| Taiwan | g0v |
+| EU | ec-europa |
 
 ---
 
@@ -58,35 +86,45 @@ The app uses `@st.cache_data` to avoid re-fetching on every interaction. The Git
 ```bash
 git clone https://github.com/plochockaa/govscan_streamlit
 cd govscan_streamlit
-pip install -r requirements.txt
+uv sync                        # installs app deps only (streamlit, pandas, plotly)
+uv sync --extra pipeline       # also installs pipeline deps (mistralai, fastembed, etc.)
 ```
 
-Add your GitHub token to `.streamlit/secrets.toml`:
-
-```toml
-GITHUB_TOKEN = "ghp_your_token_here"
-```
-
-Then:
+Copy `.env.example` and fill in your tokens:
 
 ```bash
-streamlit run app.py
+cp .env.example .env
+# add GH_TOKEN and MISTRAL_API_KEY
+```
+
+Run the app:
+
+```bash
+uv run streamlit run app.py
+```
+
+Run the full pipeline manually:
+
+```bash
+uv run python -m pipeline.run
 ```
 
 ---
 
-## What I'd build next
+## CI / CD
 
-- **LLM classification** — tag each repo by AI maturity, domain, and deployment status from README content
-- **Automated org discovery** — find government orgs via the GitHub API rather than a hardcoded list
-- **Change tracking** — store snapshots over time to surface which governments are publishing more AI projects
-- **Multilingual README parsing** — many EU and Asian government repos have non-English READMEs; an LLM layer could normalise these
+- **`test.yml`** — runs pytest on every push to main
+- **`pipeline.yml`** — nightly at 01:00 CEST: fetch → classify → embed → cluster → detect AI providers, then commits the updated `data/govscan.db` back to the repo, which triggers a Streamlit Cloud redeploy automatically
+
+Secrets required in GitHub repo settings: `MISTRAL_API_KEY`, `GH_TOKEN` (for reading public repos past the unauthenticated rate limit).
 
 ---
 
 ## Tech stack
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python_3.12-3776AB?style=flat&logo=python&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat&logo=pandas&logoColor=white)
-![GitHub API](https://img.shields.io/badge/GitHub_API-181717?style=flat&logo=github&logoColor=white)
+![Mistral](https://img.shields.io/badge/Mistral_AI-F7931E?style=flat&logoColor=white)
+![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=flat&logo=plotly&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat&logo=sqlite&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat&logo=githubactions&logoColor=white)
