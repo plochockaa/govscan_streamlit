@@ -47,3 +47,20 @@ def fetch_org_repos(org: str, headers: dict) -> list[dict]:
     check_rate_limit(headers)
     url = f"https://api.github.com/orgs/{org}/repos?per_page=100"
     return fetch_all_pages(url, headers)
+
+
+def fetch_readme(org: str, name: str, headers: dict,
+                 max_chars: int = 3000) -> str | None:
+    """Fetch and decode the README for a single repo. Returns None on 404 or error."""
+    import base64
+    url = f"https://api.github.com/repos/{org}/{name}/readme"
+    try:
+        resp = requests.get(url, headers=headers, timeout=10)
+        if resp.status_code != 200:
+            return None
+        content = resp.json().get("content", "")
+        text = base64.b64decode(content).decode("utf-8", errors="replace")
+        return text[:max_chars]
+    except Exception as exc:
+        logger.warning("README fetch failed for %s/%s: %s", org, name, exc)
+        return None

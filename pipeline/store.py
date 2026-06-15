@@ -82,7 +82,7 @@ def upsert_repo(repo: dict, db_path: Path = DB_PATH) -> None:
             )
             ON CONFLICT(id) DO UPDATE SET
                 description  = excluded.description,
-                readme_text  = excluded.readme_text,
+                readme_text  = COALESCE(excluded.readme_text, readme_text),
                 language     = excluded.language,
                 stars        = excluded.stars,
                 forks        = excluded.forks,
@@ -129,6 +129,30 @@ def update_classification(repo_id: str, classification: dict,
         """, {**classification,
               "id": repo_id,
               "classified_at": now})
+
+
+def update_readme(repo_id: str, text: str, db_path: Path = DB_PATH) -> None:
+    """Write README text for a single repo."""
+    with get_connection(db_path) as conn:
+        conn.execute(
+            "UPDATE repos SET readme_text = ? WHERE id = ?",
+            (text, repo_id)
+        )
+
+
+def get_missing_readme(limit: int = 500,
+                       db_path: Path = DB_PATH) -> list[dict]:
+    """Unclassified repos that have no README yet — fetch before classifying."""
+    with get_connection(db_path) as conn:
+        rows = conn.execute("""
+            SELECT id, org, name
+            FROM repos
+            WHERE domain IS NULL
+              AND readme_text IS NULL
+            ORDER BY stars DESC
+            LIMIT ?
+        """, (limit,)).fetchall()
+    return [dict(r) for r in rows]
 
 
 def update_embedding(repo_id: str, embedding_blob: bytes,

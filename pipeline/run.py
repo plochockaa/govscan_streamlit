@@ -8,9 +8,10 @@ from pipeline.classify import classify_batch
 from pipeline.cluster import cluster_repos
 from pipeline.detect import detect_ai_providers
 from pipeline.embed import embed_and_store
-from pipeline.fetch import fetch_org_repos
-from pipeline.store import (get_ai_ml_repos, get_connection, get_undetected_classified,
-                             init_db, update_ai_providers, upsert_repo)
+from pipeline.fetch import fetch_org_repos, fetch_readme
+from pipeline.store import (get_ai_ml_repos, get_connection, get_missing_readme,
+                             get_undetected_classified, init_db, update_ai_providers,
+                             update_readme, upsert_repo)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -66,6 +67,15 @@ def run() -> None:
                 log.warning("  Failed %s: %s", org, exc)
 
     log.info("Fetch done — %d repos total", total_fetched)
+
+    # --- Fetch READMEs (only for repos about to be classified) ---
+    to_read = get_missing_readme(limit=500)
+    log.info("Fetching READMEs for %d unclassified repos...", len(to_read))
+    for repo in to_read:
+        text = fetch_readme(repo["org"], repo["name"], headers)
+        if text:
+            update_readme(repo["id"], text)
+    log.info("README fetch done")
 
     # --- Classify ---
     log.info("Classifying unclassified repos...")
