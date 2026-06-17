@@ -45,7 +45,13 @@ class ClassificationResult(BaseModel):
 
 
 def _build_user_msg(repo: dict) -> str:
-    topics = ", ".join(repo.get("topics") or []) or "none"
+    raw_topics = repo.get("topics") or "[]"
+    if isinstance(raw_topics, str):
+        try:
+            raw_topics = json.loads(raw_topics)
+        except (json.JSONDecodeError, ValueError):
+            raw_topics = []
+    topics = ", ".join(raw_topics) or "none"
     readme = (repo.get("readme_text") or "")[:800]
     return (
         f"name: {repo['name']}\n"

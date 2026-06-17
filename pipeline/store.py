@@ -189,7 +189,7 @@ def get_ai_ml_repos(db_path: Path = DB_PATH) -> list[dict]:
     """All ai_ml repos that haven't had provider detection run yet."""
     with get_connection(db_path) as conn:
         rows = conn.execute("""
-            SELECT id, org, name, language
+            SELECT id, org, name, language, readme_text
             FROM repos
             WHERE domain = 'ai_ml'
               AND ai_providers IS NULL
@@ -202,11 +202,28 @@ def get_undetected_classified(db_path: Path = DB_PATH) -> list[dict]:
     Used to catch repos the LLM mislabelled but that actually use AI SDKs."""
     with get_connection(db_path) as conn:
         rows = conn.execute("""
-            SELECT id, org, name, language, domain
+            SELECT id, org, name, language, domain, readme_text
             FROM repos
             WHERE domain IS NOT NULL
               AND domain != 'ai_ml'
               AND ai_providers IS NULL
+        """).fetchall()
+    return [dict(r) for r in rows]
+
+
+def get_ai_ml_empty_providers(db_path: Path = DB_PATH) -> list[dict]:
+    """ai_ml repos where detection ran but found nothing — re-scan candidates.
+    Uses readme_text already stored in DB so no extra GitHub calls needed."""
+    with get_connection(db_path) as conn:
+        rows = conn.execute("""
+            SELECT id, org, name, language, readme_text
+            FROM repos
+            WHERE domain = 'ai_ml'
+              AND ai_providers IS NOT NULL
+              AND json_extract(ai_providers, '$.frontier')    = json('[]')
+              AND json_extract(ai_providers, '$.open_weight') = json('[]')
+              AND json_extract(ai_providers, '$.frameworks')  = json('[]')
+              AND readme_text IS NOT NULL
         """).fetchall()
     return [dict(r) for r in rows]
 

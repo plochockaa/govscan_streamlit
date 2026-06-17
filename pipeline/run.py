@@ -1,7 +1,10 @@
 import logging
 import os
 
+from dotenv import load_dotenv
 from mistralai.client.sdk import Mistral
+
+load_dotenv()
 
 from config import ORGS
 from pipeline.classify import classify_batch
@@ -9,9 +12,11 @@ from pipeline.cluster import cluster_repos
 from pipeline.detect import detect_ai_providers
 from pipeline.embed import embed_and_store
 from pipeline.fetch import fetch_org_repos, fetch_readme
-from pipeline.store import (get_ai_ml_repos, get_connection, get_missing_readme,
-                             get_undetected_classified, init_db, update_ai_providers,
-                             update_readme, upsert_repo)
+from pipeline.detect import detect_from_text
+from pipeline.store import (get_ai_ml_empty_providers, get_ai_ml_repos,
+                             get_connection, get_missing_readme,
+                             get_undetected_classified, init_db,
+                             update_ai_providers, update_readme, upsert_repo)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -95,7 +100,10 @@ def run() -> None:
     ai_repos = get_ai_ml_repos()
     log.info("Detecting AI providers for %d ai_ml repos...", len(ai_repos))
     for repo in ai_repos:
-        providers = detect_ai_providers(repo["org"], repo["name"], headers)
+        providers = detect_ai_providers(
+            repo["org"], repo["name"], headers,
+            readme_text=repo.get("readme_text"),
+        )
         update_ai_providers(repo["id"], providers)
         log.info("  %s/%s → %s", repo["org"], repo["name"], providers)
 
@@ -104,7 +112,10 @@ def run() -> None:
     log.info("Scanning %d non-ai_ml repos for AI SDK usage...", len(other_repos))
     reclassified = 0
     for repo in other_repos:
-        providers = detect_ai_providers(repo["org"], repo["name"], headers)
+        providers = detect_ai_providers(
+            repo["org"], repo["name"], headers,
+            readme_text=repo.get("readme_text"),
+        )
         update_ai_providers(repo["id"], providers)
         any_ai = (providers.get("frontier") or providers.get("open_weight")
                   or providers.get("frameworks"))
@@ -118,6 +129,21 @@ def run() -> None:
             log.info("  Reclassified %s → ai_ml (detected: %s)",
                      repo["id"], providers)
     log.info("Reclassified %d repos to ai_ml via dependency detection", reclassified)
+
+    # --- Re-scan existing empty-provider repos using stored README text ---
+    empty_repos = get_ai_ml_empty_providers()
+    log.info("Re-scanning %d repos with empty provider results via README text...",
+             len(empty_repos))
+    text_hits = 0
+    for repo in empty_repos:
+        providers = detect_from_text(repo["readme_text"])
+        any_found = (providers.get("frontier") or providers.get("open_weight")
+                     or providers.get("frameworks"))
+        if any_found:
+            update_ai_providers(repo["id"], providers)
+            text_hits += 1
+            log.info("  Text-scan hit: %s → %s", repo["id"], providers)
+    log.info("Text-scan upgraded %d previously-empty repos", text_hits)
 
     log.info("Pipeline complete.")
 
