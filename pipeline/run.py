@@ -15,7 +15,8 @@ from pipeline.fetch import fetch_org_repos, fetch_readme
 from pipeline.store import (get_ai_ml_empty_providers, get_ai_ml_repos,
                              get_connection, get_missing_readme,
                              get_undetected_classified, init_db,
-                             update_ai_providers, update_readme, upsert_repo)
+                             log_pipeline_run, update_ai_providers,
+                             update_readme, upsert_repo)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -83,7 +84,7 @@ def run() -> None:
 
     # --- Classify ---
     log.info("Classifying unclassified repos...")
-    classify_batch(client, limit=500)
+    classify_stats = classify_batch(client, limit=500)
 
     # --- Embed ---
     log.info("Embedding unembedded repos...")
@@ -144,6 +145,10 @@ def run() -> None:
             log.info("  Text-scan hit: %s → %s", repo["id"], providers)
     log.info("Text-scan upgraded %d previously-empty repos", text_hits)
 
+    log_pipeline_run({
+        "repos_fetched":    total_fetched,
+        **classify_stats,
+    })
     log.info("Pipeline complete.")
 
 

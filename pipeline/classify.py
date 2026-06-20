@@ -95,7 +95,7 @@ def _log_batch(n_repos: int, input_tokens: int, output_tokens: int) -> None:
 
 
 def classify_batch(client: Mistral, limit: int = 50,
-                   db_path: Path = DB_PATH) -> None:
+                   db_path: Path = DB_PATH) -> dict:
     repos = get_unclassified(limit=limit, db_path=db_path)
     total_in = total_out = 0
 
@@ -112,3 +112,11 @@ def classify_batch(client: Mistral, limit: int = 50,
 
     if repos:
         _log_batch(len(repos), total_in, total_out)
+
+    cost = (total_in * _PRICE_IN + total_out * _PRICE_OUT) / 1_000_000
+    return {
+        "repos_classified": len(repos),
+        "input_tokens":     total_in,
+        "output_tokens":    total_out,
+        "cost_usd":         round(cost, 6),
+    }
