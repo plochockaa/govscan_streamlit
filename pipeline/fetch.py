@@ -1,3 +1,4 @@
+import base64
 import time
 import logging
 import requests
@@ -52,7 +53,6 @@ def fetch_org_repos(org: str, headers: dict) -> list[dict]:
 def fetch_readme(org: str, name: str, headers: dict,
                  max_chars: int = 3000) -> str | None:
     """Fetch and decode the README for a single repo. Returns None on 404 or error."""
-    import base64
     url = f"https://api.github.com/repos/{org}/{name}/readme"
     try:
         resp = requests.get(url, headers=headers, timeout=10)
