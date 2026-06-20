@@ -9,10 +9,9 @@ load_dotenv()
 from config import ORGS
 from pipeline.classify import classify_batch
 from pipeline.cluster import cluster_repos
-from pipeline.detect import detect_ai_providers
+from pipeline.detect import detect_ai_providers, detect_from_text
 from pipeline.embed import embed_and_store
 from pipeline.fetch import fetch_org_repos, fetch_readme
-from pipeline.detect import detect_from_text
 from pipeline.store import (get_ai_ml_empty_providers, get_ai_ml_repos,
                              get_connection, get_missing_readme,
                              get_undetected_classified, init_db,
