@@ -27,12 +27,15 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen --extra pipeline
 
-      - name: Download full DB from release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release download db-latest --pattern "govscan.db" --dir data/ --clobber \
-            || echo "No previous release found, using DB from checkout"
+      # Restore the full DB (with readme_text) from the previous run's cache.
+      # On first run, or after a cache miss, falls back to the lite DB in git.
+      - name: Restore full DB from cache
+        uses: actions/cache/restore@v4
+        with:
+          path: data/govscan.db
+          key: govscan-db-${{ github.run_id }}
+          restore-keys: |
+            govscan-db-
 
       - name: Run fetch → classify → embed
         env:
@@ -40,14 +43,12 @@ jobs:
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
         run: uv run python -m pipeline.run
 
-      - name: Upload full DB to release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release delete db-latest --yes --cleanup-tag 2>/dev/null || true
-          gh release create db-latest data/govscan.db \
-            --title "Latest DB" \
-            --notes "Auto-updated by nightly pipeline"
+      # Save the full DB before we strip readme_text for the git commit.
+      - name: Save full DB to cache
+        uses: actions/cache/save@v4
+        with:
+          path: data/govscan.db
+          key: govscan-db-${{ github.run_id }}
 
       - name: Commit lite DB to git
         run: |
