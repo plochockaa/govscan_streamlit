@@ -27,16 +27,34 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen --extra pipeline
 
+      - name: Download full DB from release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release download db-latest --pattern "govscan.db" --dir data/ --clobber \
+            || echo "No previous release found, using DB from checkout"
+
       - name: Run fetch → classify → embed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
         run: uv run python -m pipeline.run
 
-      - name: Commit updated DB
+      - name: Upload full DB to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create db-latest data/govscan.db \
+            --title "Latest DB" \
+            --notes "Auto-updated by nightly pipeline" \
+            2>/dev/null \
+          || gh release upload db-latest data/govscan.db --clobber
+
+      - name: Commit lite DB to git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          sqlite3 data/govscan.db "UPDATE repos SET readme_text = NULL;"
           git pull --rebase --autostash origin main
           git add -f data/govscan.db
           git diff --staged --quiet && echo "No DB changes" || (
