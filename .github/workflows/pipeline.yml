@@ -30,7 +30,7 @@ jobs:
       # Restore the full DB (with readme_text) from the previous run's cache.
       # On first run, or after a cache miss, falls back to the lite DB in git.
       - name: Restore full DB from cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: data/govscan.db
           key: govscan-db-${{ github.run_id }}
@@ -45,7 +45,7 @@ jobs:
 
       # Save the full DB before we strip readme_text for the git commit.
       - name: Save full DB to cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: data/govscan.db
           key: govscan-db-${{ github.run_id }}
