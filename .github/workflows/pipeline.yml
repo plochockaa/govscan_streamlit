@@ -44,11 +44,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          gh release delete db-latest --yes --cleanup-tag 2>/dev/null || true
           gh release create db-latest data/govscan.db \
             --title "Latest DB" \
-            --notes "Auto-updated by nightly pipeline" \
-            2>/dev/null \
-          || gh release upload db-latest data/govscan.db --clobber
+            --notes "Auto-updated by nightly pipeline"
 
       - name: Commit lite DB to git
         run: |
