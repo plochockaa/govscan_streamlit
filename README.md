@@ -13,7 +13,7 @@ A live intelligence tool that tracks, classifies, and compares open-source work 
 - **Classifies** every government repo by domain (AI/ML, citizen services, open data, security, etc.), policy area, and maturity using Mistral
 - **Detects AI model usage** by scanning dependency files — distinguishes frontier models (OpenAI, Anthropic, AWS Bedrock) from open weight (Mistral, HuggingFace, Ollama)
 - **Clusters similar repos** across governments to find where multiple countries built the same thing independently
-- **Tracks 12,700+ repos** from 32 government organisations across 16 countries, updated nightly
+- **Tracks 12,700+ repos** from 36 government organisations across 16 countries, updated nightly
 
 ---
 

@@ -33,7 +33,7 @@ pages/
 
 config.py           ORGS dict: country → list of GitHub org names
 data/
-  govscan.db        SQLite database (not committed — fetched at deploy time)
+  govscan.db        SQLite database (committed nightly by CI; Streamlit Cloud redeploys on each commit)
   pipeline_log.jsonl  Per-run cost/token accounting
 ```
 
