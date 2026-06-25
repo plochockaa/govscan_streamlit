@@ -14,11 +14,13 @@ dependencies = [
 [project.optional-dependencies]
 pipeline = [
     "fastembed>=0.4.2",
-    "mistralai>=2.4.9",
+    "google-genai>=1.0.0",
     "onnxruntime<=1.19.0",
     "pydantic>=2.13.4",
     "python-dotenv>=1.0.0",
+    "requests>=2.32.0",
     "scikit-learn>=1.9.0",
+    "tenacity>=9.0.0",
 ]
 
 [tool.pytest.ini_options]

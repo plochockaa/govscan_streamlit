@@ -6,20 +6,25 @@ from enum import Enum
 from pathlib import Path
 from typing import Literal
 
-log = logging.getLogger(__name__)
-
-from mistralai.client.sdk import Mistral
+from google import genai
+from google.genai import types
 from pydantic import BaseModel
 
+from pipeline.fetch import fetch_readme
 from pipeline.store import DB_PATH, get_unclassified, update_classification
 
+log = logging.getLogger(__name__)
+
 _PROMPT = (Path(__file__).parent / "prompts" / "classify.txt").read_text()
-_MODEL = "mistral-small-latest"
+_MODEL = "gemini-2.0-flash"
 _LOG_PATH = Path(__file__).parent.parent / "data" / "pipeline_log.jsonl"
 
-# mistral-small-latest pricing: USD per 1M tokens
-_PRICE_IN = 0.20
-_PRICE_OUT = 0.60
+# gemini-2.0-flash pricing: USD per 1M tokens
+_PRICE_IN = 0.10
+_PRICE_OUT = 0.40
+
+# Confidence threshold below which the agent fetches the README before reclassifying
+_CONFIDENCE_THRESHOLD = 0.65
 
 
 class Domain(str, Enum):
@@ -62,25 +67,68 @@ def _build_user_msg(repo: dict) -> str:
     )
 
 
-def _call_model(repo: dict, client: Mistral) -> tuple[ClassificationResult, object]:
-    response = client.chat.complete(
+def _call_model(repo: dict, client: genai.Client) -> tuple[ClassificationResult, object]:
+    response = client.models.generate_content(
         model=_MODEL,
-        messages=[
-            {"role": "system", "content": _PROMPT},
-            {"role": "user", "content": _build_user_msg(repo)},
-        ],
-        response_format={"type": "json_object"},
+        contents=_build_user_msg(repo),
+        config=types.GenerateContentConfig(
+            system_instruction=_PROMPT,
+            response_mime_type="application/json",
+        ),
     )
-    result = ClassificationResult(**json.loads(response.choices[0].message.content))
-    return result, response.usage
+    result = ClassificationResult(**json.loads(response.text))
+    return result, response.usage_metadata
 
 
-def classify_repo(repo: dict, client: Mistral) -> ClassificationResult:
+def _classify_agent(
+    repo: dict,
+    client: genai.Client,
+    gh_headers: dict | None,
+) -> tuple[ClassificationResult, int, int, int]:
+    """
+    Two-step classification agent.
+
+    Step 1 — classify from whatever metadata is available (name, description,
+              language, topics, and readme_text if already in the DB).
+    Step 2 — if confidence is below the threshold AND the repo has no readme yet,
+              fetch the README from GitHub (one tool call) and reclassify.
+
+    Returns (result, prompt_tokens, output_tokens, readme_fetches).
+    """
+    result, usage = _call_model(repo, client)
+    prompt_tokens = usage.prompt_token_count or 0
+    output_tokens = usage.candidates_token_count or 0
+
+    needs_more_context = (
+        result.confidence < _CONFIDENCE_THRESHOLD
+        and not repo.get("readme_text")
+        and gh_headers is not None
+    )
+    if not needs_more_context:
+        return result, prompt_tokens, output_tokens, 0
+
+    # Tool call: fetch README to improve confidence
+    org, name = repo["id"].split("/", 1)
+    readme_text = fetch_readme(org, name, gh_headers)
+    if not readme_text:
+        return result, prompt_tokens, output_tokens, 1
+
+    enriched = {**repo, "readme_text": readme_text}
+    result, usage2 = _call_model(enriched, client)
+    prompt_tokens += usage2.prompt_token_count or 0
+    output_tokens += usage2.candidates_token_count or 0
+    return result, prompt_tokens, output_tokens, 1
+
+
+def classify_repo(repo: dict, client: genai.Client) -> ClassificationResult:
+    """Classify a single repo without the agent loop (no GitHub calls)."""
     result, _ = _call_model(repo, client)
     return result
 
 
-def _log_batch(n_repos: int, input_tokens: int, output_tokens: int) -> None:
+def _log_batch(
+    n_repos: int, input_tokens: int, output_tokens: int, tool_calls: int
+) -> None:
     cost = (input_tokens * _PRICE_IN + output_tokens * _PRICE_OUT) / 1_000_000
     entry = {
         "run_at": datetime.now(timezone.utc).isoformat(),
@@ -88,30 +136,38 @@ def _log_batch(n_repos: int, input_tokens: int, output_tokens: int) -> None:
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
         "cost_usd": round(cost, 6),
+        "readme_fetches": tool_calls,
     }
     _LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
     with _LOG_PATH.open("a") as f:
         f.write(json.dumps(entry) + "\n")
 
 
-def classify_batch(client: Mistral, limit: int = 50,
-                   db_path: Path = DB_PATH) -> dict:
+def classify_batch(
+    client: genai.Client,
+    limit: int = 500,
+    db_path: Path = DB_PATH,
+    gh_headers: dict | None = None,
+) -> dict:
     repos = get_unclassified(limit=limit, db_path=db_path)
-    total_in = total_out = 0
+    total_in = total_out = total_tool_calls = 0
 
     for repo in repos:
         try:
-            result, usage = _call_model(repo, client)
+            result, in_tok, out_tok, tool_calls = _classify_agent(
+                repo, client, gh_headers
+            )
             update_classification(repo["id"], result.model_dump(), db_path)
-            total_in += usage.prompt_tokens
-            total_out += usage.completion_tokens
-            time.sleep(0.4)
+            total_in += in_tok
+            total_out += out_tok
+            total_tool_calls += tool_calls
+            time.sleep(0.2)
         except Exception as exc:
             log.warning("Skipping %s — classification failed: %s", repo["id"], exc)
             time.sleep(1.0)
 
     if repos:
-        _log_batch(len(repos), total_in, total_out)
+        _log_batch(len(repos), total_in, total_out, total_tool_calls)
 
     cost = (total_in * _PRICE_IN + total_out * _PRICE_OUT) / 1_000_000
     return {
@@ -119,4 +175,5 @@ def classify_batch(client: Mistral, limit: int = 50,
         "input_tokens":     total_in,
         "output_tokens":    total_out,
         "cost_usd":         round(cost, 6),
+        "readme_fetches":   total_tool_calls,
     }

@@ -2,7 +2,7 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from mistralai.client.sdk import Mistral
+from google import genai
 
 load_dotenv()
 
@@ -47,13 +47,13 @@ def _normalize(raw: dict, org: str, country: str) -> dict:
 
 def run() -> None:
     gh_token = os.environ["GH_TOKEN"]
-    mistral_key = os.environ["MISTRAL_API_KEY"]
+    gemini_key = os.environ["GEMINI_API_KEY"]
 
     headers = {
         "Authorization": f"token {gh_token}",
         "Accept": "application/vnd.github+json",
     }
-    client = Mistral(api_key=mistral_key)
+    client = genai.Client(api_key=gemini_key)
 
     init_db()
 
@@ -84,7 +84,7 @@ def run() -> None:
 
     # --- Classify ---
     log.info("Classifying unclassified repos...")
-    classify_stats = classify_batch(client, limit=500)
+    classify_stats = classify_batch(client, limit=500, gh_headers=headers)
 
     # --- Embed ---
     log.info("Embedding unembedded repos...")

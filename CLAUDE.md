@@ -30,6 +30,7 @@ pages/
   2_trends.py       Activity over time, language breakdown
   3_similarity.py   Clusters of similar repos across governments
   4_search.py       Browse / filter all classified repos
+  5_ask.py          Gemini-powered chat agent — query the DB in natural language
 
 config.py           ORGS dict: country → list of GitHub org names
 data/
@@ -48,7 +49,8 @@ Each stage is idempotent; `run.py` skips rows already processed.
 |---|---|
 | UI | Streamlit |
 | Data / charts | pandas, plotly |
-| Classification LLM | Mistral (`mistral-small-latest`) via `mistralai` SDK |
+| Classification LLM | Gemini (`gemini-2.0-flash`) via `google-genai` SDK |
+| Query Agent LLM | Gemini (`gemini-2.5-flash`) — powers the Ask page chat agent |
 | Embeddings | `fastembed` — `BAAI/bge-small-en-v1.5` (local, no API cost) |
 | Clustering | `scikit-learn` KMeans |
 | Database | SQLite (WAL mode) — file at `data/govscan.db` |
@@ -83,7 +85,7 @@ The `pipeline_log` table in the DB and `data/pipeline_log.jsonl` both track per-
 
 ```
 GH_TOKEN          GitHub personal access token (repo:read scope)
-MISTRAL_API_KEY   Mistral API key
+GEMINI_API_KEY    Gemini API key from aistudio.google.com
 ```
 
 Store in a `.env` file at the repo root for local runs — `pipeline/run.py` calls `load_dotenv()`.  
