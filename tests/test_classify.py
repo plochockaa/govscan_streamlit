@@ -33,19 +33,16 @@ REPO = {
 
 
 def make_client(result: dict = VALID_RESULT, prompt_tokens=100, completion_tokens=50):
-    usage = MagicMock()
-    usage.prompt_tokens = prompt_tokens
-    usage.completion_tokens = completion_tokens
-
-    choice = MagicMock()
-    choice.message.content = json.dumps(result)
+    usage_metadata = MagicMock()
+    usage_metadata.prompt_token_count = prompt_tokens
+    usage_metadata.candidates_token_count = completion_tokens
 
     response = MagicMock()
-    response.choices = [choice]
-    response.usage = usage
+    response.text = json.dumps(result)
+    response.usage_metadata = usage_metadata
 
     client = MagicMock()
-    client.chat.complete.return_value = response
+    client.models.generate_content.return_value = response
     return client
 
 
@@ -100,21 +97,21 @@ class TestClassifyRepo:
     def test_passes_correct_model_to_api(self):
         client = make_client()
         classify_repo(REPO, client)
-        call_kwargs = client.chat.complete.call_args.kwargs
-        assert call_kwargs["model"] == "mistral-small-latest"
+        call_kwargs = client.models.generate_content.call_args.kwargs
+        assert call_kwargs["model"] == "gemini-2.0-flash"
 
     def test_uses_json_response_format(self):
         client = make_client()
         classify_repo(REPO, client)
-        call_kwargs = client.chat.complete.call_args.kwargs
-        assert call_kwargs["response_format"] == {"type": "json_object"}
+        call_kwargs = client.models.generate_content.call_args.kwargs
+        assert call_kwargs["config"].response_mime_type == "application/json"
 
 
 class TestLogBatch:
     def test_writes_jsonl_entry(self, tmp_path):
         log_path = tmp_path / "pipeline_log.jsonl"
         with patch("pipeline.classify._LOG_PATH", log_path):
-            _log_batch(n_repos=5, input_tokens=1000, output_tokens=500)
+            _log_batch(n_repos=5, input_tokens=1000, output_tokens=500, tool_calls=0)
 
         lines = log_path.read_text().strip().splitlines()
         assert len(lines) == 1
@@ -128,8 +125,8 @@ class TestLogBatch:
     def test_appends_on_multiple_calls(self, tmp_path):
         log_path = tmp_path / "pipeline_log.jsonl"
         with patch("pipeline.classify._LOG_PATH", log_path):
-            _log_batch(3, 500, 200)
-            _log_batch(2, 300, 100)
+            _log_batch(3, 500, 200, tool_calls=0)
+            _log_batch(2, 300, 100, tool_calls=1)
 
         lines = log_path.read_text().strip().splitlines()
         assert len(lines) == 2
@@ -137,11 +134,11 @@ class TestLogBatch:
     def test_cost_calculation(self, tmp_path):
         log_path = tmp_path / "pipeline_log.jsonl"
         with patch("pipeline.classify._LOG_PATH", log_path):
-            # 1M input tokens at $0.20 + 1M output tokens at $0.60 = $0.80
-            _log_batch(1, 1_000_000, 1_000_000)
+            # 1M input tokens at $0.10 + 1M output tokens at $0.40 = $0.50
+            _log_batch(1, 1_000_000, 1_000_000, tool_calls=0)
 
         entry = json.loads(log_path.read_text())
-        assert entry["cost_usd"] == pytest.approx(0.80)
+        assert entry["cost_usd"] == pytest.approx(0.50)
 
 
 class TestClassifyBatch:
@@ -154,7 +151,7 @@ class TestClassifyBatch:
         with patch("pipeline.classify._LOG_PATH", Path("/dev/null")):
             classify_batch(client, limit=10)
 
-        assert client.chat.complete.call_count == 2
+        assert client.models.generate_content.call_count == 2
         assert mock_update.call_count == 2
 
     @patch("pipeline.classify.update_classification")
