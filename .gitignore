@@ -7,4 +7,6 @@ __pycache__/
 .streamlit/secrets.toml
 
 data/govscan.db
+data/govscan.db-shm
+data/govscan.db-wal
 .env
