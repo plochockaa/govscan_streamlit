@@ -2,6 +2,7 @@ import sqlite3
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Optional
 
 DB_PATH = Path(__file__).parent.parent / "data" / "govscan.db"
 
@@ -361,7 +362,7 @@ def store_eval(
     repo_id: str,
     eval_model: str,
     domain_correct: bool,
-    suggested_domain: str | None,
+    suggested_domain: Optional[str],
     summary_quality: int,
     confidence_ok: bool,
     overall_score: float,

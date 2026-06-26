@@ -2,6 +2,7 @@
 venv/
 .python-version
 __pycache__/
+*.pyc
 
 .streamlit/secrets.toml
 
