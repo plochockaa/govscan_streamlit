@@ -63,6 +63,18 @@ def init_db(db_path: Path = DB_PATH) -> None:
                 ON repos(domain);
             CREATE INDEX IF NOT EXISTS idx_repos_cluster
                 ON repos(cluster_id);
+
+            CREATE TABLE IF NOT EXISTS pipeline_evals (
+                repo_id             TEXT PRIMARY KEY,
+                eval_at             TEXT NOT NULL,
+                domain_correct      INTEGER NOT NULL,
+                suggested_domain    TEXT,
+                summary_quality     INTEGER NOT NULL,
+                confidence_ok       INTEGER NOT NULL,
+                overall_score       REAL NOT NULL,
+                reasoning           TEXT,
+                eval_model          TEXT NOT NULL
+            );
         """)
 
 
@@ -324,6 +336,112 @@ def get_stats(db_path: Path = DB_PATH) -> dict:
         "ai_ml_repos":   ai_ml,
         "clusters":      clusters,
         "last_updated":  last_run,
+    }
+
+
+def get_unevaluated(limit: int = 50, db_path: Path = DB_PATH) -> list[dict]:
+    """Classified repos that have not yet been evaluated by the eval agent."""
+    with get_connection(db_path) as conn:
+        rows = conn.execute("""
+            SELECT r.id, r.name, r.org, r.country, r.description,
+                   r.readme_text, r.language, r.topics,
+                   r.domain, r.maturity, r.policy_area,
+                   r.llm_summary, r.llm_confidence
+            FROM repos r
+            LEFT JOIN pipeline_evals e ON r.id = e.repo_id
+            WHERE r.domain IS NOT NULL
+              AND e.repo_id IS NULL
+            ORDER BY r.stars DESC
+            LIMIT ?
+        """, (limit,)).fetchall()
+    return [dict(r) for r in rows]
+
+
+def store_eval(
+    repo_id: str,
+    eval_model: str,
+    domain_correct: bool,
+    suggested_domain: str | None,
+    summary_quality: int,
+    confidence_ok: bool,
+    overall_score: float,
+    reasoning: str,
+    db_path: Path = DB_PATH,
+) -> None:
+    """Write or overwrite an evaluation record for a single repo."""
+    now = datetime.now(timezone.utc).isoformat()
+    with get_connection(db_path) as conn:
+        conn.execute("""
+            INSERT INTO pipeline_evals
+                (repo_id, eval_at, domain_correct, suggested_domain,
+                 summary_quality, confidence_ok, overall_score, reasoning, eval_model)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(repo_id) DO UPDATE SET
+                eval_at          = excluded.eval_at,
+                domain_correct   = excluded.domain_correct,
+                suggested_domain = excluded.suggested_domain,
+                summary_quality  = excluded.summary_quality,
+                confidence_ok    = excluded.confidence_ok,
+                overall_score    = excluded.overall_score,
+                reasoning        = excluded.reasoning,
+                eval_model       = excluded.eval_model
+        """, (
+            repo_id, now,
+            int(domain_correct), suggested_domain,
+            summary_quality, int(confidence_ok),
+            overall_score, reasoning, eval_model,
+        ))
+
+
+def get_eval_stats(db_path: Path = DB_PATH) -> dict:
+    """Aggregate evaluation stats for the quality dashboard."""
+    with get_connection(db_path) as conn:
+        total = conn.execute(
+            "SELECT COUNT(*) FROM pipeline_evals"
+        ).fetchone()[0]
+
+        if not total:
+            return {
+                "total_evals": 0,
+                "avg_score": None,
+                "pct_domain_correct": None,
+                "by_domain": [],
+                "flagged": [],
+            }
+
+        agg = conn.execute("""
+            SELECT AVG(overall_score)              AS avg_score,
+                   AVG(CAST(domain_correct AS REAL)) AS pct_correct
+            FROM pipeline_evals
+        """).fetchone()
+
+        by_domain = conn.execute("""
+            SELECT r.domain,
+                   AVG(e.overall_score)               AS avg_score,
+                   COUNT(*)                           AS n,
+                   AVG(CAST(e.domain_correct AS REAL)) AS pct_correct
+            FROM pipeline_evals e
+            JOIN repos r ON r.id = e.repo_id
+            GROUP BY r.domain
+            ORDER BY avg_score DESC
+        """).fetchall()
+
+        flagged = conn.execute("""
+            SELECT e.repo_id, r.name, r.country, r.domain,
+                   e.suggested_domain, e.overall_score, e.reasoning
+            FROM pipeline_evals e
+            JOIN repos r ON r.id = e.repo_id
+            WHERE e.domain_correct = 0
+            ORDER BY e.overall_score ASC
+            LIMIT 25
+        """).fetchall()
+
+    return {
+        "total_evals":        total,
+        "avg_score":          agg["avg_score"],
+        "pct_domain_correct": agg["pct_correct"],
+        "by_domain":          [dict(r) for r in by_domain],
+        "flagged":            [dict(r) for r in flagged],
     }
 
 

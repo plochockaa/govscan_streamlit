@@ -8,6 +8,7 @@ load_dotenv()
 
 from config import ORGS
 from pipeline.classify import classify_batch
+from pipeline.evaluate import evaluate_batch
 from pipeline.cluster import cluster_repos
 from pipeline.detect import detect_ai_providers, detect_from_text
 from pipeline.embed import embed_and_store
@@ -144,6 +145,16 @@ def run() -> None:
             text_hits += 1
             log.info("  Text-scan hit: %s → %s", repo["id"], providers)
     log.info("Text-scan upgraded %d previously-empty repos", text_hits)
+
+    # --- Evaluate classification quality (LLM-as-judge) ---
+    log.info("Evaluating classification quality...")
+    eval_stats = evaluate_batch(client, limit=50)
+    log.info(
+        "Evaluated %d repos — avg score: %.2f, cost: $%.4f",
+        eval_stats["repos_evaluated"],
+        eval_stats["avg_score"],
+        eval_stats["cost_usd"],
+    )
 
     log_pipeline_run({
         "repos_fetched":    total_fetched,
