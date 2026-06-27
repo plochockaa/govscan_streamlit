@@ -34,7 +34,18 @@ Valid domains:
   policy_tools        Legislative tracking, consultation platforms, procurement, regulatory compliance
   other               Does not fit any category above
 
-Return ONLY valid JSON with exactly these fields — no prose, no markdown fences."""
+Return ONLY valid JSON with exactly these fields — no prose, no markdown fences:
+
+{
+  "domain_correct":         true if the assigned domain is correct, false otherwise,
+  "suggested_domain":       the domain you would assign if different, else null,
+  "summary_quality":        integer 1–5 (1=wrong/missing, 3=adequate, 5=precise and informative),
+  "confidence_appropriate": true if the confidence score matches the evidence quality,
+  "reasoning":              one sentence explaining your assessment
+}
+
+Example output:
+{"domain_correct":true,"suggested_domain":null,"summary_quality":4,"confidence_appropriate":true,"reasoning":"Correctly classified as citizen_services — the repo is a GOV.UK benefits application portal."}"""
 
 
 class EvalResult(BaseModel):
