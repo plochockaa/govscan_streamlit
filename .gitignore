@@ -9,4 +9,5 @@ __pycache__/
 data/govscan.db
 data/govscan.db-shm
 data/govscan.db-wal
+data/pipeline_log.jsonl
 .env

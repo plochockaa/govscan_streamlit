@@ -108,6 +108,20 @@ def _call_model(repo: dict, client: genai.Client) -> tuple[EvalResult, object]:
     return result, response.usage_metadata
 
 
+def _call_model_with_retry(repo: dict, client: genai.Client) -> tuple[EvalResult, object]:
+    """Retry on 429/quota errors with exponential backoff."""
+    delays = [30, 60, 120]
+    for delay in delays:
+        try:
+            return _call_model(repo, client)
+        except Exception as exc:
+            if "429" not in str(exc) and "RESOURCE_EXHAUSTED" not in str(exc):
+                raise
+            log.warning("Rate limit on %s — retrying in %ds", repo["id"], delay)
+            time.sleep(delay)
+    return _call_model(repo, client)  # final attempt, raises if still failing
+
+
 def _log_eval_batch(n_repos: int, input_tokens: int, output_tokens: int) -> None:
     cost = (input_tokens * _PRICE_IN + output_tokens * _PRICE_OUT) / 1_000_000
     entry = {
@@ -135,7 +149,7 @@ def evaluate_batch(
 
     for repo in repos:
         try:
-            result, usage = _call_model(repo, client)
+            result, usage = _call_model_with_retry(repo, client)
             score = _compute_score(result)
             store_eval(
                 repo_id=repo["id"],
