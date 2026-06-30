@@ -12,19 +12,47 @@ if not api_key:
     st.error("GEMINI_API_KEY environment variable is not set.")
     st.stop()
 
-try:
-    from pipeline.query_agent import QueryAgent
-    agent = QueryAgent(api_key=api_key)
-except Exception as exc:
-    st.error(f"Could not load agent: {exc}")
-    st.stop()
+mode = st.radio(
+    "Answer mode",
+    ["SQL — structured query", "RAG — semantic search"],
+    horizontal=True,
+    help=(
+        "**SQL** — precise counts, filters, and comparisons across the full dataset.\n\n"
+        "**RAG** — exploratory questions about what governments are building; "
+        "answers grounded in repo descriptions with source citations."
+    ),
+)
 
-EXAMPLES = [
-    "Which countries have the most AI/ML repositories?",
-    "What are the top languages used by UK government orgs?",
-    "Which governments use open-weight LLMs like Llama or Mistral?",
-    "Find clusters where multiple countries built similar tools independently.",
-]
+# Reset conversation when the user switches modes
+if st.session_state.get("_mode") != mode:
+    st.session_state.messages = []
+    st.session_state["_mode"] = mode
+
+if mode.startswith("SQL"):
+    try:
+        from pipeline.query_agent import QueryAgent
+        agent = QueryAgent(api_key=api_key)
+    except Exception as exc:
+        st.error(f"Could not load SQL agent: {exc}")
+        st.stop()
+    examples = [
+        "Which countries have the most AI/ML repositories?",
+        "What are the top languages used by UK government orgs?",
+        "Which governments use open-weight LLMs like Llama or Mistral?",
+        "Find clusters where multiple countries built similar tools independently.",
+    ]
+else:
+    try:
+        from pipeline.rag import ask_rag
+    except Exception as exc:
+        st.error(f"Could not load RAG pipeline: {exc}")
+        st.stop()
+    examples = [
+        "What are governments building to help citizens access benefits?",
+        "Which repos focus on transparency or open data publishing?",
+        "What health technology projects exist across different countries?",
+        "Show me examples of government projects using large language models.",
+    ]
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -36,7 +64,7 @@ for msg in st.session_state.messages:
 if not st.session_state.messages:
     st.markdown("**Example questions:**")
     cols = st.columns(2)
-    for i, example in enumerate(EXAMPLES):
+    for i, example in enumerate(examples):
         if cols[i % 2].button(example, use_container_width=True):
             st.session_state.pending = example
             st.rerun()
@@ -52,8 +80,18 @@ if prompt:
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        with st.spinner("Querying database..."):
-            answer = agent.ask(prompt, st.session_state.messages[:-1])
-        st.markdown(answer)
+        if mode.startswith("SQL"):
+            with st.spinner("Querying database..."):
+                answer = agent.ask(prompt, st.session_state.messages[:-1])
+            st.markdown(answer)
+        else:
+            with st.spinner("Searching repos and generating answer..."):
+                response = ask_rag(prompt, api_key)
+            st.markdown(response.answer)
+            if response.sources:
+                with st.expander(f"Sources — {len(response.sources)} repos"):
+                    for src in response.sources:
+                        st.markdown(f"- [{src}](https://github.com/{src})")
+            answer = response.answer
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
