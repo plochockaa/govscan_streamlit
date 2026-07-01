@@ -28,7 +28,7 @@ pipeline = [
 pythonpath = ["."]
 
 [tool.uv.sources]
-rag-pipeline = { path = "../rag_pipeline", editable = true }
+rag-pipeline = { git = "https://github.com/plochockaa/rag_pipeline" }
 
 [dependency-groups]
 dev = [

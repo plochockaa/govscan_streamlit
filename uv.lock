@@ -805,7 +805,7 @@ requires-dist = [
     { name = "plotly", specifier = ">=6.8.0" },
     { name = "pydantic", marker = "extra == 'pipeline'", specifier = ">=2.13.4" },
     { name = "python-dotenv", marker = "extra == 'pipeline'", specifier = ">=1.0.0" },
-    { name = "rag-pipeline", extras = ["google"], editable = "../rag_pipeline" },
+    { name = "rag-pipeline", extras = ["google"], git = "https://github.com/plochockaa/rag_pipeline" },
     { name = "requests", marker = "extra == 'pipeline'", specifier = ">=2.32.0" },
     { name = "scikit-learn", marker = "extra == 'pipeline'", specifier = ">=1.9.0" },
     { name = "streamlit", specifier = ">=1.58.0" },
@@ -2490,7 +2490,7 @@ wheels = [
 [[package]]
 name = "rag-pipeline"
 version = "0.1.0"
-source = { editable = "../rag_pipeline" }
+source = { git = "https://github.com/plochockaa/rag_pipeline#9caf60d85887173b16cd0bcfd00a905ce5463a02" }
 dependencies = [
     { name = "anthropic" },
     { name = "faiss-cpu" },
@@ -2513,37 +2513,6 @@ dependencies = [
 [package.optional-dependencies]
 google = [
     { name = "langchain-google-genai" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "anthropic", specifier = ">=0.40" },
-    { name = "faiss-cpu", specifier = "==1.9.0.post1" },
-    { name = "fastembed", specifier = ">=0.3" },
-    { name = "langchain", specifier = ">=0.3" },
-    { name = "langchain-anthropic", specifier = ">=0.2" },
-    { name = "langchain-community", specifier = ">=0.3" },
-    { name = "langchain-core", specifier = ">=0.3" },
-    { name = "langchain-google-genai", marker = "extra == 'google'", specifier = ">=2.0" },
-    { name = "langchain-huggingface", marker = "extra == 'sentence-transformers'", specifier = ">=0.1" },
-    { name = "langchain-openai", specifier = ">=0.2" },
-    { name = "langchain-text-splitters", specifier = ">=0.3" },
-    { name = "numpy", specifier = ">=1.24" },
-    { name = "onnxruntime", specifier = "<=1.19.0" },
-    { name = "openai", specifier = ">=1.0" },
-    { name = "pypdf", specifier = ">=4.0" },
-    { name = "python-dotenv", specifier = ">=1.0" },
-    { name = "rag-pipeline", extras = ["sentence-transformers", "google"], marker = "extra == 'all'" },
-    { name = "ragas", specifier = ">=0.2" },
-    { name = "sentence-transformers", marker = "extra == 'sentence-transformers'", specifier = ">=3.0" },
-    { name = "streamlit", specifier = ">=1.35" },
-]
-provides-extras = ["sentence-transformers", "google", "all"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pytest", specifier = ">=8.0" },
-    { name = "ruff", specifier = ">=0.4" },
 ]
 
 [[package]]
