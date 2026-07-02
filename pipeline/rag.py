@@ -90,7 +90,7 @@ def _text_retrieve(query: str, top_k: int = 15) -> list[dict]:
         if score > 0:
             scored.append((score, dict(r)))
 
-    scored.sort(reverse=True)
+    scored.sort(key=lambda x: x[0], reverse=True)
     return [row for _, row in scored[:top_k]]
 
 
