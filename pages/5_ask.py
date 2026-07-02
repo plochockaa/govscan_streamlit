@@ -42,11 +42,7 @@ if mode.startswith("SQL"):
         "Find clusters where multiple countries built similar tools independently.",
     ]
 else:
-    try:
-        from pipeline.rag import ask_rag
-    except Exception as exc:
-        st.error(f"Could not load RAG pipeline: {exc}")
-        st.stop()
+    from pipeline.rag import ask_rag
     examples = [
         "What are governments building to help citizens access benefits?",
         "Which repos focus on transparency or open data publishing?",

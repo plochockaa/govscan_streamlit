@@ -1,18 +1,20 @@
-"""RAG adapter: loads repo embeddings from SQLite into a rag-pipeline FAISS index.
+"""RAG retrieval with Gemini generation.
 
-Requires rag-pipeline[google] installed:
-    uv add --editable "../rag_pipeline[google]"
+Uses vector search when rag-pipeline + fastembed are available (local dev with --extra pipeline).
+Falls back to keyword search on Streamlit Cloud where onnxruntime/fastembed is unavailable.
 """
-
 from __future__ import annotations
 
-import numpy as np
-import streamlit as st
-from langchain_google_genai import ChatGoogleGenerativeAI
+import re
+import requests
+from dataclasses import dataclass, field
 
-from pipeline.embed import build_text_for_embedding
+import streamlit as st
+
 from pipeline.store import DB_PATH, get_connection
-from rag_pipeline import GeneratorResponse, build_index_from_vectors, generate, retrieve
+
+_MODEL = "gemini-2.5-flash"
+_API_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
 _SYSTEM_PROMPT = """You are GovScan Intelligence, an AI analyst specialising in government open-source technology.
 Answer questions using only the repository information provided in the context below.
@@ -23,42 +25,105 @@ Context:
 {context}"""
 
 
-@st.cache_resource(show_spinner="Building search index…")
-def _get_index():
-    """Load SQLite repo embeddings into an in-memory FAISS index.
+@dataclass
+class GeneratorResponse:
+    answer: str
+    sources: list[str] = field(default_factory=list)
 
-    Cached for the Streamlit session lifetime — takes ~1s for a few thousand
-    repos and requires no API calls (vectors already exist in the DB).
-    """
+
+try:
+    from rag_pipeline import build_index_from_vectors as _build_index
+    from rag_pipeline import retrieve as _retrieve
+    from rag_pipeline import generate as _rag_generate
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    _VECTOR_SEARCH = True
+except ImportError:
+    _VECTOR_SEARCH = False
+
+
+if _VECTOR_SEARCH:
+    @st.cache_resource(show_spinner="Building search index…")
+    def _get_index():
+        import numpy as np
+        from pipeline.embed import build_text_for_embedding
+
+        with get_connection(DB_PATH) as conn:
+            rows = conn.execute("""
+                SELECT id, name, country, domain, llm_summary, topics, description, embedding
+                FROM repos
+                WHERE embedding IS NOT NULL
+            """).fetchall()
+
+        texts, vectors, metadatas = [], [], []
+        for r in rows:
+            texts.append(build_text_for_embedding(dict(r)))
+            vectors.append(np.frombuffer(r["embedding"], dtype=np.float32).tolist())
+            metadatas.append({
+                "source": r["id"],
+                "name": r["name"],
+                "country": r["country"],
+                "domain": r["domain"],
+            })
+        return _build_index(texts, vectors, metadatas)
+
+
+def _text_retrieve(query: str, top_k: int = 15) -> list[dict]:
+    """Keyword search against llm_summary and description in SQLite."""
+    tokens = [t.lower() for t in re.findall(r'\w+', query) if len(t) > 2]
+    if not tokens:
+        return []
+
     with get_connection(DB_PATH) as conn:
         rows = conn.execute("""
-            SELECT id, name, country, domain, llm_summary, topics, description, embedding
+            SELECT id, country, domain, llm_summary, description
             FROM repos
-            WHERE embedding IS NOT NULL
+            WHERE llm_summary IS NOT NULL
         """).fetchall()
 
-    texts, vectors, metadatas = [], [], []
+    scored = []
     for r in rows:
-        texts.append(build_text_for_embedding(dict(r)))
-        vectors.append(np.frombuffer(r["embedding"], dtype=np.float32).tolist())
-        metadatas.append({
-            "source": r["id"],       # "org/repo-name" — used as citation
-            "name": r["name"],
-            "country": r["country"],
-            "domain": r["domain"],
-        })
+        text = (
+            f"{r['llm_summary'] or ''} {r['description'] or ''} "
+            f"{r['domain'] or ''} {r['country'] or ''}"
+        ).lower()
+        score = sum(text.count(t) for t in tokens)
+        if score > 0:
+            scored.append((score, dict(r)))
 
-    return build_index_from_vectors(texts, vectors, metadatas)
+    scored.sort(reverse=True)
+    return [row for _, row in scored[:top_k]]
+
+
+def _generate(query: str, docs: list[dict], api_key: str) -> GeneratorResponse:
+    """Generate a grounded answer from retrieved docs via Gemini HTTP API."""
+    context = "\n\n".join(
+        f"[{r['id']}] ({r.get('country', '')}, {r.get('domain', '')}): "
+        f"{r.get('llm_summary') or r.get('description', '')}"
+        for r in docs
+    )
+    sources = list(dict.fromkeys(r["id"] for r in docs))
+    prompt = _SYSTEM_PROMPT.format(context=context) + f"\n\nQuestion: {query}"
+
+    resp = requests.post(
+        f"{_API_BASE}/models/{_MODEL}:generateContent",
+        params={"key": api_key},
+        headers={"Content-Type": "application/json"},
+        json={"contents": [{"role": "user", "parts": [{"text": prompt}]}]},
+        timeout=60,
+    )
+    resp.raise_for_status()
+    answer = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
+    return GeneratorResponse(answer=answer, sources=sources)
 
 
 def ask_rag(query: str, api_key: str) -> GeneratorResponse:
-    """Retrieve relevant repos and generate a grounded answer.
+    """Retrieve relevant repos and generate a grounded answer."""
+    if _VECTOR_SEARCH:
+        store = _get_index()
+        docs = _retrieve(store, query)
+        llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=api_key)
+        resp = _rag_generate(query, docs, system_prompt=_SYSTEM_PROMPT, llm=llm)
+        return GeneratorResponse(answer=resp.answer, sources=list(resp.sources))
 
-    Returns GeneratorResponse with:
-        .answer  — markdown string
-        .sources — list of "org/repo-name" strings (deduplicated, ordered by relevance)
-    """
-    store = _get_index()
-    docs = retrieve(store, query)
-    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=api_key)
-    return generate(query, docs, system_prompt=_SYSTEM_PROMPT, llm=llm)
+    docs = _text_retrieve(query)
+    return _generate(query, docs, api_key)
