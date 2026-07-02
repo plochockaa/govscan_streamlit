@@ -15,7 +15,7 @@ dependencies = [
 pipeline = [
     "fastembed>=0.4.2",
     "google-genai>=1.0.0",
-    "onnxruntime<=1.19.0",
+    "onnxruntime",
     "rag-pipeline[google]",
     "pydantic>=2.13.4",
     "python-dotenv>=1.0.0",

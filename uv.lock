@@ -800,7 +800,7 @@ requires-dist = [
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "fastembed", marker = "extra == 'pipeline'", specifier = ">=0.4.2" },
     { name = "google-genai", marker = "extra == 'pipeline'", specifier = ">=1.0.0" },
-    { name = "onnxruntime", marker = "extra == 'pipeline'", specifier = "<=1.19.0" },
+    { name = "onnxruntime", marker = "extra == 'pipeline'" },
     { name = "pandas", specifier = ">=3.0.3" },
     { name = "plotly", specifier = ">=6.8.0" },
     { name = "pydantic", marker = "extra == 'pipeline'", specifier = ">=2.13.4" },
