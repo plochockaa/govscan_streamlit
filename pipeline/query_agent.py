@@ -36,7 +36,7 @@ Policy area values: health, transport, benefits, tax, justice, education, enviro
                     cross_cutting, unknown.
 
 IMPORTANT: When selecting individual repositories (not just counts/aggregations), always include:
-  - id          (used to build the GitHub URL: https://github.com/{id})
+  - id          (used to build the GitHub URL: https://github.com/{{id}})
   - name
   - country
   - llm_summary (one-sentence description)
@@ -60,8 +60,8 @@ Results (JSON): {results}
 Format your answer as markdown:
 - Start with a one-sentence summary of the finding.
 - Group results by country using bold headers (e.g. **United Kingdom**).
-- For each repository, write a bullet: [repo-name](https://github.com/{{id}}) — {what it does}
-  - If ai_providers is present, add: Models detected: {open_weight list}
+- For each repository, write a bullet: [repo-name](https://github.com/{{id}}) — {{what it does}}
+  - If ai_providers is present, add: Models detected: {{open_weight list}}
 - End with a brief insight or pattern you notice across countries.
 - Only cite repositories from the results above — do not invent any."""
 
