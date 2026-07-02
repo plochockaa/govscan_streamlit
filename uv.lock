@@ -774,7 +774,6 @@ dependencies = [
     { name = "dotenv" },
     { name = "pandas" },
     { name = "plotly" },
-    { name = "rag-pipeline", extra = ["google"] },
     { name = "streamlit" },
 ]
 
@@ -785,6 +784,7 @@ pipeline = [
     { name = "onnxruntime" },
     { name = "pydantic" },
     { name = "python-dotenv" },
+    { name = "rag-pipeline", extra = ["google"] },
     { name = "requests" },
     { name = "scikit-learn" },
     { name = "tenacity" },
@@ -805,7 +805,7 @@ requires-dist = [
     { name = "plotly", specifier = ">=6.8.0" },
     { name = "pydantic", marker = "extra == 'pipeline'", specifier = ">=2.13.4" },
     { name = "python-dotenv", marker = "extra == 'pipeline'", specifier = ">=1.0.0" },
-    { name = "rag-pipeline", extras = ["google"], git = "https://github.com/plochockaa/rag_pipeline" },
+    { name = "rag-pipeline", extras = ["google"], marker = "extra == 'pipeline'", git = "https://github.com/plochockaa/rag_pipeline" },
     { name = "requests", marker = "extra == 'pipeline'", specifier = ">=2.32.0" },
     { name = "scikit-learn", marker = "extra == 'pipeline'", specifier = ">=1.9.0" },
     { name = "streamlit", specifier = ">=1.58.0" },
