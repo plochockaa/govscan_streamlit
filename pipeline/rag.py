@@ -106,12 +106,12 @@ def _generate(query: str, docs: list[dict], api_key: str) -> GeneratorResponse:
 
     resp = requests.post(
         f"{_API_BASE}/models/{_MODEL}:generateContent",
-        params={"key": api_key},
-        headers={"Content-Type": "application/json"},
+        headers={"Content-Type": "application/json", "x-goog-api-key": api_key},
         json={"contents": [{"role": "user", "parts": [{"text": prompt}]}]},
         timeout=60,
     )
-    resp.raise_for_status()
+    if not resp.ok:
+        raise RuntimeError(f"Gemini API error {resp.status_code}: {resp.text[:200]}")
     answer = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
     return GeneratorResponse(answer=answer, sources=sources)
 

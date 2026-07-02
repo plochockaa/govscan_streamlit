@@ -67,9 +67,12 @@ Format your answer as markdown:
 
 
 def _call_gemini(api_key: str, prompt: str) -> str:
-    url = f"{_API_BASE}/models/{_MODEL}:generateContent?key={api_key}"
-    body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}]}
-    resp = requests.post(url, json=body, timeout=30)
+    resp = requests.post(
+        f"{_API_BASE}/models/{_MODEL}:generateContent",
+        headers={"x-goog-api-key": api_key},
+        json={"contents": [{"role": "user", "parts": [{"text": prompt}]}]},
+        timeout=30,
+    )
     resp.raise_for_status()
     return resp.json()["candidates"][0]["content"]["parts"][0]["text"]
 
