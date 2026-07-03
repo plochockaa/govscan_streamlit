@@ -2,7 +2,7 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from google import genai
+from mistralai import Mistral
 
 load_dotenv()
 
@@ -48,13 +48,13 @@ def _normalize(raw: dict, org: str, country: str) -> dict:
 
 def run() -> None:
     gh_token = os.environ["GH_TOKEN"]
-    gemini_key = os.environ["GEMINI_API_KEY"]
+    mistral_key = os.environ["MISTRAL_API_KEY"]
 
     headers = {
         "Authorization": f"token {gh_token}",
         "Accept": "application/vnd.github+json",
     }
-    client = genai.Client(api_key=gemini_key)
+    client = Mistral(api_key=mistral_key)
 
     init_db()
 

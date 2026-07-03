@@ -6,8 +6,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Literal
 
-from google import genai
-from google.genai import types
+from mistralai import Mistral
 from pydantic import BaseModel
 
 from pipeline.fetch import fetch_readme
@@ -16,12 +15,12 @@ from pipeline.store import DB_PATH, get_unclassified, update_classification
 log = logging.getLogger(__name__)
 
 _PROMPT = (Path(__file__).parent / "prompts" / "classify.txt").read_text()
-_MODEL = "gemini-2.0-flash"
+_MODEL = "open-mistral-nemo"
 _LOG_PATH = Path(__file__).parent.parent / "data" / "pipeline_log.jsonl"
 
-# gemini-2.0-flash pricing: USD per 1M tokens
-_PRICE_IN = 0.10
-_PRICE_OUT = 0.40
+# open-mistral-nemo pricing: USD per 1M tokens (free tier = $0, paid = $0.15)
+_PRICE_IN = 0.15
+_PRICE_OUT = 0.15
 
 # Confidence threshold below which the agent fetches the README before reclassifying
 _CONFIDENCE_THRESHOLD = 0.65
@@ -67,22 +66,22 @@ def _build_user_msg(repo: dict) -> str:
     )
 
 
-def _call_model(repo: dict, client: genai.Client) -> tuple[ClassificationResult, object]:
-    response = client.models.generate_content(
+def _call_model(repo: dict, client: Mistral) -> tuple[ClassificationResult, object]:
+    response = client.chat.complete(
         model=_MODEL,
-        contents=_build_user_msg(repo),
-        config=types.GenerateContentConfig(
-            system_instruction=_PROMPT,
-            response_mime_type="application/json",
-        ),
+        messages=[
+            {"role": "system", "content": _PROMPT},
+            {"role": "user", "content": _build_user_msg(repo)},
+        ],
+        response_format={"type": "json_object"},
     )
-    result = ClassificationResult(**json.loads(response.text))
-    return result, response.usage_metadata
+    result = ClassificationResult(**json.loads(response.choices[0].message.content))
+    return result, response.usage
 
 
 def _classify_agent(
     repo: dict,
-    client: genai.Client,
+    client: Mistral,
     gh_headers: dict | None,
 ) -> tuple[ClassificationResult, int, int, int]:
     """
@@ -96,8 +95,8 @@ def _classify_agent(
     Returns (result, prompt_tokens, output_tokens, readme_fetches).
     """
     result, usage = _call_model(repo, client)
-    prompt_tokens = usage.prompt_token_count or 0
-    output_tokens = usage.candidates_token_count or 0
+    prompt_tokens = usage.prompt_tokens or 0
+    output_tokens = usage.completion_tokens or 0
 
     needs_more_context = (
         result.confidence < _CONFIDENCE_THRESHOLD
@@ -115,12 +114,12 @@ def _classify_agent(
 
     enriched = {**repo, "readme_text": readme_text}
     result, usage2 = _call_model(enriched, client)
-    prompt_tokens += usage2.prompt_token_count or 0
-    output_tokens += usage2.candidates_token_count or 0
+    prompt_tokens += usage2.prompt_tokens or 0
+    output_tokens += usage2.completion_tokens or 0
     return result, prompt_tokens, output_tokens, 1
 
 
-def classify_repo(repo: dict, client: genai.Client) -> ClassificationResult:
+def classify_repo(repo: dict, client: Mistral) -> ClassificationResult:
     """Classify a single repo without the agent loop (no GitHub calls)."""
     result, _ = _call_model(repo, client)
     return result
@@ -144,13 +143,14 @@ def _log_batch(
 
 
 def classify_batch(
-    client: genai.Client,
+    client: Mistral,
     limit: int = 500,
     db_path: Path = DB_PATH,
     gh_headers: dict | None = None,
 ) -> dict:
     repos = get_unclassified(limit=limit, db_path=db_path)
     total_in = total_out = total_tool_calls = 0
+    first_error: str | None = None
 
     for repo in repos:
         try:
@@ -163,6 +163,8 @@ def classify_batch(
             total_tool_calls += tool_calls
             time.sleep(0.2)
         except Exception as exc:
+            if first_error is None:
+                first_error = f"{type(exc).__name__}: {exc}"
             log.warning("Skipping %s — classification failed: %s", repo["id"], exc)
             time.sleep(1.0)
 
@@ -176,4 +178,5 @@ def classify_batch(
         "output_tokens":    total_out,
         "cost_usd":         round(cost, 6),
         "readme_fetches":   total_tool_calls,
+        "error":            first_error,
     }

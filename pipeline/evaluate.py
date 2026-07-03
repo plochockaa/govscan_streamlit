@@ -5,20 +5,19 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
 
-from google import genai
-from google.genai import types
+from mistralai import Mistral
 from pydantic import BaseModel
 
 from pipeline.store import DB_PATH, get_unevaluated, store_eval
 
 log = logging.getLogger(__name__)
 
-_MODEL = "gemini-2.0-flash"
+_MODEL = "open-mistral-nemo"
 _LOG_PATH = Path(__file__).parent.parent / "data" / "pipeline_log.jsonl"
 
-# Same pricing as classify.py (gemini-2.0-flash)
-_PRICE_IN = 0.10
-_PRICE_OUT = 0.40
+# open-mistral-nemo pricing: USD per 1M tokens (free tier = $0, paid = $0.15)
+_PRICE_IN = 0.15
+_PRICE_OUT = 0.15
 
 _SYSTEM_PROMPT = """You are evaluating the quality of automated classifications of government GitHub repositories.
 Given the raw repository data and the LLM classification, assess whether the classification is correct.
@@ -95,27 +94,27 @@ def _build_user_msg(repo: dict) -> str:
     )
 
 
-def _call_model(repo: dict, client: genai.Client) -> tuple[EvalResult, object]:
-    response = client.models.generate_content(
+def _call_model(repo: dict, client: Mistral) -> tuple[EvalResult, object]:
+    response = client.chat.complete(
         model=_MODEL,
-        contents=_build_user_msg(repo),
-        config=types.GenerateContentConfig(
-            system_instruction=_SYSTEM_PROMPT,
-            response_mime_type="application/json",
-        ),
+        messages=[
+            {"role": "system", "content": _SYSTEM_PROMPT},
+            {"role": "user", "content": _build_user_msg(repo)},
+        ],
+        response_format={"type": "json_object"},
     )
-    result = EvalResult(**json.loads(response.text))
-    return result, response.usage_metadata
+    result = EvalResult(**json.loads(response.choices[0].message.content))
+    return result, response.usage
 
 
-def _call_model_with_retry(repo: dict, client: genai.Client) -> tuple[EvalResult, object]:
-    """Retry on 429/quota errors with exponential backoff."""
+def _call_model_with_retry(repo: dict, client: Mistral) -> tuple[EvalResult, object]:
+    """Retry on rate-limit errors with exponential backoff."""
     delays = [30, 60, 120]
     for delay in delays:
         try:
             return _call_model(repo, client)
         except Exception as exc:
-            if "429" not in str(exc) and "RESOURCE_EXHAUSTED" not in str(exc):
+            if "429" not in str(exc) and "rate" not in str(exc).lower():
                 raise
             log.warning("Rate limit on %s — retrying in %ds", repo["id"], delay)
             time.sleep(delay)
@@ -138,7 +137,7 @@ def _log_eval_batch(n_repos: int, input_tokens: int, output_tokens: int) -> None
 
 
 def evaluate_batch(
-    client: genai.Client,
+    client: Mistral,
     limit: int = 50,
     db_path: Path = DB_PATH,
 ) -> dict:
@@ -163,8 +162,8 @@ def evaluate_batch(
                 db_path=db_path,
             )
             scores.append(score)
-            total_in += usage.prompt_token_count or 0
-            total_out += usage.candidates_token_count or 0
+            total_in += usage.prompt_tokens or 0
+            total_out += usage.completion_tokens or 0
             time.sleep(0.2)
         except Exception as exc:
             log.warning("Skipping eval for %s — %s", repo["id"], exc)
