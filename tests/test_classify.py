@@ -33,16 +33,22 @@ REPO = {
 
 
 def make_client(result: dict = VALID_RESULT, prompt_tokens=100, completion_tokens=50):
-    usage_metadata = MagicMock()
-    usage_metadata.prompt_token_count = prompt_tokens
-    usage_metadata.candidates_token_count = completion_tokens
+    usage = MagicMock()
+    usage.prompt_tokens = prompt_tokens
+    usage.completion_tokens = completion_tokens
+
+    message = MagicMock()
+    message.content = json.dumps(result)
+
+    choice = MagicMock()
+    choice.message = message
 
     response = MagicMock()
-    response.text = json.dumps(result)
-    response.usage_metadata = usage_metadata
+    response.choices = [choice]
+    response.usage = usage
 
     client = MagicMock()
-    client.models.generate_content.return_value = response
+    client.chat.complete.return_value = response
     return client
 
 
@@ -97,14 +103,14 @@ class TestClassifyRepo:
     def test_passes_correct_model_to_api(self):
         client = make_client()
         classify_repo(REPO, client)
-        call_kwargs = client.models.generate_content.call_args.kwargs
-        assert call_kwargs["model"] == "gemini-2.0-flash"
+        call_kwargs = client.chat.complete.call_args.kwargs
+        assert call_kwargs["model"] == "open-mistral-nemo"
 
     def test_uses_json_response_format(self):
         client = make_client()
         classify_repo(REPO, client)
-        call_kwargs = client.models.generate_content.call_args.kwargs
-        assert call_kwargs["config"].response_mime_type == "application/json"
+        call_kwargs = client.chat.complete.call_args.kwargs
+        assert call_kwargs["response_format"] == {"type": "json_object"}
 
 
 class TestLogBatch:
@@ -134,11 +140,11 @@ class TestLogBatch:
     def test_cost_calculation(self, tmp_path):
         log_path = tmp_path / "pipeline_log.jsonl"
         with patch("pipeline.classify._LOG_PATH", log_path):
-            # 1M input tokens at $0.10 + 1M output tokens at $0.40 = $0.50
+            # 1M input tokens at $0.15 + 1M output tokens at $0.15 = $0.30
             _log_batch(1, 1_000_000, 1_000_000, tool_calls=0)
 
         entry = json.loads(log_path.read_text())
-        assert entry["cost_usd"] == pytest.approx(0.50)
+        assert entry["cost_usd"] == pytest.approx(0.30)
 
 
 class TestClassifyBatch:
@@ -151,7 +157,7 @@ class TestClassifyBatch:
         with patch("pipeline.classify._LOG_PATH", Path("/dev/null")):
             classify_batch(client, limit=10)
 
-        assert client.models.generate_content.call_count == 2
+        assert client.chat.complete.call_count == 2
         assert mock_update.call_count == 2
 
     @patch("pipeline.classify.update_classification")

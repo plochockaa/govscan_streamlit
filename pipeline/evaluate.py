@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
 
-from mistralai import Mistral
+from mistralai.client import Mistral
 from pydantic import BaseModel
 
 from pipeline.store import DB_PATH, get_unevaluated, store_eval

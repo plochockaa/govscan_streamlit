@@ -6,7 +6,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Literal
 
-from mistralai import Mistral
+from mistralai.client import Mistral
 from pydantic import BaseModel
 
 from pipeline.fetch import fetch_readme
