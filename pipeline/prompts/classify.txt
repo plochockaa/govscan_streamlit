@@ -1,75 +1,164 @@
-You are classifying government GitHub repositories.
-Given: repo name, description, first 800 chars of README, language, topics.
-Return ONLY valid JSON with exactly these fields. No prose, no markdown fences.
+You are classifying government GitHub repositories into exactly one domain.
+Return ONLY a JSON object with these five fields. No prose, no markdown fences.
 
 {
-  "domain":         one of the domain values below,
-  "maturity":       one of: prototype | active | maintained | archived
-                    (never null — pick the closest match),
-  "policy_area":    one of: health | transport | benefits | tax | justice |
-                    education | environment | cross_cutting | unknown,
-  "summary":        one sentence describing what this repo does,
-  "confidence":     float 0.0–1.0 (see confidence guide below),
-  "model_type":     one of: frontier | open_weight | unknown
-                    (only classify this when domain is ai_ml,
-                     set to unknown for all other domains),
-  "model_provider": the specific provider or model name if identifiable,
-                    else null
+  "domain":      one of the nine domain values listed below,
+  "maturity":    one of: prototype | active | maintained | archived,
+  "policy_area": one of: health | transport | benefits | tax | justice |
+                 education | environment | cross_cutting | unknown,
+  "summary":     one sentence describing what this repo does,
+  "confidence":  float 0.0–1.0 (see guide below)
 }
 
-Domain definitions — pick the single best fit:
+--- DOMAIN DEFINITIONS ---
 
-  ai_ml               Machine learning models, LLMs, AI assistants, NLP pipelines,
-                      neural networks, computer vision, model training and inference,
-                      AI evaluation frameworks, RAG pipelines, prompt engineering,
-                      AI governance tools, chatbots, generative AI.
-                      ONLY use this when the repo contains actual AI/ML code,
-                      models, pipelines, or evaluation tools. Policy documents,
-                      reports, or guidance ABOUT AI that contain no runnable code
-                      should use policy_tools instead.
+ai_ml               Machine learning models, LLMs, AI assistants, NLP pipelines,
+                    neural networks, computer vision, model training and inference,
+                    AI evaluation frameworks, RAG pipelines, prompt engineering,
+                    AI governance tools, chatbots, generative AI.
+                    Only use this when the repo contains actual AI/ML code,
+                    models, or pipelines — not policy documents about AI.
 
-  data_infrastructure ETL pipelines, data warehouses, data quality tools, data
-                      catalogues, APIs for structured data access, analytics
-                      platforms, dashboards.
+data_infrastructure ETL pipelines, data warehouses, data quality tools, data
+                    catalogues, APIs for structured data access, analytics
+                    platforms, dashboards, reporting tools.
 
-  citizen_services    Public-facing government services and portals: benefits
-                      applications, appointment booking, forms, payments,
-                      service-status pages.
+citizen_services    Public-facing government services: benefits applications,
+                    appointment booking, online forms, payments, service-status
+                    pages, GOV.UK-style portals.
 
-  security            Authentication, authorisation, identity management (SSO,
-                      OAuth, PKI), penetration testing tools, vulnerability
-                      scanning, certificate management, DMARC/TLS checking.
+security            Authentication, identity management (SSO, OAuth, PKI),
+                    penetration testing tools, vulnerability scanning,
+                    certificate management, DMARC/TLS checking.
 
-  open_data           Datasets, open government data portals, statistical
-                      releases, data-sharing standards, CKAN extensions.
+open_data           Datasets, open government data portals, statistical
+                    releases, data-sharing standards, CKAN extensions.
 
-  devtools            Developer tooling not specific to a government service:
-                      CI/CD helpers, SDKs, boilerplates, design systems,
-                      prototyping kits, linters, deployment tools,
-                      Terraform modules.
+devtools            Developer tooling not tied to a specific government service:
+                    CI/CD helpers, SDKs, boilerplates, design systems,
+                    prototyping kits, linters, deployment tools, Terraform.
 
-  research            Academic or exploratory work with no current production
-                      intent: papers, experiments, proof-of-concepts,
-                      simulation models.
+research            Academic or exploratory work with no current production
+                    intent: papers, experiments, proof-of-concepts, simulations.
 
-  policy_tools        Legislative tracking, regulatory compliance tools,
-                      consultation platforms, policy drafting aids,
-                      procurement tools. Also use for documents or guidance
-                      ABOUT AI/ML that contain no runnable code.
+policy_tools        Legislative tracking, regulatory compliance, consultation
+                    platforms, policy drafting, procurement tools. Also use for
+                    documents or guidance about AI that contain no runnable code.
 
-  other               Does not fit any category above.
+other               Does not clearly fit any category above.
 
-Confidence guide:
-  0.9–1.0  README clearly describes the domain, no ambiguity
-  0.7–0.8  Good description but some uncertainty about domain
-  0.6      Ambiguous — repo could reasonably fit multiple domains
-  0.4      README or description is empty or under 20 characters
-  0.3      No description at all — classified from name and topics only
+--- CONFIDENCE GUIDE ---
 
-If description AND readme are both empty or under 20 characters:
-  - Set domain using repo name and topics as the only signal
-  - Set confidence to 0.3
-  - Set summary to "No description available — classified from repo name and topics only"
+0.9–1.0  README clearly describes the domain; no ambiguity
+0.7–0.8  Good description but some uncertainty
+0.6      Repo could reasonably fit multiple domains
+0.4      README or description is empty or under 20 characters
+0.3      No description at all — classified from name and topics only
 
-Example output:
-{"domain":"ai_ml","maturity":"prototype","policy_area":"cross_cutting","summary":"A RAG pipeline for answering citizen queries using government documents.","confidence":0.85,"model_type":"open_weight","model_provider":"Llama"}
+--- FEW-SHOT EXAMPLES ---
+
+Input:
+name: apply-for-a-passport
+description: Online passport renewal service for UK citizens
+language: Ruby
+topics: ["passport", "citizen-service", "gov.uk"]
+readme: Allows citizens to renew their passports online, track applications...
+
+Output:
+{"domain":"citizen_services","maturity":"active","policy_area":"benefits","summary":"Online passport renewal service for UK citizens.","confidence":0.95}
+
+---
+
+Input:
+name: govuk-frontend
+description: The code you need to start building a user interface for government services
+language: JavaScript
+topics: ["design-system", "frontend", "govuk"]
+readme: GOV.UK Frontend contains styles, components and patterns to build accessible services...
+
+Output:
+{"domain":"devtools","maturity":"maintained","policy_area":"cross_cutting","summary":"Design system and frontend component library for building GOV.UK services.","confidence":0.95}
+
+---
+
+Input:
+name: land-registry-price-paid-data
+description: HM Land Registry price paid data for property transactions in England and Wales
+language: Python
+topics: ["open-data", "land-registry", "property"]
+readme: This dataset contains prices paid for residential property in England and Wales...
+
+Output:
+{"domain":"open_data","maturity":"maintained","policy_area":"transport","summary":"Open dataset of residential property transaction prices from HM Land Registry.","confidence":0.9}
+
+---
+
+Input:
+name: rag-pipeline-govuk
+description: RAG pipeline for answering citizen queries using GOV.UK documents
+language: Python
+topics: ["llm", "rag", "ai", "government"]
+readme: Uses LangChain and OpenAI to build a retrieval-augmented generation system...
+
+Output:
+{"domain":"ai_ml","maturity":"prototype","policy_area":"cross_cutting","summary":"RAG pipeline that answers citizen queries using GOV.UK documents via LLM retrieval.","confidence":0.92}
+
+---
+
+Input:
+name: data-platform
+description: Internal data warehouse and ETL pipeline for analytics
+language: Python
+topics: ["etl", "data-warehouse", "airflow"]
+readme: Manages ingestion, transformation and storage of government datasets using Airflow...
+
+Output:
+{"domain":"data_infrastructure","maturity":"active","policy_area":"cross_cutting","summary":"Internal ETL and data warehouse platform for government analytics.","confidence":0.9}
+
+---
+
+Input:
+name: sso-service
+description: Single sign-on service for government staff using OAuth 2.0
+language: Go
+topics: ["sso", "oauth", "identity", "authentication"]
+readme: Provides centralised authentication for internal government applications via OAuth 2.0...
+
+Output:
+{"domain":"security","maturity":"active","policy_area":"cross_cutting","summary":"Centralised OAuth 2.0 single sign-on service for government staff.","confidence":0.95}
+
+---
+
+Input:
+name: housing-demand-simulation
+description: Agent-based simulation model for housing demand forecasting
+language: Python
+topics: ["simulation", "modelling", "research"]
+readme: Experimental ABM model exploring housing demand under different policy scenarios...
+
+Output:
+{"domain":"research","maturity":"prototype","policy_area":"benefits","summary":"Experimental agent-based simulation model for housing demand forecasting.","confidence":0.88}
+
+---
+
+Input:
+name: consultation-platform
+description: Platform for running public consultations on government policy
+language: Ruby
+topics: ["consultation", "policy", "engagement"]
+readme: Allows government departments to publish consultations and collect public responses...
+
+Output:
+{"domain":"policy_tools","maturity":"active","policy_area":"cross_cutting","summary":"Platform for publishing and collecting responses to government policy consultations.","confidence":0.9}
+
+---
+
+Input:
+name: conference-talks-2019
+description: Slides and notes from internal tech conference
+language: none
+topics: []
+readme: none
+
+Output:
+{"domain":"other","maturity":"archived","policy_area":"unknown","summary":"Archive of slides and notes from an internal government technology conference.","confidence":0.85}

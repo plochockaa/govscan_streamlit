@@ -74,6 +74,7 @@ def _call_model(repo: dict, client: Mistral) -> tuple[ClassificationResult, obje
             {"role": "user", "content": _build_user_msg(repo)},
         ],
         response_format={"type": "json_object"},
+        temperature=0,
     )
     result = ClassificationResult(**json.loads(response.choices[0].message.content))
     return result, response.usage
