@@ -12,12 +12,12 @@ from pipeline.store import DB_PATH, get_unevaluated, store_eval
 
 log = logging.getLogger(__name__)
 
-_MODEL = "open-mistral-nemo"
+_MODEL = "mistral-large-latest"
 _LOG_PATH = Path(__file__).parent.parent / "data" / "pipeline_log.jsonl"
 
-# open-mistral-nemo pricing: USD per 1M tokens (free tier = $0, paid = $0.15)
-_PRICE_IN = 0.15
-_PRICE_OUT = 0.15
+# mistral-large-latest pricing: USD per 1M tokens
+_PRICE_IN = 2.0
+_PRICE_OUT = 6.0
 
 _SYSTEM_PROMPT = """You are evaluating the quality of automated classifications of government GitHub repositories.
 Given the raw repository data and the LLM classification, assess whether the classification is correct.
@@ -142,7 +142,8 @@ def evaluate_batch(
     db_path: Path = DB_PATH,
 ) -> dict:
     """LLM-as-judge: evaluate classification quality for a sample of repos."""
-    repos = get_unevaluated(limit=limit, db_path=db_path)
+    # Re-evaluate repos previously scored by a weaker model.
+    repos = get_unevaluated(limit=limit, db_path=db_path, force_model=_MODEL)
     total_in = total_out = 0
     scores = []
 

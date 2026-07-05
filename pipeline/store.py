@@ -340,21 +340,40 @@ def get_stats(db_path: Path = DB_PATH) -> dict:
     }
 
 
-def get_unevaluated(limit: int = 50, db_path: Path = DB_PATH) -> list[dict]:
-    """Classified repos that have not yet been evaluated by the eval agent."""
+def get_unevaluated(limit: int = 50, db_path: Path = DB_PATH,
+                    force_model: str | None = None) -> list[dict]:
+    """Classified repos that have not yet been evaluated by the eval agent.
+
+    If force_model is given, repos already evaluated by a DIFFERENT model
+    are also returned so they can be re-evaluated with the new model.
+    """
     with get_connection(db_path) as conn:
-        rows = conn.execute("""
-            SELECT r.id, r.name, r.org, r.country, r.description,
-                   r.readme_text, r.language, r.topics,
-                   r.domain, r.maturity, r.policy_area,
-                   r.llm_summary, r.llm_confidence
-            FROM repos r
-            LEFT JOIN pipeline_evals e ON r.id = e.repo_id
-            WHERE r.domain IS NOT NULL
-              AND e.repo_id IS NULL
-            ORDER BY r.stars DESC
-            LIMIT ?
-        """, (limit,)).fetchall()
+        if force_model:
+            rows = conn.execute("""
+                SELECT r.id, r.name, r.org, r.country, r.description,
+                       r.readme_text, r.language, r.topics,
+                       r.domain, r.maturity, r.policy_area,
+                       r.llm_summary, r.llm_confidence
+                FROM repos r
+                LEFT JOIN pipeline_evals e ON r.id = e.repo_id
+                WHERE r.domain IS NOT NULL
+                  AND (e.repo_id IS NULL OR e.eval_model != ?)
+                ORDER BY r.stars DESC
+                LIMIT ?
+            """, (force_model, limit)).fetchall()
+        else:
+            rows = conn.execute("""
+                SELECT r.id, r.name, r.org, r.country, r.description,
+                       r.readme_text, r.language, r.topics,
+                       r.domain, r.maturity, r.policy_area,
+                       r.llm_summary, r.llm_confidence
+                FROM repos r
+                LEFT JOIN pipeline_evals e ON r.id = e.repo_id
+                WHERE r.domain IS NOT NULL
+                  AND e.repo_id IS NULL
+                ORDER BY r.stars DESC
+                LIMIT ?
+            """, (limit,)).fetchall()
     return [dict(r) for r in rows]
 
 

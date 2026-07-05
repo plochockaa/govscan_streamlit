@@ -26,7 +26,7 @@ def load():
 
 st.title("Classification Quality")
 st.caption(
-    "LLM-as-judge: a Gemini evaluator independently reviews a sample of "
+    "LLM-as-judge: an independent evaluator reviews a sample of "
     "classified repositories each night and scores domain accuracy, summary "
     "quality, and confidence calibration."
 )
