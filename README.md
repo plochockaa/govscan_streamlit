@@ -1,8 +1,9 @@
 # GovScan — International Government GitHub Scanner
 
-A live intelligence tool that tracks, classifies, and compares open-source work published by government organisations on GitHub worldwide. The nightly pipeline fetches repos, classifies them using a Gemini-powered AI agent, embeds them for similarity search, and clusters them to surface duplicate efforts across countries. A natural-language query agent lets you interrogate the entire dataset through conversation.
+A live intelligence tool that tracks, classifies, and compares open-source work published by government organisations on GitHub worldwide. The nightly pipeline fetches repos, classifies them using a Mistral LLM agent, embeds them for similarity search, and clusters them to surface duplicate efforts across countries. A Gemini-powered natural-language query agent lets you interrogate the entire dataset through conversation.
 
-🔗 **[Live app → govscan.streamlit.app](https://govscan.streamlit.app)**
+🔗 **[Live app → govscan.streamlit.app](https://govscan.streamlit.app)**  
+📝 **[Kaggle writeup](https://www.kaggle.com/competitions/vibecoding-agents-capstone-project/writeups/govscan-intelligence)**
 
 ![GovScan demo](https://raw.githubusercontent.com/plochockaa/govscan_streamlit/main/pages/govscan.gif)
 
@@ -10,7 +11,7 @@ A live intelligence tool that tracks, classifies, and compares open-source work 
 
 ## What it does
 
-- **Classifies** every government repo by domain (AI/ML, citizen services, open data, security, etc.), policy area, and maturity using a Gemini agent — two-step reasoning: metadata first, README fetch if confidence is low
+- **Classifies** every government repo by domain (AI/ML, citizen services, open data, security, etc.), policy area, and maturity using a Mistral agent — two-step reasoning: metadata first, README fetch if confidence is low
 - **Answers natural-language questions** about government tech trends via a Gemini-powered query agent with SQL and similarity-search tools
 - **Detects AI model usage** by scanning dependency files — distinguishes frontier models (OpenAI, Anthropic, AWS Bedrock) from open weight (Mistral, HuggingFace, Ollama)
 - **Clusters similar repos** across governments to find where multiple countries built the same thing independently
@@ -27,6 +28,7 @@ A live intelligence tool that tracks, classifies, and compares open-source work 
 | **Similarity** | Expandable cluster cards — countries, repo links, LLM summaries, domain filters |
 | **Search** | Full-text search across name / description / LLM summary with sidebar filters |
 | **Ask** | Natural-language chat agent — ask questions, get data-backed answers |
+| **Quality** | LLM-as-judge evaluation dashboard — domain accuracy, summary quality, flagged misclassifications |
 
 ---
 
@@ -41,8 +43,10 @@ pipeline/fetch.py        ← paginated org scraping, rate-limit handling
       ▼
 pipeline/store.py        ← SQLite (repos, embeddings, clusters, ai_providers)
       │
-      ├── pipeline/classify.py   ← Gemini agent → domain / maturity / policy_area
+      ├── pipeline/classify.py   ← Mistral agent → domain / maturity / policy_area
       │                             (2-step: metadata first; fetches README if confidence < 0.65)
+      │
+      ├── pipeline/evaluate.py   ← Mistral LLM-as-judge → scores domain accuracy & summary quality
       │
       ├── pipeline/embed.py      ← fastembed (BAAI/bge-small-en-v1.5, local ONNX)
       │
@@ -92,14 +96,14 @@ The data pipeline is fully offline — all heavy processing runs in CI overnight
 git clone https://github.com/plochockaa/govscan_streamlit
 cd govscan_streamlit
 uv sync                        # installs app deps only (streamlit, pandas, plotly)
-uv sync --extra pipeline       # also installs pipeline deps (google-genai, fastembed, etc.)
+uv sync --extra pipeline       # also installs pipeline deps (mistralai, fastembed, etc.)
 ```
 
 Copy `.env.example` and fill in your tokens:
 
 ```bash
 cp .env.example .env
-# add GH_TOKEN and GEMINI_API_KEY
+# add GH_TOKEN, MISTRAL_API_KEY, and GEMINI_API_KEY
 ```
 
 Run the app:
@@ -120,8 +124,10 @@ uv run python -m pipeline.run
 
 - **`test.yml`** — runs pytest on every push to main
 - **`pipeline.yml`** — nightly at 01:00 CEST: fetch → classify → embed → cluster → detect AI providers, then commits the updated `data/govscan.db` back to the repo, which triggers a Streamlit Cloud redeploy automatically
+- **`evaluate.yml`** — manually triggered (Actions → Run Evaluation): runs the Mistral LLM-as-judge over classified repos and commits updated quality scores to the DB
 
-Secrets required in GitHub repo settings: `GEMINI_API_KEY`, `GH_TOKEN` (for reading public repos past the unauthenticated rate limit).
+Secrets required in GitHub repo settings: `MISTRAL_API_KEY` (pipeline + evaluation), `GH_TOKEN` (GitHub API rate limit).  
+`GEMINI_API_KEY` is set in Streamlit Cloud secrets — it's only needed by the Ask page at runtime, not the pipeline.
 
 ---
 
