@@ -49,6 +49,7 @@ def _normalize(raw: dict, org: str, country: str) -> dict:
 def run() -> None:
     gh_token = os.environ["GH_TOKEN"]
     mistral_key = os.environ["MISTRAL_API_KEY"]
+    gemini_key = os.environ["GEMINI_API_KEY"]
 
     headers = {
         "Authorization": f"token {gh_token}",
@@ -86,7 +87,7 @@ def run() -> None:
     # --- Evaluate classification quality (LLM-as-judge) ---
     # Run before classify so it gets tokens before the larger classify batch can exhaust the quota.
     log.info("Evaluating classification quality...")
-    eval_stats = evaluate_batch(client, limit=50)
+    eval_stats = evaluate_batch(gemini_key, limit=50)
     log.info(
         "Evaluated %d repos — avg score: %.2f, cost: $%.4f",
         eval_stats["repos_evaluated"],

@@ -39,14 +39,12 @@ jobs:
 
       - name: Run evaluation
         env:
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           uv run python -c "
           import os
-          from mistralai.client import Mistral
           from pipeline.evaluate import evaluate_batch
-          client = Mistral(api_key=os.environ['MISTRAL_API_KEY'])
-          stats = evaluate_batch(client, limit=int('${{ github.event.inputs.limit }}'))
+          stats = evaluate_batch(os.environ['GEMINI_API_KEY'], limit=int('${{ github.event.inputs.limit }}'))
           print(f'Evaluated: {stats[\"repos_evaluated\"]}')
           print(f'Avg score: {stats[\"avg_score\"]:.2%}')
           print(f'Cost: \${stats[\"cost_usd\"]:.4f}')

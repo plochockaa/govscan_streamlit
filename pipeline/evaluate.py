@@ -5,19 +5,20 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
 
-from mistralai.client import Mistral
+import requests
 from pydantic import BaseModel
 
 from pipeline.store import DB_PATH, get_unevaluated, store_eval
 
 log = logging.getLogger(__name__)
 
-_MODEL = "mistral-large-latest"
+_MODEL = "gemini-2.5-flash"
+_API_BASE = "https://generativelanguage.googleapis.com/v1beta"
 _LOG_PATH = Path(__file__).parent.parent / "data" / "pipeline_log.jsonl"
 
-# mistral-large-latest pricing: USD per 1M tokens
-_PRICE_IN = 2.0
-_PRICE_OUT = 6.0
+# gemini-2.5-flash pricing: USD per 1M tokens
+_PRICE_IN = 0.15
+_PRICE_OUT = 0.60
 
 _SYSTEM_PROMPT = """You are evaluating the quality of automated classifications of government GitHub repositories.
 Given the raw repository data and the LLM classification, assess whether the classification is correct.
@@ -46,6 +47,18 @@ Return ONLY valid JSON with exactly these fields — no prose, no markdown fence
 Example output:
 {"domain_correct":true,"suggested_domain":null,"summary_quality":4,"confidence_appropriate":true,"reasoning":"Correctly classified as citizen_services — the repo is a GOV.UK benefits application portal."}"""
 
+_RESPONSE_SCHEMA = {
+    "type": "OBJECT",
+    "properties": {
+        "domain_correct":         {"type": "BOOLEAN"},
+        "suggested_domain":       {"type": "STRING", "nullable": True},
+        "summary_quality":        {"type": "INTEGER"},
+        "confidence_appropriate": {"type": "BOOLEAN"},
+        "reasoning":              {"type": "STRING"},
+    },
+    "required": ["domain_correct", "summary_quality", "confidence_appropriate", "reasoning"],
+}
+
 
 class EvalResult(BaseModel):
     domain_correct: bool
@@ -53,7 +66,7 @@ class EvalResult(BaseModel):
         "ai_ml", "data_infrastructure", "citizen_services", "security",
         "open_data", "devtools", "research", "policy_tools", "other",
     ] | None = None
-    summary_quality: int          # 1–5
+    summary_quality: int
     confidence_appropriate: bool
     reasoning: str
 
@@ -94,31 +107,40 @@ def _build_user_msg(repo: dict) -> str:
     )
 
 
-def _call_model(repo: dict, client: Mistral) -> tuple[EvalResult, object]:
-    response = client.chat.complete(
-        model=_MODEL,
-        messages=[
-            {"role": "system", "content": _SYSTEM_PROMPT},
-            {"role": "user", "content": _build_user_msg(repo)},
-        ],
-        response_format={"type": "json_object"},
+def _call_model(repo: dict, api_key: str) -> tuple[EvalResult, dict]:
+    resp = requests.post(
+        f"{_API_BASE}/models/{_MODEL}:generateContent",
+        headers={"x-goog-api-key": api_key},
+        json={
+            "system_instruction": {"parts": [{"text": _SYSTEM_PROMPT}]},
+            "contents": [{"role": "user", "parts": [{"text": _build_user_msg(repo)}]}],
+            "generationConfig": {
+                "responseMimeType": "application/json",
+                "responseSchema": _RESPONSE_SCHEMA,
+            },
+        },
+        timeout=30,
     )
-    result = EvalResult(**json.loads(response.choices[0].message.content))
-    return result, response.usage
+    resp.raise_for_status()
+    data = resp.json()
+    usage = data.get("usageMetadata", {})
+    content = data["candidates"][0]["content"]["parts"][0]["text"]
+    result = EvalResult(**json.loads(content))
+    return result, usage
 
 
-def _call_model_with_retry(repo: dict, client: Mistral) -> tuple[EvalResult, object]:
+def _call_model_with_retry(repo: dict, api_key: str) -> tuple[EvalResult, dict]:
     """Retry on rate-limit errors with exponential backoff."""
     delays = [30, 60, 120]
     for delay in delays:
         try:
-            return _call_model(repo, client)
+            return _call_model(repo, api_key)
         except Exception as exc:
             if "429" not in str(exc) and "rate" not in str(exc).lower():
                 raise
             log.warning("Rate limit on %s — retrying in %ds", repo["id"], delay)
             time.sleep(delay)
-    return _call_model(repo, client)  # final attempt, raises if still failing
+    return _call_model(repo, api_key)  # final attempt, raises if still failing
 
 
 def _log_eval_batch(n_repos: int, input_tokens: int, output_tokens: int) -> None:
@@ -137,19 +159,18 @@ def _log_eval_batch(n_repos: int, input_tokens: int, output_tokens: int) -> None
 
 
 def evaluate_batch(
-    client: Mistral,
+    api_key: str,
     limit: int = 50,
     db_path: Path = DB_PATH,
 ) -> dict:
     """LLM-as-judge: evaluate classification quality for a sample of repos."""
-    # Re-evaluate repos previously scored by a weaker model.
     repos = get_unevaluated(limit=limit, db_path=db_path, force_model=_MODEL)
     total_in = total_out = 0
     scores = []
 
     for repo in repos:
         try:
-            result, usage = _call_model_with_retry(repo, client)
+            result, usage = _call_model_with_retry(repo, api_key)
             score = _compute_score(result)
             store_eval(
                 repo_id=repo["id"],
@@ -163,8 +184,8 @@ def evaluate_batch(
                 db_path=db_path,
             )
             scores.append(score)
-            total_in += usage.prompt_tokens or 0
-            total_out += usage.completion_tokens or 0
+            total_in += usage.get("promptTokenCount", 0)
+            total_out += usage.get("candidatesTokenCount", 0)
             time.sleep(0.2)
         except Exception as exc:
             log.warning("Skipping eval for %s — %s", repo["id"], exc)
