@@ -12,13 +12,13 @@ from pipeline.store import DB_PATH, get_unevaluated, store_eval
 
 log = logging.getLogger(__name__)
 
-_MODEL = "gemini-2.5-flash"
+_MODEL = "gemini-2.0-flash"
 _API_BASE = "https://generativelanguage.googleapis.com/v1beta"
 _LOG_PATH = Path(__file__).parent.parent / "data" / "pipeline_log.jsonl"
 
-# gemini-2.5-flash pricing: USD per 1M tokens
-_PRICE_IN = 0.15
-_PRICE_OUT = 0.60
+# gemini-2.0-flash pricing: USD per 1M tokens
+_PRICE_IN = 0.10
+_PRICE_OUT = 0.40
 
 _SYSTEM_PROMPT = """You are evaluating the quality of automated classifications of government GitHub repositories.
 Given the raw repository data and the LLM classification, assess whether the classification is correct.
@@ -112,7 +112,7 @@ def _call_model(repo: dict, api_key: str) -> tuple[EvalResult, dict]:
         f"{_API_BASE}/models/{_MODEL}:generateContent",
         headers={"x-goog-api-key": api_key},
         json={
-            "system_instruction": {"parts": [{"text": _SYSTEM_PROMPT}]},
+            "systemInstruction": {"parts": [{"text": _SYSTEM_PROMPT}]},
             "contents": [{"role": "user", "parts": [{"text": _build_user_msg(repo)}]}],
             "generationConfig": {
                 "responseMimeType": "application/json",
