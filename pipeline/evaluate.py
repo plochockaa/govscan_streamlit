@@ -164,7 +164,7 @@ def evaluate_batch(
     db_path: Path = DB_PATH,
 ) -> dict:
     """LLM-as-judge: evaluate classification quality for a sample of repos."""
-    repos = get_unevaluated(limit=limit, db_path=db_path, force_model=_MODEL)
+    repos = get_unevaluated(limit=limit, db_path=db_path)
     total_in = total_out = 0
     scores = []
 
