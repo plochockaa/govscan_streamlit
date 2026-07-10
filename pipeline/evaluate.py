@@ -12,13 +12,13 @@ from pipeline.store import DB_PATH, get_unevaluated, store_eval
 
 log = logging.getLogger(__name__)
 
-_MODEL = "gemini-2.0-flash"
+_MODEL = "gemini-2.5-flash"
 _API_BASE = "https://generativelanguage.googleapis.com/v1beta"
 _LOG_PATH = Path(__file__).parent.parent / "data" / "pipeline_log.jsonl"
 
-# gemini-2.0-flash pricing: USD per 1M tokens
-_PRICE_IN = 0.10
-_PRICE_OUT = 0.40
+# gemini-2.5-flash pricing: USD per 1M tokens
+_PRICE_IN = 0.15
+_PRICE_OUT = 0.60
 
 _SYSTEM_PROMPT = """You are evaluating the quality of automated classifications of government GitHub repositories.
 Given the raw repository data and the LLM classification, assess whether the classification is correct.
@@ -46,18 +46,6 @@ Return ONLY valid JSON with exactly these fields — no prose, no markdown fence
 
 Example output:
 {"domain_correct":true,"suggested_domain":null,"summary_quality":4,"confidence_appropriate":true,"reasoning":"Correctly classified as citizen_services — the repo is a GOV.UK benefits application portal."}"""
-
-_RESPONSE_SCHEMA = {
-    "type": "OBJECT",
-    "properties": {
-        "domain_correct":         {"type": "BOOLEAN"},
-        "suggested_domain":       {"type": "STRING", "nullable": True},
-        "summary_quality":        {"type": "INTEGER"},
-        "confidence_appropriate": {"type": "BOOLEAN"},
-        "reasoning":              {"type": "STRING"},
-    },
-    "required": ["domain_correct", "summary_quality", "confidence_appropriate", "reasoning"],
-}
 
 
 class EvalResult(BaseModel):
@@ -116,7 +104,6 @@ def _call_model(repo: dict, api_key: str) -> tuple[EvalResult, dict]:
             "contents": [{"role": "user", "parts": [{"text": _build_user_msg(repo)}]}],
             "generationConfig": {
                 "responseMimeType": "application/json",
-                "responseSchema": _RESPONSE_SCHEMA,
             },
         },
         timeout=30,
