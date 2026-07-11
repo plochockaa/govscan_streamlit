@@ -1,3 +1,6 @@
 streamlit
 pandas
 plotly
+fastembed>=0.4.2
+onnxruntime<=1.19.0
+rag-pipeline[google] @ git+https://github.com/plochockaa/rag_pipeline
