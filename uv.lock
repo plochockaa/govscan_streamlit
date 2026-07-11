@@ -781,19 +781,19 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "dotenv" },
+    { name = "fastembed" },
+    { name = "onnxruntime" },
     { name = "pandas" },
     { name = "plotly" },
+    { name = "rag-pipeline", extra = ["google"] },
     { name = "streamlit" },
 ]
 
 [package.optional-dependencies]
 pipeline = [
-    { name = "fastembed" },
     { name = "mistralai" },
-    { name = "onnxruntime" },
     { name = "pydantic" },
     { name = "python-dotenv" },
-    { name = "rag-pipeline", extra = ["google"] },
     { name = "requests" },
     { name = "scikit-learn" },
     { name = "tenacity" },
@@ -807,14 +807,14 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "dotenv", specifier = ">=0.9.9" },
-    { name = "fastembed", marker = "extra == 'pipeline'", specifier = ">=0.4.2" },
+    { name = "fastembed", specifier = ">=0.4.2" },
     { name = "mistralai", marker = "extra == 'pipeline'", specifier = ">=1.0.0" },
-    { name = "onnxruntime", marker = "extra == 'pipeline'" },
+    { name = "onnxruntime", specifier = "<=1.19.0" },
     { name = "pandas", specifier = ">=3.0.3" },
     { name = "plotly", specifier = ">=6.8.0" },
     { name = "pydantic", marker = "extra == 'pipeline'", specifier = ">=2.13.4" },
     { name = "python-dotenv", marker = "extra == 'pipeline'", specifier = ">=1.0.0" },
-    { name = "rag-pipeline", extras = ["google"], marker = "extra == 'pipeline'", git = "https://github.com/plochockaa/rag_pipeline" },
+    { name = "rag-pipeline", extras = ["google"], git = "https://github.com/plochockaa/rag_pipeline" },
     { name = "requests", marker = "extra == 'pipeline'", specifier = ">=2.32.0" },
     { name = "scikit-learn", marker = "extra == 'pipeline'", specifier = ">=1.9.0" },
     { name = "streamlit", specifier = ">=1.58.0" },

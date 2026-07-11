@@ -56,8 +56,8 @@ Each stage is idempotent; `run.py` skips rows already processed.
 | Database | SQLite (WAL mode) — file at `data/govscan.db` |
 | Package manager | `uv` |
 
-Streamlit dependencies: `streamlit`, `pandas`, `plotly` (in `requirements.txt`).  
-Pipeline dependencies: extras group `[pipeline]` in `pyproject.toml`.
+App dependencies (incl. vector search: `fastembed`, `onnxruntime`, `rag-pipeline`) are in `pyproject.toml`'s base `dependencies` — Streamlit Cloud deploys from `uv.lock`.  
+Pipeline-only dependencies (nightly data pipeline, not needed by the deployed app): extras group `[pipeline]` in `pyproject.toml`.
 
 ---
 

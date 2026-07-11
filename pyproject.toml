@@ -9,14 +9,14 @@ dependencies = [
     "pandas>=3.0.3",
     "plotly>=6.8.0",
     "streamlit>=1.58.0",
+    "fastembed>=0.4.2",
+    "onnxruntime<=1.19.0",
+    "rag-pipeline[google]",
 ]
 
 [project.optional-dependencies]
 pipeline = [
-    "fastembed>=0.4.2",
     "mistralai>=1.0.0",
-    "onnxruntime",
-    "rag-pipeline[google]",
     "pydantic>=2.13.4",
     "python-dotenv>=1.0.0",
     "requests>=2.32.0",
